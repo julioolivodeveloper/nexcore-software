@@ -27,8 +27,8 @@
 
     /* ── TOKENS ─────────────────────────────────────── */
     :root {
-      --purple:      #7c3aed;
-      --purple-l:    #a78bfa;
+      --purple:      #2563eb;
+      --purple-l:    #60a5fa;
       --cyan:        #06b6d4;
       --pink:        #ec4899;
       --green:       #10b981;
@@ -54,7 +54,7 @@
     #cursor-glow {
       position: fixed; pointer-events: none; z-index: 0;
       width: 600px; height: 600px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(37,99,235,0.07) 0%, transparent 70%);
       transform: translate(-50%, -50%);
       transition: left .12s ease, top .12s ease;
     }
@@ -125,15 +125,15 @@
       margin-left: auto;
       display: flex; align-items: center; gap: 8px;
       padding: 10px 22px; border-radius: 999px;
-      background: linear-gradient(135deg, var(--purple), #5b21b6);
+      background: linear-gradient(135deg, var(--purple), #1d4ed8);
       font-size: .875rem; font-weight: 600; color: #fff;
       transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
-      box-shadow: 0 4px 20px rgba(124,58,237,.35);
+      box-shadow: 0 4px 20px rgba(37,99,235,.35);
       flex-shrink: 0;
     }
     .nav-cta:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(124,58,237,.5);
+      box-shadow: 0 8px 30px rgba(37,99,235,.5);
     }
     .nav-cta svg { width: 16px; height: 16px; }
     .nav-burger {
@@ -173,7 +173,7 @@
     }
     .orb-1 {
       width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(124,58,237,.18), transparent 65%);
+      background: radial-gradient(circle, rgba(37,99,235,.18), transparent 65%);
       top: -15%; left: -15%;
       animation: orb-float 9s ease-in-out infinite;
     }
@@ -214,8 +214,8 @@
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 8px 18px; border-radius: 999px;
-      border: 1px solid rgba(124,58,237,.3);
-      background: rgba(124,58,237,.1);
+      border: 1px solid rgba(37,99,235,.3);
+      background: rgba(37,99,235,.1);
       font-size: .8rem; font-weight: 600;
       color: var(--purple-l); letter-spacing: .04em;
       margin-bottom: 24px;
@@ -223,8 +223,8 @@
     }
     .hero-badge svg { width: 14px; height: 14px; }
     @keyframes badge-pulse {
-      0%,100% { box-shadow: 0 0 0 0 rgba(124,58,237,.2); }
-      50%      { box-shadow: 0 0 0 8px rgba(124,58,237,0); }
+      0%,100% { box-shadow: 0 0 0 0 rgba(37,99,235,.2); }
+      50%      { box-shadow: 0 0 0 8px rgba(37,99,235,0); }
     }
     .hero-title {
       font-family: 'Space Grotesk', sans-serif;
@@ -255,12 +255,12 @@
     .btn-primary {
       display: inline-flex; align-items: center; gap: 9px;
       padding: 14px 28px; border-radius: 999px;
-      background: linear-gradient(135deg, var(--purple), #5b21b6);
+      background: linear-gradient(135deg, var(--purple), #1d4ed8);
       color: #fff; font-weight: 600; font-size: .95rem;
-      box-shadow: 0 4px 24px rgba(124,58,237,.4);
+      box-shadow: 0 4px 24px rgba(37,99,235,.4);
       transition: transform .2s ease, box-shadow .2s ease;
     }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(124,58,237,.55); }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(37,99,235,.55); }
     .btn-primary svg { width: 18px; height: 18px; }
     .btn-ghost {
       display: inline-flex; align-items: center; gap: 8px;
@@ -301,7 +301,7 @@
     .terminal {
       position: absolute; top: 20px; right: 0; left: 10%;
       background: rgba(13,13,26,.9);
-      border: 1px solid rgba(124,58,237,.25);
+      border: 1px solid rgba(37,99,235,.25);
       border-radius: 16px;
       box-shadow: 0 24px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.04), inset 0 1px 0 rgba(255,255,255,.05);
       overflow: hidden;
@@ -358,7 +358,7 @@
       animation: fb-float1 4s ease-in-out infinite;
     }
     .fb-2 {
-      background: rgba(124,58,237,.15); border-color: rgba(124,58,237,.3); color: var(--purple-l);
+      background: rgba(37,99,235,.15); border-color: rgba(37,99,235,.3); color: var(--purple-l);
       bottom: 30px; left: -10px;
       animation: fb-float2 5s ease-in-out infinite;
     }
@@ -401,7 +401,7 @@
       width: 46px; height: 46px; flex-shrink: 0;
       border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
-      background: rgba(124,58,237,.12); border: 1px solid rgba(124,58,237,.2);
+      background: rgba(37,99,235,.12); border: 1px solid rgba(37,99,235,.2);
     }
     .point-icon svg { width: 20px; height: 20px; color: var(--purple-l); }
     .point-text h4 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 3px; }
@@ -440,7 +440,7 @@
       border-radius: 999px; letter-spacing: .04em;
     }
     .tag-done { background: rgba(16,185,129,.12); color: #6ee7b7; border: 1px solid rgba(16,185,129,.2); }
-    .tag-ai   { background: rgba(124,58,237,.12); color: var(--purple-l); border: 1px solid rgba(124,58,237,.2); }
+    .tag-ai   { background: rgba(37,99,235,.12); color: var(--purple-l); border: 1px solid rgba(37,99,235,.2); }
     .tag-fast { background: rgba(245,158,11,.12); color: #fcd34d; border: 1px solid rgba(245,158,11,.2); }
 
     /* ── SERVICES ───────────────────────────────────── */
@@ -463,13 +463,13 @@
     .service-card::before {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(124,58,237,.1), transparent 55%);
+      background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(37,99,235,.1), transparent 55%);
       opacity: 0; transition: opacity .3s ease;
     }
     .service-card:hover::before { opacity: 1; }
     .service-card:hover {
-      border-color: rgba(124,58,237,.35);
-      box-shadow: 0 20px 60px rgba(124,58,237,.15);
+      border-color: rgba(37,99,235,.35);
+      box-shadow: 0 20px 60px rgba(37,99,235,.15);
     }
     .s-icon {
       width: 52px; height: 52px; border-radius: 14px; margin-bottom: 18px;
@@ -478,12 +478,12 @@
     }
     .service-card:hover .s-icon { transform: scale(1.1) rotate(-4deg); }
     .s-icon svg { width: 24px; height: 24px; color: #fff; }
-    .s-icon-1 { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+    .s-icon-1 { background: linear-gradient(135deg, #2563eb, #60a5fa); }
     .s-icon-2 { background: linear-gradient(135deg, #06b6d4, #0284c7); }
     .s-icon-3 { background: linear-gradient(135deg, #10b981, #059669); }
     .s-icon-4 { background: linear-gradient(135deg, #f59e0b, #d97706); }
     .s-icon-5 { background: linear-gradient(135deg, #ec4899, #be185d); }
-    .s-icon-6 { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+    .s-icon-6 { background: linear-gradient(135deg, #3b82f6, #1e40af); }
     .s-icon-7 { background: linear-gradient(135deg, #14b8a6, #0f766e); }
     .service-card h3 {
       font-family: 'Space Grotesk', sans-serif;
@@ -542,7 +542,7 @@
     .step-icon {
       width: 40px; height: 40px; margin: 0 auto 12px;
       display: flex; align-items: center; justify-content: center;
-      border-radius: 10px; background: rgba(124,58,237,.12);
+      border-radius: 10px; background: rgba(37,99,235,.12);
     }
     .step-icon svg { width: 18px; height: 18px; color: var(--purple-l); }
 
@@ -561,7 +561,7 @@
       transition: border-color .3s ease, transform .3s ease;
       position: relative; overflow: hidden;
     }
-    .bento-card:hover { border-color: rgba(124,58,237,.3); transform: translateY(-4px); }
+    .bento-card:hover { border-color: rgba(37,99,235,.3); transform: translateY(-4px); }
     .bento-card.wide { grid-column: span 2; }
     .bento-card.tall { grid-row: span 2; }
     .bento-card::after {
@@ -574,8 +574,8 @@
     .b-icon {
       width: 48px; height: 48px; border-radius: 14px; margin-bottom: 18px;
       display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(135deg, rgba(124,58,237,.2), rgba(6,182,212,.1));
-      border: 1px solid rgba(124,58,237,.15);
+      background: linear-gradient(135deg, rgba(37,99,235,.2), rgba(6,182,212,.1));
+      border: 1px solid rgba(37,99,235,.15);
     }
     .b-icon svg { width: 22px; height: 22px; color: var(--purple-l); }
     .bento-card h3 {
@@ -594,8 +594,8 @@
     /* ── CONTACT ─────────────────────────────────────── */
     .contact-section { overflow: hidden; }
     .contact-inner {
-      background: linear-gradient(135deg, rgba(124,58,237,.12), rgba(6,182,212,.06));
-      border: 1px solid rgba(124,58,237,.25);
+      background: linear-gradient(135deg, rgba(37,99,235,.12), rgba(6,182,212,.06));
+      border: 1px solid rgba(37,99,235,.25);
       border-radius: 28px;
       padding: 80px 60px;
       text-align: center;
@@ -604,7 +604,7 @@
     .contact-inner::before {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse 70% 70% at 50% 0%, rgba(124,58,237,.15), transparent 70%);
+      background: radial-gradient(ellipse 70% 70% at 50% 0%, rgba(37,99,235,.15), transparent 70%);
     }
     .contact-inner > * { position: relative; z-index: 1; }
     .contact-tag {
@@ -972,8 +972,8 @@
           <div class="s-arrow"><i data-lucide="arrow-right"></i> Más info</div>
         </div>
 
-        <div class="service-card reveal reveal-delay-4" style="background: linear-gradient(135deg, rgba(124,58,237,.08), rgba(6,182,212,.04)); border-color: rgba(124,58,237,.2);">
-          <div class="s-icon" style="background: linear-gradient(135deg, rgba(124,58,237,.3), rgba(6,182,212,.2)); border-color: rgba(124,58,237,.3);">
+        <div class="service-card reveal reveal-delay-4" style="background: linear-gradient(135deg, rgba(37,99,235,.08), rgba(6,182,212,.04)); border-color: rgba(37,99,235,.2);">
+          <div class="s-icon" style="background: linear-gradient(135deg, rgba(37,99,235,.3), rgba(6,182,212,.2)); border-color: rgba(37,99,235,.3);">
             <i data-lucide="plus-circle" style="color: var(--purple-l);"></i>
           </div>
           <h3>¿Tu industria?</h3>
