@@ -671,6 +671,61 @@
       50%      { box-shadow: 0 6px 50px rgba(37,211,102,.7), 0 0 0 10px rgba(37,211,102,.08); }
     }
 
+    /* ── CODE WINDOWS ───────────────────────────────── */
+    .code-win {
+      background: rgba(8,8,20,.96);
+      border: 1px solid rgba(37,99,235,.2);
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.04);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .76rem; line-height: 1.8;
+    }
+    .cw-head {
+      display: flex; align-items: center; gap: 7px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,.025);
+      border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .cw-title { margin-left: auto; font-size: .68rem; color: var(--text-muted); }
+    .cw-body  { padding: 16px 20px; }
+    .cw-body div { white-space: pre; }
+
+    /* Services section 2-col header */
+    .services-head-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 50px; align-items: center; margin-bottom: 60px;
+    }
+    @media (max-width: 768px) {
+      .services-head-row { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    /* Process terminal */
+    .process-terminal {
+      margin-top: 56px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 24px; align-items: start;
+    }
+    .proc-log { padding: 16px 20px; }
+    .proc-log div { display: flex; gap: 12px; font-size: .76rem; line-height: 1.9; }
+    .proc-log .log-ok   { color: var(--green); }
+    .proc-log .log-dim  { color: var(--text-muted); }
+    .proc-log .log-time { color: #4b5563; margin-left: auto; }
+    .proc-log .log-result { margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--border); }
+    @media (max-width: 768px) {
+      .process-terminal { grid-template-columns: 1fr; }
+    }
+
+    /* Bento code card */
+    .bento-code {
+      background: rgba(8,8,20,.95);
+      border: 1px solid rgba(37,99,235,.2);
+      border-radius: var(--radius);
+      overflow: hidden;
+      grid-column: span 1;
+    }
+    .bento-code:hover { border-color: rgba(37,99,235,.4); transform: translateY(-4px); }
+    .bento-code .cw-body { padding: 20px; font-size: .74rem; }
+
     /* ── FOOTER ──────────────────────────────────────── */
     .footer {
       padding: 48px 0 32px;
@@ -924,10 +979,28 @@
   <!-- ── SERVICES ──────────────────────────────────── -->
   <section class="section services-section" id="servicios">
     <div class="container">
-      <div class="section-head reveal">
-        <div class="section-tag"><i data-lucide="layout-grid"></i> Industrias</div>
-        <h2 class="section-title">Software para <span class="gradient-text">cada industria</span></h2>
-        <p class="section-sub">Desarrollamos sistemas para los negocios más exigentes del mercado con soluciones específicas para cada sector.</p>
+      <div class="services-head-row">
+        <div class="section-head reveal">
+          <div class="section-tag"><i data-lucide="layout-grid"></i> Industrias</div>
+          <h2 class="section-title">Software para <span class="gradient-text">cada industria</span></h2>
+          <p class="section-sub">Desarrollamos sistemas para los negocios más exigentes del mercado con soluciones específicas para cada sector.</p>
+        </div>
+        <div class="code-win reveal reveal-delay-3">
+          <div class="cw-head">
+            <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+            <span class="cw-title">tienda-config.json</span>
+          </div>
+          <div class="cw-body">
+            <div><span class="t-comment">// Tienda online lista en 3 días</span></div>
+            <div><span class="t-kw">const</span> <span class="t-var">tienda</span> = {</div>
+            <div>  <span class="t-var">nombre</span>:    <span class="t-str">"Mi Tienda Pro"</span>,</div>
+            <div>  <span class="t-var">productos</span>: <span class="t-num">1200</span>,</div>
+            <div>  <span class="t-var">pagos</span>:     [<span class="t-str">"Stripe"</span>, <span class="t-str">"PayPal"</span>],</div>
+            <div>  <span class="t-var">módulos</span>:   [<span class="t-str">"carrito"</span>, <span class="t-str">"envíos"</span>],</div>
+            <div>  <span class="t-var">estado</span>:    <span class="t-ok">"✓ En vivo"</span></div>
+            <div>};</div>
+          </div>
+        </div>
       </div>
       <div class="services-grid">
 
@@ -1029,6 +1102,48 @@
           <p>Tu sistema en producción, probado y funcionando. Listo para usar en tiempo récord.</p>
         </div>
       </div>
+
+      <!-- Build log terminals -->
+      <div class="process-terminal">
+        <div class="code-win reveal reveal-delay-2">
+          <div class="cw-head">
+            <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+            <span class="cw-title">terminal — nexcore build</span>
+          </div>
+          <div class="proc-log">
+            <div><span class="log-ok">$</span> <span class="t-fn">nexcore</span> build <span class="t-str">--proyecto</span>=restaurante</div>
+            <div>&nbsp;</div>
+            <div><span class="log-ok">✓</span> <span>Analizando procesos...</span>    <span class="log-time">0.3s</span></div>
+            <div><span class="log-ok">✓</span> <span>Arquitectura con IA...</span>    <span class="log-time">1.2s</span></div>
+            <div><span class="log-ok">✓</span> <span>Generando módulos...</span>      <span class="log-time">4.1s</span></div>
+            <div><span class="log-ok">✓</span> <span>Pruebas automatizadas...</span>  <span class="log-time">2.8s</span></div>
+            <div><span class="log-ok">✓</span> <span>Optimizando build...</span>      <span class="log-time">0.9s</span></div>
+            <div class="log-result">
+              <div><span class="log-ok">→</span> <span class="t-ok">Deploy listo en 3 días</span></div>
+              <div><span class="log-ok">→</span> <span class="log-dim">mi-restaurante.vercel.app</span> <span class="t-ok">✓</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-win reveal reveal-delay-4">
+          <div class="cw-head">
+            <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+            <span class="cw-title">reservas-api.js</span>
+          </div>
+          <div class="cw-body">
+            <div><span class="t-comment">// Sistema de reservas en tiempo real</span></div>
+            <div><span class="t-kw">const</span> <span class="t-var">reserva</span> = <span class="t-kw">await</span> <span class="t-fn">API</span>.<span class="t-fn">crear</span>({</div>
+            <div>  <span class="t-var">cliente</span>:  <span class="t-str">"Juan Pérez"</span>,</div>
+            <div>  <span class="t-var">fecha</span>:    <span class="t-str">"2026-06-15"</span>,</div>
+            <div>  <span class="t-var">hora</span>:     <span class="t-str">"19:30"</span>,</div>
+            <div>  <span class="t-var">personas</span>: <span class="t-num">4</span>,</div>
+            <div>  <span class="t-var">pago</span>:     <span class="t-ok">"confirmado"</span></div>
+            <div>});</div>
+            <br>
+            <div><span class="t-comment">// SMS enviado automáticamente ✓</span></div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1077,6 +1192,43 @@
           <div class="b-icon"><i data-lucide="headphones"></i></div>
           <h3>Soporte Continuo</h3>
           <p>No desaparecemos después del lanzamiento. Estamos disponibles para mejoras, ajustes y soporte técnico.</p>
+        </div>
+
+        <div class="bento-code code-win reveal reveal-delay-3" style="transition: border-color .3s ease, transform .3s ease;">
+          <div class="cw-head">
+            <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+            <span class="cw-title">performance.js</span>
+          </div>
+          <div class="cw-body">
+            <div><span class="t-comment">// Métricas de tu sistema</span></div>
+            <div><span class="t-kw">const</span> <span class="t-var">stats</span> = {</div>
+            <div>  <span class="t-var">uptime</span>:    <span class="t-str">"99.9%"</span>,   <span class="t-ok">// ✓</span></div>
+            <div>  <span class="t-var">velocidad</span>: <span class="t-str">"&lt;200ms"</span>,  <span class="t-ok">// ✓</span></div>
+            <div>  <span class="t-var">usuarios</span>:  <span class="t-str">"∞ escala"</span>, <span class="t-ok">// ✓</span></div>
+            <div>  <span class="t-var">seguridad</span>: <span class="t-str">"AES-256"</span>,  <span class="t-ok">// ✓</span></div>
+            <div>  <span class="t-var">soporte</span>:   <span class="t-str">"24/7"</span>,     <span class="t-ok">// ✓</span></div>
+            <div>};</div>
+            <br>
+            <div><span class="t-ok">// Performance: A+</span></div>
+          </div>
+        </div>
+
+        <div class="bento-code code-win reveal reveal-delay-5" style="transition: border-color .3s ease, transform .3s ease;">
+          <div class="cw-head">
+            <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+            <span class="cw-title">inventario-bot.py</span>
+          </div>
+          <div class="cw-body">
+            <div><span class="t-comment"># IA monitoreando stock</span></div>
+            <div><span class="t-kw">if</span> stock[<span class="t-str">"leche"</span>] &lt; <span class="t-num">10</span>:</div>
+            <div>  AI.<span class="t-fn">ordenar</span>(</div>
+            <div>    producto=<span class="t-str">"leche"</span>,</div>
+            <div>    cantidad=<span class="t-num">50</span>,</div>
+            <div>    proveedor=<span class="t-str">"auto"</span></div>
+            <div>  )</div>
+            <br>
+            <div><span class="t-ok"># Orden enviada ✓ — sin intervención</span></div>
+          </div>
         </div>
 
       </div>
