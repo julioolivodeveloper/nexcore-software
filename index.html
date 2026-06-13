@@ -671,6 +671,54 @@
       50%      { box-shadow: 0 6px 50px rgba(37,211,102,.7), 0 0 0 10px rgba(37,211,102,.08); }
     }
 
+    /* ── CLIENTS MARQUEE ────────────────────────────── */
+    .clients-section {
+      padding: 64px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .clients-label {
+      text-align: center;
+      font-size: .72rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 36px;
+    }
+    .clients-marquee {
+      position: relative;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+      mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+    }
+    .clients-track {
+      display: flex; align-items: center; gap: 56px;
+      width: max-content;
+      animation: marquee-left 35s linear infinite;
+    }
+    .clients-track:hover { animation-play-state: paused; }
+    @keyframes marquee-left {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .client-logo {
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      height: 64px; width: 130px;
+    }
+    .client-logo img {
+      height: 52px; width: 130px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.45;
+      transition: opacity .3s ease, filter .3s ease, transform .3s ease;
+      display: block;
+    }
+    .client-logo img:hover {
+      opacity: 1;
+      filter: none;
+      transform: scale(1.08);
+    }
+
     /* ── DEMO SECTION ───────────────────────────────── */
     .demo-section { background: var(--bg2); }
     .demo-inner {
@@ -994,6 +1042,43 @@
         <div class="fbadge fb-3" id="fb3">
           <i data-lucide="check-circle"></i> En Producción
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CLIENTS ──────────────────────────────────── -->
+  <section class="clients-section">
+    <p class="clients-label">Empresas que confían en nosotros</p>
+    <div class="clients-marquee">
+      <div class="clients-track">
+        <!-- Set 1 (originals) -->
+        <div class="client-logo"><img src="img/clients/miquelito-tacos.png"      alt="Miquelito Tacos"></div>
+        <div class="client-logo"><img src="img/clients/montero.png"              alt="Montero Western"></div>
+        <div class="client-logo"><img src="img/clients/lamasini.png"             alt="Lamasini"></div>
+        <div class="client-logo"><img src="img/clients/fresnan-farmers.png"      alt="Fresnan Indoor Farmers Market"></div>
+        <div class="client-logo"><img src="img/clients/aca-las-tortas.jpg"       alt="Aca Las Tortas El Paso"></div>
+        <div class="client-logo"><img src="img/clients/la-internacional.png"     alt="La Internacional Carnicería"></div>
+        <div class="client-logo"><img src="img/clients/frankies.png"             alt="Frankie's Hot Dog & Hamburgers"></div>
+        <div class="client-logo"><img src="img/clients/snackers.png"             alt="Snackers"></div>
+        <div class="client-logo"><img src="img/clients/castro-cakes.png"         alt="Castro Cakes"></div>
+        <div class="client-logo"><img src="img/clients/maxval.png"               alt="Maxval Inc"></div>
+        <div class="client-logo"><img src="img/clients/rsg-systems.png"          alt="RSG Systems-Plus"></div>
+        <div class="client-logo"><img src="img/clients/tres-estrellas.png"       alt="Tres Estrellas de Oro"></div>
+        <div class="client-logo"><img src="img/clients/owl-brand.png"            alt="Owl Brand"></div>
+        <!-- Set 2 (clones para loop infinito) -->
+        <div class="client-logo"><img src="img/clients/miquelito-tacos.png"      alt="Miquelito Tacos"></div>
+        <div class="client-logo"><img src="img/clients/montero.png"              alt="Montero Western"></div>
+        <div class="client-logo"><img src="img/clients/lamasini.png"             alt="Lamasini"></div>
+        <div class="client-logo"><img src="img/clients/fresnan-farmers.png"      alt="Fresnan Indoor Farmers Market"></div>
+        <div class="client-logo"><img src="img/clients/aca-las-tortas.jpg"       alt="Aca Las Tortas El Paso"></div>
+        <div class="client-logo"><img src="img/clients/la-internacional.png"     alt="La Internacional Carnicería"></div>
+        <div class="client-logo"><img src="img/clients/frankies.png"             alt="Frankie's Hot Dog & Hamburgers"></div>
+        <div class="client-logo"><img src="img/clients/snackers.png"             alt="Snackers"></div>
+        <div class="client-logo"><img src="img/clients/castro-cakes.png"         alt="Castro Cakes"></div>
+        <div class="client-logo"><img src="img/clients/maxval.png"               alt="Maxval Inc"></div>
+        <div class="client-logo"><img src="img/clients/rsg-systems.png"          alt="RSG Systems-Plus"></div>
+        <div class="client-logo"><img src="img/clients/tres-estrellas.png"       alt="Tres Estrellas de Oro"></div>
+        <div class="client-logo"><img src="img/clients/owl-brand.png"            alt="Owl Brand"></div>
       </div>
     </div>
   </section>
