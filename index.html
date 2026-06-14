@@ -837,6 +837,63 @@
     .bento-code:hover { border-color: rgba(37,99,235,.4); transform: translateY(-4px); }
     .bento-code .cw-body { padding: 20px; font-size: .74rem; }
 
+    /* ── PAYMENTS SECTION ───────────────────────────── */
+    .payments-section {
+      padding: 80px 0;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .payments-label {
+      text-align: center;
+      font-size: .72rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--purple-l);
+      margin-bottom: 40px;
+    }
+    .payments-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .payment-card {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+      padding: 32px 28px;
+      transition: transform .3s, border-color .3s, box-shadow .3s;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .payment-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(37,99,235,.35);
+      box-shadow: 0 16px 48px rgba(37,99,235,.12);
+    }
+    .payment-logo {
+      display: flex; align-items: center;
+      height: 36px;
+    }
+    .payment-info h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem; font-weight: 700; margin-bottom: 8px;
+    }
+    .payment-info p {
+      font-size: .85rem; color: var(--text-muted); line-height: 1.6;
+    }
+    .payment-tags {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px;
+    }
+    .payment-tags span {
+      padding: 4px 12px; border-radius: 999px;
+      background: rgba(37,99,235,.12);
+      border: 1px solid rgba(37,99,235,.25);
+      font-size: .75rem; font-weight: 600; color: var(--purple-l);
+    }
+    @media (max-width: 640px) {
+      .payments-grid { grid-template-columns: 1fr; }
+    }
+
     /* ── FOOTER ──────────────────────────────────────── */
     .footer {
       padding: 48px 0 32px;
@@ -1380,6 +1437,58 @@
             <div>  )</div>
             <br>
             <div><span class="t-ok"># Orden enviada ✓ — sin intervención</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PAYMENTS ─────────────────────────────────── -->
+  <section class="payments-section">
+    <div class="container">
+      <p class="payments-label reveal">Métodos de pago integrados</p>
+      <div class="payments-grid">
+
+        <!-- Stripe -->
+        <div class="payment-card reveal reveal-delay-1">
+          <div class="payment-logo">
+            <!-- Stripe wordmark SVG -->
+            <svg viewBox="0 0 60 25" fill="none" xmlns="http://www.w3.org/2000/svg" height="28">
+              <path d="M5.45 9.3c0-.65.54-.9 1.43-.9 1.28 0 2.9.39 4.18 1.08V5.57A11.1 11.1 0 0 0 6.88 5C3.48 5 1.2 6.73 1.2 9.5c0 4.34 5.98 3.65 5.98 5.52 0 .77-.67 1.02-1.61 1.02-1.39 0-3.17-.57-4.57-1.34v3.97c1.55.67 3.12 1 4.57 1 3.48 0 5.88-1.72 5.88-4.52C11.45 10.59 5.45 11.4 5.45 9.3zm11.65-7.08L13.5 2.9l-.05 15.45h3.9L17.1 2.22zm5.12 4.5H18.3v11.63h3.9V6.72h-.08zm0-4.5c-1.08 0-1.96.88-1.96 1.96 0 1.1.88 1.96 1.96 1.96 1.1 0 1.96-.86 1.96-1.96a1.96 1.96 0 0 0-1.96-1.96zm10.1 4.16c-.9 0-1.78.4-2.4 1.04l-.16-.88h-3.47v15.81l3.9-.83.01-3.84c.65.47 1.6.76 2.55.76 2.57 0 4.91-2.06 4.91-6.6 0-4.15-2.37-5.46-5.34-5.46zm-.94 8.43c-.85 0-1.35-.3-1.7-.68l-.02-5.37c.38-.42.9-.7 1.72-.7 1.32 0 2.23 1.47 2.23 3.37 0 1.95-.89 3.38-2.23 3.38zm14.03-8.43c-3.97 0-6.22 2.66-6.22 6.6 0 4.35 2.48 6.35 6.15 6.35 1.77 0 3.1-.4 4.1-.96v-3.2c-1 .52-2.15.82-3.6.82-1.42 0-2.68-.5-2.84-2.22h7.15c.02-.19.05-.95.05-1.3 0-3.6-1.82-6.09-4.79-6.09zm-2.46 5.25c0-1.65.86-2.34 1.65-2.34.77 0 1.58.69 1.58 2.34h-3.23z" fill="#635BFF"/>
+            </svg>
+          </div>
+          <div class="payment-info">
+            <h3>Stripe</h3>
+            <p>Pagos con tarjeta de crédito y débito, pagos recurrentes, facturas y más. Acepta Visa, Mastercard, Amex.</p>
+          </div>
+          <div class="payment-tags">
+            <span>Tarjetas</span>
+            <span>Recurrente</span>
+            <span>Global</span>
+          </div>
+        </div>
+
+        <!-- Square -->
+        <div class="payment-card reveal reveal-delay-2">
+          <div class="payment-logo">
+            <!-- Square logo SVG -->
+            <svg viewBox="0 0 80 28" fill="none" xmlns="http://www.w3.org/2000/svg" height="28">
+              <!-- Square icon -->
+              <rect x="0" y="4" width="20" height="20" rx="4" fill="#006AFF"/>
+              <rect x="5" y="9" width="10" height="10" rx="1.5" fill="white"/>
+              <!-- Square wordmark -->
+              <text x="26" y="21" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#ffffff" letter-spacing="-0.3">Square</text>
+            </svg>
+          </div>
+          <div class="payment-info">
+            <h3>Square</h3>
+            <p>Punto de venta en persona, pagos con lector de tarjetas, facturación digital y gestión de inventario.</p>
+          </div>
+          <div class="payment-tags">
+            <span>POS</span>
+            <span>En persona</span>
+            <span>Lector</span>
           </div>
         </div>
 
