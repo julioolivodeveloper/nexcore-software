@@ -28,7 +28,7 @@
     .nav-cta{margin-left:auto;display:flex;align-items:center;gap:8px;padding:10px 22px;border-radius:999px;background:linear-gradient(135deg,var(--purple),#1d4ed8);font-size:.875rem;font-weight:600;color:#fff;box-shadow:0 4px 20px rgba(37,99,235,.35);flex-shrink:0;transition:transform .2s,box-shadow .2s;}
     .nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(37,99,235,.5);}.nav-cta svg{width:16px;height:16px;}
     .nav-burger{display:none;background:none;border:none;color:#fff;cursor:pointer;padding:6px;}
-    @media(max-width:768px){.nav-links{position:fixed;top:64px;left:0;right:0;bottom:0;flex-direction:column;justify-content:center;gap:40px;background:#07070f;font-size:1.4rem;transform:translateX(100%);transition:transform .35s;pointer-events:none;}.nav-links.open{transform:translateX(0);pointer-events:all;}.nav-links a{font-size:1.2rem;}.nav-burger{display:flex;margin-left:auto;}.nav-cta{display:none;}}
+    @media(max-width:768px){.nav-links{position:fixed;top:0;left:0;right:0;bottom:0;z-index:998;flex-direction:column;justify-content:center;align-items:center;gap:0;background:#07070f;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);pointer-events:none;padding:0;}.nav-links::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple),var(--cyan),var(--pink));}.nav-links.open{transform:translateX(0);pointer-events:all;}.nav-links li{width:100%;border-bottom:1px solid rgba(255,255,255,.06);}.nav-links li:first-child{border-top:1px solid rgba(255,255,255,.06);}.nav-links a{display:block;width:100%;text-align:center;padding:20px 0;font-size:1.15rem;font-weight:600;color:var(--text-muted);transition:color .2s,background .2s;}.nav-links a:hover{color:#fff;background:rgba(255,255,255,.03);}.nav-mobile-wa{display:flex!important;align-items:center;justify-content:center;gap:10px;margin-top:36px;padding:14px 36px;border-radius:999px;background:linear-gradient(135deg,var(--purple),#1d4ed8);color:#fff;font-weight:700;font-size:1rem;box-shadow:0 4px 24px rgba(37,99,235,.4);}.nav-mobile-wa svg{width:18px;height:18px;}.nav-burger{display:flex;margin-left:auto;z-index:1001;position:relative;}.nav-cta{display:none;}}@media(min-width:769px){.nav-mobile-wa{display:none!important;}}
     .container{max-width:1160px;margin:0 auto;padding:0 24px;}
     .orb{position:absolute;border-radius:50%;filter:blur(80px);}
     .orb-1{width:700px;height:700px;background:radial-gradient(circle,rgba(37,99,235,.18),transparent 65%);top:-15%;left:-15%;animation:orb-float 9s ease-in-out infinite;}
@@ -90,9 +90,19 @@
   <nav class="nav" id="nav">
     <div class="nav-inner">
       <a href="index.html" class="nav-logo"><div class="logo-hex">⬡</div>Financial Innovation</a>
-      <div class="nav-links" id="navLinks">
-        <a href="index.html#servicios">Servicios</a><a href="index.html#proceso">Proceso</a><a href="index.html#ventajas">Ventajas</a><a href="https://wa.me/12094609828" target="_blank">Contacto</a>
-      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="index.html#servicios">Servicios</a></li>
+        <li><a href="index.html#proceso">Proceso</a></li>
+        <li><a href="index.html#ventajas">Ventajas</a></li>
+        <li><a href="https://wa.me/12094609828" target="_blank" rel="noopener">Contacto</a></li>
+        <li style="border:none;padding:0;">
+          <a href="https://wa.me/12094609828" target="_blank" rel="noopener" class="nav-mobile-wa">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.583 3.842 1.585 5.395L2 22l4.733-1.54A9.97 9.97 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2z"/></svg>
+            WhatsApp
+          </a>
+        </li>
+      </ul>
       <a href="https://wa.me/12094609828" target="_blank" class="nav-cta">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.583 3.842 1.585 5.395L2 22l4.733-1.54A9.97 9.97 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2z"/></svg>
         WhatsApp
