@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Software para Tiendas Online — Financial Innovation</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      --purple: #2563eb;
+      --purple-l: #60a5fa;
+      --cyan: #06b6d4;
+      --pink: #ec4899;
+      --green: #10b981;
+      --yellow: #f59e0b;
+      --bg: #07070f;
+      --bg2: #0e0e1c;
+      --bg3: #13132a;
+      --border: rgba(255,255,255,0.07);
+      --text-muted: #94a3b8;
+      --radius: 20px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #07070f; color: #e2e8f0; overflow-x: hidden; line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    #cursor-glow {
+      position: fixed; pointer-events: none; z-index: 0;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(37,99,235,0.07) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: left .12s ease, top .12s ease;
+    }
+    .loader { position: fixed; top: 0; left: 0; width: 0; height: 3px; background: linear-gradient(90deg, var(--purple), var(--cyan), var(--pink)); z-index: 9999; animation: load-bar 1.1s ease forwards; }
+    @keyframes load-bar { to { width: 100%; opacity: 0; } }
+
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 20px 0; transition: background .3s, backdrop-filter .3s, border-bottom .3s, padding .3s; }
+    .nav.scrolled { background: rgba(7,7,15,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 12px 0; }
+    .nav-inner { display: flex; align-items: center; gap: 40px; max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+    .nav-logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.35rem; font-weight: 700; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .logo-hex { width: 34px; height: 34px; background: linear-gradient(135deg, var(--purple), var(--cyan)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #fff; }
+    .nav-links { display: flex; align-items: center; gap: 32px; flex: 1; }
+    .nav-links a { font-size: .9rem; font-weight: 500; color: var(--text-muted); transition: color .2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta { margin-left: auto; display: flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 999px; background: linear-gradient(135deg, var(--purple), #1d4ed8); font-size: .875rem; font-weight: 600; color: #fff; box-shadow: 0 4px 20px rgba(37,99,235,.35); flex-shrink: 0; transition: transform .2s, box-shadow .2s; }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(37,99,235,.5); }
+    .nav-cta svg { width: 16px; height: 16px; }
+    .nav-burger { display: none; background: none; border: none; color: #fff; cursor: pointer; padding: 6px; }
+    @media (max-width: 768px) {
+      .nav-links { position: fixed; top: 64px; left: 0; right: 0; bottom: 0; flex-direction: column; justify-content: center; gap: 40px; background: rgba(7,7,15,0.97); backdrop-filter: blur(20px); font-size: 1.4rem; transform: translateX(100%); transition: transform .35s; pointer-events: none; }
+      .nav-links.open { transform: translateX(0); pointer-events: all; }
+      .nav-links a { font-size: 1.2rem; }
+      .nav-burger { display: flex; margin-left: auto; }
+      .nav-cta { display: none; }
+    }
+
+    .container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+
+    .orb { position: absolute; border-radius: 50%; filter: blur(80px); }
+    .orb-1 { width: 700px; height: 700px; background: radial-gradient(circle, rgba(37,99,235,.18), transparent 65%); top: -15%; left: -15%; animation: orb-float 9s ease-in-out infinite; }
+    .orb-2 { width: 550px; height: 550px; background: radial-gradient(circle, rgba(6,182,212,.13), transparent 65%); top: 10%; right: -10%; animation: orb-float 11s ease-in-out infinite reverse; }
+    @keyframes orb-float { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(40px,-40px) scale(1.06)} 66%{transform:translate(-25px,25px) scale(0.94)} }
+
+    .grid-overlay { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px); background-size: 64px 64px; -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%); mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%); }
+
+    .terminal { background: rgba(13,13,26,.9); border: 1px solid rgba(37,99,235,.25); border-radius: 16px; box-shadow: 0 24px 80px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.05); overflow: hidden; backdrop-filter: blur(20px); }
+    .terminal-head { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: rgba(255,255,255,.03); border-bottom: 1px solid rgba(255,255,255,.05); }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-r { background: #ff5f57; } .dot-y { background: #febc2e; } .dot-g { background: #28c840; }
+    .terminal-title { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: .75rem; color: var(--text-muted); }
+    .terminal-body { padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: .8rem; line-height: 1.8; }
+    .t-comment { color: #4b5563; } .t-kw { color: var(--purple-l); } .t-var { color: #e2e8f0; } .t-fn { color: var(--cyan); } .t-str { color: var(--green); } .t-num { color: var(--yellow); } .t-ok { color: var(--green); font-weight: 600; }
+    .terminal-cursor { display: inline-block; width: 8px; height: 14px; background: var(--purple-l); vertical-align: middle; margin-left: 3px; border-radius: 2px; animation: blink 1.1s ease infinite; }
+    @keyframes blink { 0%,50%{opacity:1} 51%,100%{opacity:0} }
+
+    .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 90px; position: relative; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 60px; position: relative; z-index: 2; width: 100%; padding: 60px 0; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 999px; border: 1px solid rgba(37,99,235,.3); background: rgba(37,99,235,.1); font-size: .8rem; font-weight: 600; color: var(--purple-l); margin-bottom: 24px; }
+    .hero-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 700; line-height: 1.05; letter-spacing: -.03em; margin-bottom: 22px; }
+    .grad { background: linear-gradient(135deg, var(--purple-l) 0%, var(--cyan) 60%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-desc { font-size: 1.05rem; color: var(--text-muted); max-width: 480px; line-height: 1.75; margin-bottom: 36px; }
+    .hero-btns { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 9px; padding: 14px 28px; border-radius: 999px; background: linear-gradient(135deg, var(--purple), #1d4ed8); color: #fff; font-weight: 600; font-size: .95rem; box-shadow: 0 4px 24px rgba(37,99,235,.4); transition: transform .2s, box-shadow .2s; }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(37,99,235,.55); }
+    .btn-ghost { display: inline-flex; align-items: center; gap: 8px; padding: 14px 26px; border-radius: 999px; border: 1px solid var(--border); color: #cbd5e1; font-weight: 500; font-size: .95rem; background: rgba(255,255,255,.03); transition: border-color .2s, background .2s, transform .2s; }
+    .btn-ghost:hover { border-color: rgba(255,255,255,.2); background: rgba(255,255,255,.06); transform: translateY(-2px); }
+    .hero-visual { position: relative; height: 420px; }
+
+    .section { padding: 100px 0; position: relative; }
+    .section-label { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--purple-l); margin-bottom: 14px; }
+    .section-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.9rem, 3.5vw, 2.8rem); font-weight: 700; letter-spacing: -.025em; line-height: 1.15; margin-bottom: 14px; }
+    .section-sub { color: var(--text-muted); font-size: 1rem; max-width: 540px; line-height: 1.7; margin-bottom: 56px; }
+
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .feature-card { background: rgba(255,255,255,.025); border: 1px solid var(--border); border-radius: 16px; padding: 28px 24px; transition: border-color .3s, box-shadow .3s, transform .3s; }
+    .feature-card:hover { border-color: rgba(37,99,235,.4); box-shadow: 0 12px 40px rgba(37,99,235,.1); transform: translateY(-4px); }
+    .feat-icon { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, rgba(37,99,235,.2), rgba(6,182,212,.1)); border: 1px solid rgba(37,99,235,.2); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .feat-icon svg { width: 20px; height: 20px; color: var(--purple-l); }
+    .feature-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: .83rem; color: var(--text-muted); line-height: 1.6; }
+
+    .deliverables-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 860px; }
+    .deliv-item { display: flex; align-items: flex-start; gap: 14px; background: rgba(255,255,255,.025); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; }
+    .deliv-check { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--purple), var(--cyan)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .deliv-check svg { width: 14px; height: 14px; color: #fff; }
+    .deliv-item h4 { font-size: .95rem; font-weight: 700; margin-bottom: 4px; }
+    .deliv-item p { font-size: .82rem; color: var(--text-muted); line-height: 1.5; }
+
+    .cta-box { background: linear-gradient(135deg, rgba(37,99,235,.1), rgba(6,182,212,.05)); border: 1px solid rgba(37,99,235,.3); border-radius: 28px; padding: 72px 56px; text-align: center; position: relative; overflow: hidden; max-width: 720px; margin: 0 auto; }
+    .cta-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--purple), var(--cyan)); }
+    .cta-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 700; margin-bottom: 16px; }
+    .cta-box p { color: var(--text-muted); font-size: 1rem; margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; }
+
+    .ai-section { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .ai-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .stat-big { font-family: 'Space Grotesk', sans-serif; font-size: 5rem; font-weight: 700; background: linear-gradient(135deg, var(--purple-l), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+    .stat-label { font-size: 1rem; color: var(--text-muted); margin-top: 8px; }
+
+    @media (max-width: 860px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+      .hero-visual { height: auto; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .deliverables-list { grid-template-columns: 1fr; }
+      .cta-box { padding: 48px 28px; }
+      .ai-inner { grid-template-columns: 1fr; gap: 32px; }
+    }
+    @media (max-width: 520px) {
+      .features-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader"></div>
+  <div id="cursor-glow"></div>
+
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-hex">⬡</div>
+        Financial Innovation
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html#servicios">Servicios</a>
+        <a href="index.html#proceso">Proceso</a>
+        <a href="index.html#ventajas">Ventajas</a>
+        <a href="https://wa.me/12094609828" target="_blank">Contacto</a>
+      </div>
+      <a href="https://wa.me/12094609828" target="_blank" class="nav-cta">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.583 3.842 1.585 5.395L2 22l4.733-1.54A9.97 9.97 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2z"/></svg>
+        WhatsApp
+      </a>
+      <button class="nav-burger" id="navBurger">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" style="background: var(--bg);">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="grid-overlay"></div>
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-badge">🛒 E-Commerce</div>
+          <h1 class="hero-title">Tu tienda en línea,<br>lista en <span class="grad">días</span></h1>
+          <p class="hero-desc">Catálogo de productos, carrito de compras, pagos seguros y panel de administración completo. Todo construido con IA en tiempo récord.</p>
+          <div class="hero-btns">
+            <a href="https://wa.me/12094609828" target="_blank" class="btn-primary">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.583 3.842 1.585 5.395L2 22l4.733-1.54A9.97 9.97 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2z"/></svg>
+              Solicitar Demo Gratis
+            </a>
+            <a href="index.html" class="btn-ghost">← Volver</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="terminal" style="position:relative;z-index:2;">
+            <div class="terminal-head">
+              <span class="dot dot-r"></span>
+              <span class="dot dot-y"></span>
+              <span class="dot dot-g"></span>
+              <span class="terminal-title">tienda-config.js</span>
+            </div>
+            <div class="terminal-body">
+              <div><span class="t-comment">// Configurando tu tienda online</span></div>
+              <div><span class="t-kw">const</span> <span class="t-var">tienda</span> = <span class="t-kw">await</span> <span class="t-fn">FI.create</span>({</div>
+              <div>&nbsp;&nbsp;<span class="t-var">tipo</span>: <span class="t-str">'ecommerce'</span>,</div>
+              <div>&nbsp;&nbsp;<span class="t-var">productos</span>: <span class="t-num">1200</span>,</div>
+              <div>&nbsp;&nbsp;<span class="t-var">pagos</span>: [<span class="t-str">'Stripe'</span>, <span class="t-str">'PayPal'</span>, <span class="t-str">'Zelle'</span>],</div>
+              <div>&nbsp;&nbsp;<span class="t-var">módulos</span>: [<span class="t-str">'carrito'</span>, <span class="t-str">'envíos'</span>, <span class="t-str">'cupones'</span>],</div>
+              <div>&nbsp;&nbsp;<span class="t-var">estado</span>: <span class="t-str">'✓ En vivo'</span></div>
+              <div>});</div>
+              <div>&nbsp;</div>
+              <div><span class="t-ok">✓ Tienda desplegada en producción</span></div>
+              <div><span class="t-ok">✓ SSL activado · CDN configurado</span></div>
+              <div><span class="t-ok">✓ Pagos listos para recibir</span><span class="terminal-cursor"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARACTERÍSTICAS -->
+  <section class="section" style="background: var(--bg2);">
+    <div class="container">
+      <p class="section-label reveal">¿Qué incluye el sistema?</p>
+      <h2 class="section-title reveal reveal-delay-1">Todo lo que tu tienda<br>online necesita</h2>
+      <p class="section-sub reveal reveal-delay-2">Cada funcionalidad diseñada para convertir visitantes en clientes y clientes en compradores recurrentes.</p>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feat-icon"><i data-lucide="layout-grid"></i></div>
+          <h3>Catálogo con filtros inteligentes</h3>
+          <p>Organiza miles de productos con categorías, etiquetas, filtros de precio y búsqueda en tiempo real.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feat-icon"><i data-lucide="shopping-cart"></i></div>
+          <h3>Carrito de compras inteligente</h3>
+          <p>Carrito persistente, productos sugeridos y recuperación de carritos abandonados por WhatsApp.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feat-icon"><i data-lucide="credit-card"></i></div>
+          <h3>Pagos con Stripe / PayPal</h3>
+          <p>Acepta tarjetas, PayPal, Zelle y efectivo. Pagos seguros con cifrado SSL y confirmación instantánea.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feat-icon"><i data-lucide="package"></i></div>
+          <h3>Gestión de pedidos en tiempo real</h3>
+          <p>Panel completo para procesar pedidos, actualizar estados y notificar al cliente en cada etapa.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feat-icon"><i data-lucide="tag"></i></div>
+          <h3>Cupones y descuentos</h3>
+          <p>Crea códigos de descuento, ofertas por tiempo limitado y promociones automáticas por volumen.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feat-icon"><i data-lucide="users"></i></div>
+          <h3>Historial de clientes</h3>
+          <p>Perfil completo por cliente: pedidos anteriores, preferencias, direcciones y puntos de lealtad.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feat-icon"><i data-lucide="bar-chart-2"></i></div>
+          <h3>Reportes de ventas</h3>
+          <p>Dashboard con ventas diarias, productos más vendidos, ingresos y métricas de conversión.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feat-icon"><i data-lucide="bell"></i></div>
+          <h3>Notificaciones automáticas</h3>
+          <p>Email y WhatsApp automáticos para confirmación de pedido, envío y entrega sin intervención manual.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feat-icon"><i data-lucide="share-2"></i></div>
+          <h3>Integración con redes sociales</h3>
+          <p>Conecta con Instagram Shopping, Facebook Catalog y Google Shopping para ampliar tu alcance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENTREGABLES -->
+  <section class="section" style="background: var(--bg);">
+    <div class="container">
+      <p class="section-label reveal">¿Qué recibes?</p>
+      <h2 class="section-title reveal reveal-delay-1">Entregables concretos,<br>listos para usar</h2>
+      <p class="section-sub reveal reveal-delay-2">Sin promesas vagas. Recibes un sistema completo listo para generar ventas desde el primer día.</p>
+      <div class="deliverables-list">
+        <div class="deliv-item reveal">
+          <div class="deliv-check"><i data-lucide="check"></i></div>
+          <div>
+            <h4>Sitio web con dominio y hosting</h4>
+            <p>Tienda online completa, responsive, con dominio propio y hosting incluido el primer año.</p>
+          </div>
+        </div>
+        <div class="deliv-item reveal reveal-delay-1">
+          <div class="deliv-check"><i data-lucide="check"></i></div>
+          <div>
+            <h4>Panel de administración web</h4>
+            <p>Dashboard completo para gestionar productos, pedidos, clientes e inventario desde cualquier lugar.</p>
+          </div>
+        </div>
+        <div class="deliv-item reveal">
+          <div class="deliv-check"><i data-lucide="check"></i></div>
+          <div>
+            <h4>App móvil para gestionar pedidos</h4>
+            <p>Recibe notificaciones de nuevos pedidos y gestiona tu tienda desde tu teléfono en todo momento.</p>
+          </div>
+        </div>
+        <div class="deliv-item reveal reveal-delay-1">
+          <div class="deliv-check"><i data-lucide="check"></i></div>
+          <div>
+            <h4>Sistema de pagos integrado</h4>
+            <p>Stripe, PayPal y Zelle configurados, probados y listos para recibir tu primer pago.</p>
+          </div>
+        </div>
+        <div class="deliv-item reveal">
+          <div class="deliv-check"><i data-lucide="check"></i></div>
+          <div>
+            <h4>Capacitación de 1 hora</h4>
+            <p>Sesión en vivo por videollamada para que tú y tu equipo dominen el sistema desde el día uno.</p>
+          </div>
+        </div>
+        <div class="deliv-item reveal reveal-delay-1">
+          <div class="deliv-check"><i data-lucide="check"></i></div>
+          <div>
+            <h4>Soporte técnico 30 días</h4>
+            <p>Un mes de soporte directo por WhatsApp para resolver cualquier duda o ajuste necesario.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VENTAJA IA -->
+  <section class="section ai-section">
+    <div class="container">
+      <div class="ai-inner">
+        <div class="reveal">
+          <p class="section-label">¿Por qué es diferente?</p>
+          <h2 class="section-title">La IA lo hace<br>posible en días</h2>
+          <p style="color:var(--text-muted);font-size:1rem;line-height:1.75;margin-bottom:24px;">Mientras las agencias tradicionales tardan semanas en diseñar wireframes, nosotros usamos IA para generar, revisar y desplegar tu tienda online completa en una fracción del tiempo. Sin sacrificar calidad ni personalización.</p>
+          <p style="color:var(--text-muted);font-size:.9rem;line-height:1.7;">Cada sistema es construido a medida para tu negocio, tus productos y tus clientes. No son plantillas — es software real.</p>
+        </div>
+        <div class="reveal reveal-delay-2" style="text-align:center;">
+          <div class="stat-big">3</div>
+          <div class="stat-label">días promedio de entrega</div>
+          <div style="margin-top:32px;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:14px 18px;">
+              <i data-lucide="zap" style="color:var(--yellow);width:18px;height:18px;flex-shrink:0;"></i>
+              <span style="font-size:.88rem;">IA genera la estructura base en horas</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:14px 18px;">
+              <i data-lucide="settings" style="color:var(--cyan);width:18px;height:18px;flex-shrink:0;"></i>
+              <span style="font-size:.88rem;">Ingenieros personalizan para tu negocio</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:14px 18px;">
+              <i data-lucide="rocket" style="color:var(--green);width:18px;height:18px;flex-shrink:0;"></i>
+              <span style="font-size:.88rem;">Lanzamiento y soporte garantizados</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="background: var(--bg2);">
+    <div class="container">
+      <div class="cta-box reveal">
+        <h2>¿Listo para vender en línea?</h2>
+        <p>Habla con nosotros hoy y ten tu tienda online funcionando esta misma semana. Sin contratos largos, sin sorpresas.</p>
+        <a href="https://wa.me/12094609828" target="_blank" class="btn-primary" style="margin:0 auto;display:inline-flex;">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.583 3.842 1.585 5.395L2 22l4.733-1.54A9.97 9.97 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2z"/></svg>
+          Solicitar Demo Gratis por WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background:var(--bg2); border-top:1px solid var(--border); padding:48px 0; margin-top:0;">
+    <div class="container" style="display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;">
+      <a href="index.html" style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;display:flex;align-items:center;gap:8px;">
+        <div class="logo-hex">⬡</div> Financial Innovation
+      </a>
+      <nav style="display:flex;gap:28px;flex-wrap:wrap;justify-content:center;">
+        <a href="index.html#servicios" style="font-size:.85rem;color:var(--text-muted);">Servicios</a>
+        <a href="index.html#proceso" style="font-size:.85rem;color:var(--text-muted);">Proceso</a>
+        <a href="index.html#ventajas" style="font-size:.85rem;color:var(--text-muted);">Ventajas</a>
+        <a href="https://wa.me/12094609828" target="_blank" style="font-size:.85rem;color:var(--text-muted);">Contacto</a>
+      </nav>
+      <p style="font-size:.8rem;color:var(--text-muted);">© 2026 Financial Innovation. Software personalizado con IA.</p>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+    const glow = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', e => {
+      glow.style.left = e.clientX + 'px';
+      glow.style.top = e.clientY + 'px';
+    });
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40), { passive: true });
+    const burger = document.getElementById('navBurger');
+    const navLinks = document.getElementById('navLinks');
+    let menuOpen = false;
+    burger.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      navLinks.classList.toggle('open', menuOpen);
+      burger.innerHTML = menuOpen
+        ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+        : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></svg>';
+    });
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+    setTimeout(() => document.querySelector('.loader')?.remove(), 1300);
+  </script>
+</body>
+</html>
