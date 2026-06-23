@@ -456,39 +456,71 @@
 
     .about-visual {
       background: var(--bg2);
-      border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 30px; position: relative; overflow: hidden;
+      border: 1px solid rgba(37,99,235,.22);
+      border-radius: var(--radius);
+      overflow: hidden; position: relative;
+      box-shadow: 0 0 0 1px rgba(37,99,235,.08), 0 24px 64px rgba(0,0,0,.35);
     }
-    .about-visual::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, var(--purple), var(--cyan));
-    }
-    .ai-flow {
-      display: flex; flex-direction: column; gap: 0;
-    }
-    .ai-step {
-      display: flex; align-items: center; gap: 16px;
-      padding: 16px 0;
+    .av-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 13px 20px;
       border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,.02);
+    }
+    .av-dots { display: flex; gap: 6px; }
+    .av-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .72rem; color: var(--text-muted); flex: 1;
+    }
+    .av-live {
+      display: flex; align-items: center; gap: 6px;
+      font-size: .68rem; font-weight: 700; color: #6ee7b7; letter-spacing: .04em;
+    }
+    .av-live-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: #10b981;
+      animation: pulse-live 2s ease infinite;
+    }
+    @keyframes pulse-live { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+    .ai-flow { padding: 8px 20px 20px; display: flex; flex-direction: column; }
+    .ai-step {
+      display: flex; gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,.05);
     }
     .ai-step:last-child { border-bottom: none; }
-    .ai-step-num {
-      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    .ai-step-left {
+      display: flex; flex-direction: column; align-items: center;
+      flex-shrink: 0; width: 42px;
+    }
+    .ai-step-icon {
+      width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: .75rem; font-weight: 700;
-      background: linear-gradient(135deg, var(--purple), var(--cyan));
-      color: #fff;
     }
-    .ai-step-label { font-size: .88rem; font-weight: 500; color: #e2e8f0; }
+    .ai-step-icon svg { width: 19px; height: 19px; }
+    .ai-icon-1 { background: rgba(16,185,129,.14); border: 1px solid rgba(16,185,129,.28); color: #6ee7b7; }
+    .ai-icon-2 { background: rgba(37,99,235,.14); border: 1px solid rgba(37,99,235,.28); color: var(--purple-l); }
+    .ai-icon-3 { background: rgba(245,158,11,.14); border: 1px solid rgba(245,158,11,.28); color: #fcd34d; }
+    .ai-icon-4 { background: rgba(236,72,153,.14); border: 1px solid rgba(236,72,153,.28); color: #f9a8d4; }
+    .ai-step-connector {
+      flex: 1; width: 1px; min-height: 12px; margin: 5px 0;
+      background: linear-gradient(to bottom, rgba(255,255,255,.1), transparent);
+    }
+    .ai-step:last-child .ai-step-connector { display: none; }
+    .ai-step-body { flex: 1; min-width: 0; padding-top: 2px; }
+    .ai-step-top {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 5px; flex-wrap: wrap;
+    }
+    .ai-step-label { font-size: .87rem; font-weight: 600; color: #e2e8f0; flex: 1; min-width: 0; }
+    .ai-step-desc { font-size: .76rem; color: var(--text-muted); line-height: 1.55; }
     .ai-step-tag {
-      margin-left: auto;
-      font-size: .7rem; font-weight: 600; padding: 4px 10px;
-      border-radius: 999px; letter-spacing: .04em;
+      font-size: .67rem; font-weight: 700; padding: 3px 9px;
+      border-radius: 999px; letter-spacing: .04em; white-space: nowrap;
     }
-    .tag-done { background: rgba(16,185,129,.12); color: #6ee7b7; border: 1px solid rgba(16,185,129,.2); }
-    .tag-ai   { background: rgba(37,99,235,.12); color: var(--purple-l); border: 1px solid rgba(37,99,235,.2); }
-    .tag-fast { background: rgba(245,158,11,.12); color: #fcd34d; border: 1px solid rgba(245,158,11,.2); }
+    .tag-done { background: rgba(16,185,129,.12); color: #6ee7b7; border: 1px solid rgba(16,185,129,.22); }
+    .tag-ai   { background: rgba(37,99,235,.12); color: var(--purple-l); border: 1px solid rgba(37,99,235,.22); }
+    .tag-fast { background: rgba(245,158,11,.12); color: #fcd34d; border: 1px solid rgba(245,158,11,.22); }
+    .tag-live { background: rgba(236,72,153,.12); color: #f9a8d4; border: 1px solid rgba(236,72,153,.22); }
 
     /* ── SERVICES ───────────────────────────────────── */
     .services-section { background: var(--bg2); }
@@ -1190,27 +1222,72 @@
           </div>
         </div>
         <div class="about-visual reveal reveal-delay-2">
+          <div class="av-header">
+            <div class="av-dots">
+              <span class="dot dot-r"></span>
+              <span class="dot dot-y"></span>
+              <span class="dot dot-g"></span>
+            </div>
+            <span class="av-title">proceso.flow</span>
+            <span class="av-live"><span class="av-live-dot"></span> En ejecución</span>
+          </div>
           <div class="ai-flow">
+
             <div class="ai-step">
-              <div class="ai-step-num">1</div>
-              <span class="ai-step-label">Consulta y análisis del negocio</span>
-              <span class="ai-step-tag tag-done">✓ Completado</span>
+              <div class="ai-step-left">
+                <div class="ai-step-icon ai-icon-1"><i data-lucide="message-circle"></i></div>
+                <div class="ai-step-connector"></div>
+              </div>
+              <div class="ai-step-body">
+                <div class="ai-step-top">
+                  <span class="ai-step-label">Consulta y análisis</span>
+                  <span class="ai-step-tag tag-done">✓ Completado</span>
+                </div>
+                <p class="ai-step-desc">Entendemos tus procesos, metas y flujos de trabajo en detalle.</p>
+              </div>
             </div>
+
             <div class="ai-step">
-              <div class="ai-step-num">2</div>
-              <span class="ai-step-label">Diseño de arquitectura con IA</span>
-              <span class="ai-step-tag tag-ai">⚡ IA</span>
+              <div class="ai-step-left">
+                <div class="ai-step-icon ai-icon-2"><i data-lucide="brain-circuit"></i></div>
+                <div class="ai-step-connector"></div>
+              </div>
+              <div class="ai-step-body">
+                <div class="ai-step-top">
+                  <span class="ai-step-label">Arquitectura con IA</span>
+                  <span class="ai-step-tag tag-ai">⚡ IA</span>
+                </div>
+                <p class="ai-step-desc">Nuestra IA diseña la estructura óptima para tu sistema en minutos.</p>
+              </div>
             </div>
+
             <div class="ai-step">
-              <div class="ai-step-num">3</div>
-              <span class="ai-step-label">Desarrollo y pruebas</span>
-              <span class="ai-step-tag tag-fast">🔥 Rápido</span>
+              <div class="ai-step-left">
+                <div class="ai-step-icon ai-icon-3"><i data-lucide="code-2"></i></div>
+                <div class="ai-step-connector"></div>
+              </div>
+              <div class="ai-step-body">
+                <div class="ai-step-top">
+                  <span class="ai-step-label">Desarrollo y pruebas</span>
+                  <span class="ai-step-tag tag-fast">🔥 Rápido</span>
+                </div>
+                <p class="ai-step-desc">Código limpio, pruebas automatizadas y revisiones en tiempo real.</p>
+              </div>
             </div>
+
             <div class="ai-step">
-              <div class="ai-step-num">4</div>
-              <span class="ai-step-label">Lanzamiento en producción</span>
-              <span class="ai-step-tag tag-done">✓ En vivo</span>
+              <div class="ai-step-left">
+                <div class="ai-step-icon ai-icon-4"><i data-lucide="rocket"></i></div>
+              </div>
+              <div class="ai-step-body">
+                <div class="ai-step-top">
+                  <span class="ai-step-label">Lanzamiento en producción</span>
+                  <span class="ai-step-tag tag-live">🚀 En vivo</span>
+                </div>
+                <p class="ai-step-desc">Deploy completo, dominio configurado y listo para tus clientes.</p>
+              </div>
             </div>
+
           </div>
         </div>
       </div>
