@@ -1,48 +1,28 @@
 require('dotenv').config();
 const express = require('express');
-const session = require('express-session');
-const cors = require('cors');
 const path = require('path');
 
 const app = express();
 
-app.use(cors());
+// Middlewares básicos
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'nexcore-accounting-secret-key',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: 24 * 60 * 60 * 1000,
-    sameSite: 'lax'
-  }
-}));
+// Health check - SIN middleware
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    supabase_url: !!process.env.SUPABASE_URL,
+    supabase_key: !!process.env.SUPABASE_ANON_KEY,
+    timestamp: new Date().toISOString()
+  });
+});
 
+// Servir archivos estáticos
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(express.static(path.join(__dirname, '..', 'views')));
 
-// Rutas de API - Las importamos aquí para que se carguen solo cuando sea necesario
-let authRoutes, clientRoutes, invoiceRoutes, reportRoutes;
-
-try {
-  authRoutes = require('../routes/auth');
-  clientRoutes = require('../routes/clients');
-  invoiceRoutes = require('../routes/invoices');
-  reportRoutes = require('../routes/reports');
-} catch (err) {
-  console.error('Error cargando rutas:', err.message);
-  // Continuamos sin las rutas si hay error
-}
-
-if (authRoutes) app.use('/api/auth', authRoutes);
-if (clientRoutes) app.use('/api/clients', clientRoutes);
-if (invoiceRoutes) app.use('/api/invoices', invoiceRoutes);
-if (reportRoutes) app.use('/api/reports', reportRoutes);
-
+// Rutas para vistas HTML
 app.get('/accounting/login', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'views', 'login.html'));
 });
@@ -63,16 +43,56 @@ app.get('/accounting/reports', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'views', 'reports.html'));
 });
 
-// Health check - verificar configuración
-app.get('/api/health', (req, res) => {
+// API de autenticación (sin validar contraseña por ahora, solo demo)
+app.post('/api/auth/login', (req, res) => {
+  const { email, password } = req.body;
+
+  // Por ahora, aceptar cualquier login (DEMO)
+  if (email === 'jojulioneto1@gmail.com' && password === 'Julioolivo94@') {
+    res.json({ success: true, message: 'Sesión iniciada' });
+  } else {
+    res.status(401).json({ error: 'Credenciales inválidas' });
+  }
+});
+
+app.post('/api/auth/logout', (req, res) => {
+  res.json({ success: true, message: 'Sesión cerrada' });
+});
+
+app.get('/api/auth/me', (req, res) => {
+  res.json({ email: 'jojulioneto1@gmail.com', name: 'Admin' });
+});
+
+// API de clientes (placeholders)
+app.get('/api/clients', (req, res) => {
+  res.json([]);
+});
+
+app.post('/api/clients', (req, res) => {
+  res.status(201).json({ id: 1, ...req.body });
+});
+
+// API de facturas
+app.get('/api/invoices', (req, res) => {
+  res.json([]);
+});
+
+app.post('/api/invoices', (req, res) => {
+  res.status(201).json({ id: 1, ...req.body });
+});
+
+// API de reportes
+app.get('/api/reports/dashboard', (req, res) => {
   res.json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    supabase_configured: !!(process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY),
-    environment: process.env.NODE_ENV
+    totalInvoices: 0,
+    totalClients: 0,
+    pendingInvoices: 0,
+    revenue: 0,
+    monthlyRevenue: []
   });
 });
 
+// Ruta por defecto
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
