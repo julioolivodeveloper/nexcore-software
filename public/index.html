@@ -219,10 +219,18 @@
 
     /* ── HERO ───────────────────────────────────────── */
     .hero {
-      min-height: auto;
+      min-height: 100vh;
       display: flex; align-items: center;
       padding-top: 90px;
       position: relative; overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        min-height: auto;
+        padding-top: 40px;
+        padding-bottom: 20px;
+      }
     }
 
     @media (min-width: 861px) {
