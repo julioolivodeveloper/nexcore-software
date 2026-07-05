@@ -191,11 +191,18 @@ let invoices = [
   { id: 156, client_name: 'Celso Hernández-Gómez',   issue_date: '2026-02-12', due_date: '2026-03-12', status: 'paid', total: 200.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:200}] },
   { id: 157, client_name: 'Celso Hernández-Gómez',   issue_date: '2026-03-28', due_date: '2026-04-28', status: 'paid', total: 20.00,    notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:20}] },
   { id: 158, client_name: 'Celso Hernández-Gómez',   issue_date: '2026-05-28', due_date: '2026-06-28', status: 'paid', total: 50.00,    notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:50}] },
-  { id: 159, client_name: 'Celso Hernández-Gómez',   issue_date: '2026-06-08', due_date: '2026-07-08', status: 'paid', total: 30.00,    notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:30}] },
+  { id: 159, client_name: 'Celso Hernández-Gómez',   issue_date: '2026-06-08', due_date: '2026-07-08', status: 'paid', total: 30.00,    notes: 'Zelle', items: [{description:'Servicios', quantity:1, unit_price:30}] },
+  { id: 160, client_name: 'Zoila Camacho',           issue_date: '2026-06-13', due_date: '2026-07-13', status: 'paid', total: 240.00,   notes: 'Zelle', items: [{description:'Servicios', quantity:1, unit_price:240}] },
+  { id: 161, client_name: 'Zoila Camacho',           issue_date: '2026-06-20', due_date: '2026-07-20', status: 'paid', total: 240.00,   notes: 'Zelle', items: [{description:'Servicios', quantity:1, unit_price:240}] },
+  { id: 162, client_name: 'Tres Estrellas de Oro Inc',issue_date: '2026-06-23', due_date: '2026-07-23', status: 'paid', total: 400.00,   notes: 'Zelle', items: [{description:'Servicios', quantity:1, unit_price:400}] },
+  { id: 163, client_name: 'Zoila Camacho',           issue_date: '2026-06-25', due_date: '2026-07-25', status: 'paid', total: 15.00,    notes: 'Zelle', items: [{description:'Servicios', quantity:1, unit_price:15}] },
+  { id: 164, client_name: 'Zoila Camacho',           issue_date: '2026-06-27', due_date: '2026-07-27', status: 'paid', total: 240.00,   notes: 'Zelle', items: [{description:'Servicios', quantity:1, unit_price:240}] },
+  { id: 165, client_name: 'Montero Western',         issue_date: '2026-06-30', due_date: '2026-07-30', status: 'paid', total: 1200.00,  notes: 'Zelle', items: [{description:'Administración TikTok Shop y TikTok Ads', quantity:1, unit_price:1200}] },
+  { id: 166, client_name: 'Zoila Camacho',           issue_date: '2026-07-04', due_date: '2026-08-04', status: 'paid', total: 240.00,   notes: 'Zelle', items: [{description:'Servicios', quantity:1, unit_price:240}] },
 ];
 
 let nextClientId = 32;
-let nextInvoiceId = 160;
+let nextInvoiceId = 167;
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 
