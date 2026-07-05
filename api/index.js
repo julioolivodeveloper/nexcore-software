@@ -142,10 +142,31 @@ let invoices = [
   { id: 107, client_name: 'Montero Western',         issue_date: '2025-11-28', due_date: '2025-12-28', status: 'paid', total: 1200.00,  notes: 'Wire Credit', items: [{description:'Servicios', quantity:1, unit_price:1200}] },
   { id: 108, client_name: 'Zoila Camacho',           issue_date: '2025-12-01', due_date: '2026-01-01', status: 'paid', total: 220.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:220}] },
   { id: 109, client_name: 'Zoila Camacho',           issue_date: '2025-12-08', due_date: '2026-01-08', status: 'paid', total: 220.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:220}] },
+  { id: 110, client_name: 'Zela Murray',             issue_date: '2025-12-10', due_date: '2026-01-10', status: 'paid', total: 30.00,    notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:30}] },
+  { id: 111, client_name: 'Zoila Camacho',           issue_date: '2025-12-15', due_date: '2026-01-15', status: 'paid', total: 220.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:220}] },
+  { id: 112, client_name: 'Zoila Camacho',           issue_date: '2025-12-22', due_date: '2026-01-22', status: 'paid', total: 220.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:220}] },
+  { id: 113, client_name: 'Zoila Camacho',           issue_date: '2025-12-29', due_date: '2026-01-29', status: 'paid', total: 220.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:220}] },
+  { id: 114, client_name: 'Montero Western',         issue_date: '2025-12-29', due_date: '2026-01-29', status: 'paid', total: 1400.00,  notes: 'Wire Credit', items: [{description:'Servicios', quantity:1, unit_price:1400}] },
+  { id: 115, client_name: 'Zoila Camacho',           issue_date: '2026-01-05', due_date: '2026-02-05', status: 'paid', total: 220.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:220}] },
+  { id: 116, client_name: 'Zoila Camacho',           issue_date: '2026-01-08', due_date: '2026-02-08', status: 'paid', total: 60.00,    notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:60}] },
+  { id: 117, client_name: 'Zoila Camacho',           issue_date: '2026-01-12', due_date: '2026-02-12', status: 'paid', total: 220.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:220}] },
+  { id: 118, client_name: 'Zoila Camacho',           issue_date: '2026-01-20', due_date: '2026-02-20', status: 'paid', total: 220.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:220}] },
+  { id: 119, client_name: 'Montero Western',         issue_date: '2026-01-30', due_date: '2026-03-01', status: 'paid', total: 1400.00,  notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:1400}] },
+  { id: 120, client_name: 'Zoila Camacho',           issue_date: '2026-02-02', due_date: '2026-03-02', status: 'paid', total: 220.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:220}] },
+  { id: 121, client_name: 'CBP Construction, Inc.',  issue_date: '2026-02-02', due_date: '2026-03-02', status: 'paid', total: 1800.00,  notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:1800}] },
+  { id: 122, client_name: 'Alejandra Granillo',      issue_date: '2026-02-05', due_date: '2026-03-05', status: 'paid', total: 100.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:100}] },
+  { id: 123, client_name: 'CBP Construction, Inc.',  issue_date: '2026-02-05', due_date: '2026-03-05', status: 'paid', total: 1000.00,  notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:1000}] },
+  { id: 124, client_name: 'Zoila Camacho',           issue_date: '2026-02-09', due_date: '2026-03-09', status: 'paid', total: 220.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:220}] },
+  { id: 125, client_name: 'Zoila Camacho',           issue_date: '2026-02-17', due_date: '2026-03-17', status: 'paid', total: 240.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:240}] },
+  { id: 126, client_name: 'Zoila Camacho',           issue_date: '2026-02-23', due_date: '2026-03-23', status: 'paid', total: 220.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:220}] },
+  { id: 127, client_name: 'Zoila Camacho',           issue_date: '2026-03-02', due_date: '2026-04-02', status: 'paid', total: 220.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:220}] },
+  { id: 128, client_name: 'Montero Western',         issue_date: '2026-03-02', due_date: '2026-04-02', status: 'paid', total: 1400.00,  notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:1400}] },
+  { id: 129, client_name: 'Zoila Camacho',           issue_date: '2026-03-04', due_date: '2026-04-04', status: 'paid', total: 20.00,    notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:20}] },
+  { id: 130, client_name: 'Zoila Camacho',           issue_date: '2026-03-09', due_date: '2026-04-09', status: 'paid', total: 230.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:230}] },
 ];
 
 let nextClientId = 30;
-let nextInvoiceId = 110;
+let nextInvoiceId = 131;
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 
