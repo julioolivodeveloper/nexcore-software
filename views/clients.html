@@ -3,464 +3,239 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clientes - Contabilidad</title>
+  <title>Clientes — Contabilidad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple: #2563eb; --purple-l: #60a5fa; --cyan: #06b6d4; --green: #10b981;
+      --bg: #07070f; --bg2: #0e0e1c; --bg3: #13132a;
+      --border: rgba(255,255,255,0.07); --text-muted: #94a3b8; --radius: 16px;
     }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f5f7fa;
-      color: #333;
-    }
-
-    .container {
-      display: flex;
-      height: 100vh;
-    }
-
-    .sidebar {
-      width: 250px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 20px;
-      overflow-y: auto;
-    }
-
-    .logo {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .nav-menu {
-      list-style: none;
-    }
-
-    .nav-item {
-      margin-bottom: 10px;
-    }
-
-    .nav-link {
-      display: block;
-      padding: 12px;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      transition: background 0.3s;
-    }
-
-    .nav-link:hover, .nav-link.active {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .header {
-      background: white;
-      padding: 20px 30px;
-      border-bottom: 1px solid #e0e0e0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .header h1 {
-      font-size: 24px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: transform 0.2s;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-    }
-
-    .content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 30px;
-    }
-
-    .search-bar {
-      margin-bottom: 20px;
-      display: flex;
-      gap: 10px;
-    }
-
-    .search-bar input {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 14px;
-    }
-
-    table {
-      width: 100%;
-      background: white;
-      border-collapse: collapse;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    th {
-      background: #f5f7fa;
-      padding: 15px;
-      text-align: left;
-      font-weight: 600;
-      color: #666;
-      border-bottom: 2px solid #e0e0e0;
-    }
-
-    td {
-      padding: 15px;
-      border-bottom: 1px solid #e0e0e0;
-    }
-
-    tr:hover {
-      background: #f9f9f9;
-    }
-
-    .btn-action {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      margin-right: 10px;
-      padding: 5px 10px;
-      border-radius: 3px;
-      transition: background 0.2s;
-    }
-
-    .btn-edit {
-      color: #667eea;
-    }
-
-    .btn-delete {
-      color: #e74c3c;
-    }
-
-    .btn-action:hover {
-      background: #f0f0f0;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    }
-
-    .modal-header {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: 600;
-      color: #333;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 14px;
-      font-family: inherit;
-    }
-
-    textarea {
-      resize: vertical;
-    }
-
-    .modal-footer {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-      justify-content: flex-end;
-    }
-
-    .btn-secondary {
-      background: #e0e0e0;
-      color: #333;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .logout-btn {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      right: 20px;
-      padding: 10px;
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      width: calc(100% - 40px);
-    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: #e2e8f0; display: flex; height: 100vh; overflow: hidden; }
+    .sidebar { width: 240px; flex-shrink: 0; background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 24px 16px; }
+    .sidebar-logo { display: flex; align-items: center; gap: 10px; padding: 0 8px 24px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+    .logo-hex { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--purple), var(--cyan)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .sidebar-logo span { font-family: 'Space Grotesk', sans-serif; font-size: .95rem; font-weight: 700; color: #fff; }
+    .nav-section-label { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #475569; padding: 0 8px; margin-bottom: 6px; }
+    .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 2px; margin-bottom: 20px; }
+    .nav-link { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; color: var(--text-muted); font-size: .875rem; font-weight: 500; text-decoration: none; transition: background .2s, color .2s; }
+    .nav-link svg { width: 17px; height: 17px; flex-shrink: 0; }
+    .nav-link:hover { background: rgba(255,255,255,.05); color: #e2e8f0; }
+    .nav-link.active { background: rgba(37,99,235,.15); color: var(--purple-l); border: 1px solid rgba(37,99,235,.2); }
+    .sidebar-footer { margin-top: auto; }
+    .logout-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px; border-radius: 10px; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-size: .875rem; font-weight: 500; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+    .logout-btn svg { width: 17px; height: 17px; }
+    .logout-btn:hover { background: rgba(239,68,68,.08); border-color: rgba(239,68,68,.25); color: #fca5a5; }
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .topbar { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; }
+    .topbar h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; }
+    .user-badge { display: flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,.04); border: 1px solid var(--border); font-size: .8rem; color: var(--text-muted); }
+    .user-badge svg { width: 14px; height: 14px; color: var(--purple-l); }
+    .content { flex: 1; overflow-y: auto; padding: 28px; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; gap: 12px; }
+    .search-wrap { position: relative; flex: 1; max-width: 320px; }
+    .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--text-muted); }
+    .search-wrap input { width: 100%; padding: 10px 12px 10px 38px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; color: #e2e8f0; font-size: .875rem; font-family: 'Inter', sans-serif; transition: border-color .2s; }
+    .search-wrap input:focus { outline: none; border-color: rgba(37,99,235,.4); }
+    .search-wrap input::placeholder { color: #475569; }
+    .btn-primary { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 10px; background: linear-gradient(135deg, var(--purple), #1d4ed8); color: #fff; border: none; font-family: 'Space Grotesk', sans-serif; font-size: .875rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(37,99,235,.35); transition: transform .2s, box-shadow .2s; }
+    .btn-primary svg { width: 16px; height: 16px; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,99,235,.5); }
+    .panel { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: rgba(255,255,255,.02); }
+    th { padding: 12px 16px; text-align: left; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+    td { padding: 14px 16px; font-size: .875rem; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,.02); }
+    .avatar { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, rgba(37,99,235,.3), rgba(6,182,212,.2)); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .8rem; color: var(--purple-l); }
+    .client-cell { display: flex; align-items: center; gap: 12px; }
+    .client-name { font-weight: 500; color: #e2e8f0; }
+    .client-email { font-size: .78rem; color: var(--text-muted); }
+    .btn-icon { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: background .2s, color .2s, border-color .2s; }
+    .btn-icon svg { width: 14px; height: 14px; }
+    .btn-icon:hover { background: rgba(239,68,68,.1); border-color: rgba(239,68,68,.3); color: #fca5a5; }
+    .empty-state { text-align: center; padding: 60px; color: var(--text-muted); }
+    .empty-state svg { width: 40px; height: 40px; margin: 0 auto 12px; opacity: .3; }
+    /* MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 100; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--bg2); border: 1px solid rgba(37,99,235,.25); border-radius: var(--radius); padding: 32px; width: 100%; max-width: 460px; animation: modal-in .3s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes modal-in { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .modal-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; }
+    .modal-close { background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 4px; border-radius: 6px; }
+    .modal-close:hover { color: #fff; }
+    .modal-close svg { width: 20px; height: 20px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; margin-bottom: 6px; font-size: .83rem; font-weight: 500; color: #cbd5e1; }
+    .form-group input { width: 100%; padding: 10px 14px; background: rgba(255,255,255,.04); border: 1px solid var(--border); border-radius: 10px; color: #e2e8f0; font-size: .875rem; font-family: 'Inter', sans-serif; transition: border-color .2s; }
+    .form-group input:focus { outline: none; border-color: rgba(37,99,235,.4); background: rgba(37,99,235,.05); }
+    .form-group input::placeholder { color: #475569; }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+    .btn-ghost { padding: 10px 18px; border-radius: 10px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: .875rem; font-weight: 500; cursor: pointer; transition: background .2s, color .2s; }
+    .btn-ghost:hover { background: rgba(255,255,255,.05); color: #e2e8f0; }
+    .msg { margin-top: 14px; padding: 10px 14px; border-radius: 10px; font-size: .83rem; display: none; align-items: center; gap: 8px; }
+    .msg svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .msg-error { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.25); color: #fca5a5; }
+    .msg-success { background: rgba(16,185,129,.1); border: 1px solid rgba(16,185,129,.25); color: #6ee7b7; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <aside class="sidebar">
-      <div class="logo">📊 Contabilidad</div>
-      <ul class="nav-menu">
-        <li class="nav-item"><a href="/accounting/dashboard" class="nav-link">📈 Dashboard</a></li>
-        <li class="nav-item"><a href="/accounting/invoices" class="nav-link">📄 Facturas</a></li>
-        <li class="nav-item"><a href="/accounting/clients" class="nav-link active">👥 Clientes</a></li>
-        <li class="nav-item"><a href="/accounting/reports" class="nav-link">📋 Reportes</a></li>
-      </ul>
-      <button class="logout-btn" onclick="logout()">🚪 Cerrar Sesión</button>
-    </aside>
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-hex">⬡</div>
+      <span>Contabilidad</span>
+    </div>
+    <div class="nav-section-label">Menú</div>
+    <ul class="nav-menu">
+      <li><a href="/accounting/dashboard" class="nav-link"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+      <li><a href="/accounting/invoices" class="nav-link"><i data-lucide="file-text"></i> Facturas</a></li>
+      <li><a href="/accounting/clients" class="nav-link active"><i data-lucide="users"></i> Clientes</a></li>
+      <li><a href="/accounting/reports" class="nav-link"><i data-lucide="bar-chart-2"></i> Reportes</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="logout()"><i data-lucide="log-out"></i> Cerrar Sesión</button>
+    </div>
+  </aside>
 
-    <main class="main">
-      <header class="header">
-        <h1>Gestión de Clientes</h1>
-        <button class="btn-primary" onclick="openModal()">➕ Nuevo Cliente</button>
-      </header>
-
-      <div class="content">
-        <div class="search-bar">
-          <input type="text" id="searchInput" placeholder="Buscar cliente..." onkeyup="filterClients()">
+  <main class="main">
+    <div class="topbar">
+      <h1>Clientes</h1>
+      <div class="user-badge"><i data-lucide="user"></i><span id="userEmail">—</span></div>
+    </div>
+    <div class="content">
+      <div class="toolbar">
+        <div class="search-wrap">
+          <i data-lucide="search"></i>
+          <input type="text" id="searchInput" placeholder="Buscar cliente..." oninput="filterClients()">
         </div>
+        <button class="btn-primary" onclick="openModal()">
+          <i data-lucide="user-plus"></i> Nuevo Cliente
+        </button>
+      </div>
 
-        <table id="clientsTable">
+      <div class="panel">
+        <table>
           <thead>
             <tr>
-              <th>Nombre</th>
-              <th>Email</th>
+              <th>Cliente</th>
               <th>Teléfono</th>
-              <th>RUC/Cédula</th>
-              <th>Acciones</th>
+              <th>Empresa</th>
+              <th>Registrado</th>
+              <th></th>
             </tr>
           </thead>
           <tbody id="clientsBody">
-            <tr><td colspan="5" style="text-align: center; color: #999;">Cargando...</td></tr>
+            <tr><td colspan="5" class="empty-state">
+              <div><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Sin clientes aún</div>
+            </td></tr>
           </tbody>
         </table>
       </div>
-    </main>
-  </div>
+    </div>
+  </main>
 
-  <div class="modal" id="clientModal">
-    <div class="modal-content">
-      <div class="modal-header" id="modalTitle">Nuevo Cliente</div>
-      <form id="clientForm" onsubmit="saveClient(event)">
-        <input type="hidden" id="clientId">
-
-        <div class="form-group">
-          <label>Nombre *</label>
-          <input type="text" id="name" required>
-        </div>
-
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="email">
-        </div>
-
-        <div class="form-group">
-          <label>Teléfono</label>
-          <input type="tel" id="phone">
-        </div>
-
-        <div class="form-group">
-          <label>Dirección</label>
-          <textarea id="address"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>RUC/Cédula</label>
-          <input type="text" id="tax_id">
-        </div>
-
-        <div class="form-group">
-          <label>Nombre de Empresa</label>
-          <input type="text" id="business_name">
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
-          <button type="submit" class="btn-primary">Guardar</button>
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">Nuevo Cliente</span>
+        <button class="modal-close" onclick="closeModal()"><i data-lucide="x"></i></button>
+      </div>
+      <form id="clientForm">
+        <div class="form-group"><label>Nombre completo *</label><input type="text" id="name" required placeholder="Juan Pérez"></div>
+        <div class="form-group"><label>Correo electrónico *</label><input type="email" id="email" required placeholder="juan@email.com"></div>
+        <div class="form-group"><label>Teléfono</label><input type="tel" id="phone" placeholder="+1 (555) 000-0000"></div>
+        <div class="form-group"><label>Empresa</label><input type="text" id="company" placeholder="Nombre de empresa"></div>
+        <div class="form-group"><label>Dirección</label><input type="text" id="address" placeholder="Dirección completa"></div>
+        <div class="msg msg-error" id="errMsg"><i data-lucide="alert-circle"></i><span id="errText"></span></div>
+        <div class="msg msg-success" id="okMsg"><i data-lucide="check-circle"></i><span>Cliente guardado correctamente</span></div>
+        <div class="modal-actions">
+          <button type="button" class="btn-ghost" onclick="closeModal()">Cancelar</button>
+          <button type="submit" class="btn-primary"><i data-lucide="save"></i> Guardar</button>
         </div>
       </form>
     </div>
   </div>
 
   <script>
-    let clients = [];
+    lucide.createIcons();
+    let allClients = [];
 
     async function loadClients() {
       try {
-        const response = await fetch('/api/clients');
-        clients = await response.json();
-        displayClients(clients);
-      } catch (err) {
-        console.error('Error:', err);
-      }
+        const res = await fetch('/api/clients');
+        allClients = await res.json();
+        renderClients(allClients);
+      } catch(e) { console.error(e); }
     }
 
-    function displayClients(data) {
+    function renderClients(list) {
       const tbody = document.getElementById('clientsBody');
-      if (data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #999;">Sin clientes registrados</td></tr>';
+      if (!list.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty-state"><div><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:40px;height:40px;margin:0 auto 12px;opacity:.3"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Sin clientes aún</div></td></tr>';
         return;
       }
-
-      tbody.innerHTML = data.map(client => `
+      tbody.innerHTML = list.map(c => `
         <tr>
-          <td>${client.name}</td>
-          <td>${client.email || '-'}</td>
-          <td>${client.phone || '-'}</td>
-          <td>${client.tax_id || '-'}</td>
-          <td>
-            <button class="btn-action btn-edit" onclick="editClient(${client.id})">✏️ Editar</button>
-            <button class="btn-action btn-delete" onclick="deleteClient(${client.id})">🗑️ Eliminar</button>
-          </td>
+          <td><div class="client-cell">
+            <div class="avatar">${(c.name||'?')[0].toUpperCase()}</div>
+            <div><div class="client-name">${c.name}</div><div class="client-email">${c.email}</div></div>
+          </div></td>
+          <td style="color:var(--text-muted)">${c.phone || '—'}</td>
+          <td style="color:var(--text-muted)">${c.company || '—'}</td>
+          <td style="color:var(--text-muted)">${c.created_at ? new Date(c.created_at).toLocaleDateString('es') : '—'}</td>
+          <td><button class="btn-icon" onclick="deleteClient(${c.id})"><i data-lucide="trash-2"></i></button></td>
         </tr>
       `).join('');
+      lucide.createIcons();
     }
 
     function filterClients() {
-      const search = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = clients.filter(c => c.name.toLowerCase().includes(search));
-      displayClients(filtered);
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      renderClients(allClients.filter(c => (c.name+c.email+c.company).toLowerCase().includes(q)));
     }
 
-    function openModal() {
-      document.getElementById('clientId').value = '';
-      document.getElementById('clientForm').reset();
-      document.getElementById('modalTitle').textContent = 'Nuevo Cliente';
-      document.getElementById('clientModal').classList.add('active');
-    }
+    function openModal() { document.getElementById('modalOverlay').classList.add('open'); }
+    function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); document.getElementById('clientForm').reset(); hideMessages(); }
+    function closeModalOutside(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+    function hideMessages() { ['errMsg','okMsg'].forEach(id => document.getElementById(id).style.display = 'none'); }
 
-    function closeModal() {
-      document.getElementById('clientModal').classList.remove('active');
-    }
-
-    async function editClient(id) {
-      const client = clients.find(c => c.id === id);
-      if (!client) return;
-
-      document.getElementById('clientId').value = client.id;
-      document.getElementById('name').value = client.name;
-      document.getElementById('email').value = client.email || '';
-      document.getElementById('phone').value = client.phone || '';
-      document.getElementById('address').value = client.address || '';
-      document.getElementById('tax_id').value = client.tax_id || '';
-      document.getElementById('business_name').value = client.business_name || '';
-      document.getElementById('modalTitle').textContent = 'Editar Cliente';
-      document.getElementById('clientModal').classList.add('active');
-    }
-
-    async function saveClient(e) {
-      e.preventDefault();
-
-      const id = document.getElementById('clientId').value;
-      const data = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        address: document.getElementById('address').value,
-        tax_id: document.getElementById('tax_id').value,
-        business_name: document.getElementById('business_name').value
-      };
-
+    document.getElementById('clientForm').addEventListener('submit', async (e) => {
+      e.preventDefault(); hideMessages();
+      const body = { name: document.getElementById('name').value, email: document.getElementById('email').value, phone: document.getElementById('phone').value, company: document.getElementById('company').value, address: document.getElementById('address').value };
       try {
-        const method = id ? 'PUT' : 'POST';
-        const url = id ? `/api/clients/${id}` : '/api/clients';
-
-        const response = await fetch(url, {
-          method,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-
-        if (response.ok) {
-          closeModal();
-          loadClients();
+        const res = await fetch('/api/clients', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        if (res.ok) {
+          document.getElementById('okMsg').style.display = 'flex';
+          lucide.createIcons();
+          setTimeout(() => { closeModal(); loadClients(); }, 1200);
+        } else {
+          const d = await res.json();
+          document.getElementById('errText').textContent = d.error || 'Error al guardar';
+          document.getElementById('errMsg').style.display = 'flex';
+          lucide.createIcons();
         }
-      } catch (err) {
-        console.error('Error:', err);
-      }
-    }
+      } catch { document.getElementById('errText').textContent = 'Error de conexión'; document.getElementById('errMsg').style.display = 'flex'; lucide.createIcons(); }
+    });
 
     async function deleteClient(id) {
-      if (!confirm('¿Está seguro de eliminar este cliente?')) return;
-
-      try {
-        const response = await fetch(`/api/clients/${id}`, { method: 'DELETE' });
-        if (response.ok) {
-          loadClients();
-        }
-      } catch (err) {
-        console.error('Error:', err);
-      }
+      if (!confirm('¿Eliminar este cliente?')) return;
+      await fetch(`/api/clients/${id}`, { method: 'DELETE' });
+      loadClients();
     }
 
-    async function logout() {
-      try {
-        await fetch('/api/auth/logout', { method: 'POST' });
-        window.location.href = '/accounting/login';
-      } catch (err) {
-        console.error('Error:', err);
-      }
+    async function loadUser() {
+      try { const res = await fetch('/api/auth/me'); const u = await res.json(); document.getElementById('userEmail').textContent = u.email; } catch(e) {}
     }
+    async function logout() { await fetch('/api/auth/logout', { method: 'POST' }); window.location.href = '/accounting/login'; }
 
-    window.addEventListener('load', loadClients);
-    document.getElementById('clientModal').addEventListener('click', (e) => {
-      if (e.target.id === 'clientModal') closeModal();
-    });
+    loadClients(); loadUser();
   </script>
 </body>
 </html>

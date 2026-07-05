@@ -3,301 +3,146 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reportes - Contabilidad</title>
+  <title>Reportes — Contabilidad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f5f7fa;
-      color: #333;
-    }
-
-    .container {
-      display: flex;
-      height: 100vh;
-    }
-
-    .sidebar {
-      width: 250px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 20px;
-      overflow-y: auto;
-    }
-
-    .logo {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .nav-menu {
-      list-style: none;
-    }
-
-    .nav-item {
-      margin-bottom: 10px;
-    }
-
-    .nav-link {
-      display: block;
-      padding: 12px;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      transition: background 0.3s;
-    }
-
-    .nav-link:hover, .nav-link.active {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .header {
-      background: white;
-      padding: 20px 30px;
-      border-bottom: 1px solid #e0e0e0;
-    }
-
-    .header h1 {
-      font-size: 24px;
-    }
-
-    .content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 30px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-label {
-      color: #999;
-      font-size: 12px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .card-value {
-      font-size: 28px;
-      font-weight: bold;
-      color: #667eea;
-    }
-
-    .report-section {
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      margin-bottom: 20px;
-    }
-
-    .report-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      color: #333;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th {
-      background: #f5f7fa;
-      padding: 12px;
-      text-align: left;
-      font-weight: 600;
-      color: #666;
-      border-bottom: 2px solid #e0e0e0;
-    }
-
-    td {
-      padding: 12px;
-      border-bottom: 1px solid #e0e0e0;
-    }
-
-    tr:hover {
-      background: #f9f9f9;
-    }
-
-    .logout-btn {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      right: 20px;
-      padding: 10px;
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      width: calc(100% - 40px);
-    }
-
-    @media (max-width: 768px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --purple:#2563eb;--purple-l:#60a5fa;--cyan:#06b6d4;--green:#10b981;--yellow:#f59e0b;--bg:#07070f;--bg2:#0e0e1c;--border:rgba(255,255,255,0.07);--text-muted:#94a3b8;--radius:16px; }
+    body { font-family:'Inter',sans-serif;background:var(--bg);color:#e2e8f0;display:flex;height:100vh;overflow:hidden; }
+    .sidebar { width:240px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 16px; }
+    .sidebar-logo { display:flex;align-items:center;gap:10px;padding:0 8px 24px;border-bottom:1px solid var(--border);margin-bottom:20px; }
+    .logo-hex { width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--purple),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0; }
+    .sidebar-logo span { font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;color:#fff; }
+    .nav-section-label { font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#475569;padding:0 8px;margin-bottom:6px; }
+    .nav-menu { list-style:none;display:flex;flex-direction:column;gap:2px;margin-bottom:20px; }
+    .nav-link { display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:var(--text-muted);font-size:.875rem;font-weight:500;text-decoration:none;transition:background .2s,color .2s; }
+    .nav-link svg { width:17px;height:17px;flex-shrink:0; }
+    .nav-link:hover { background:rgba(255,255,255,.05);color:#e2e8f0; }
+    .nav-link.active { background:rgba(37,99,235,.15);color:var(--purple-l);border:1px solid rgba(37,99,235,.2); }
+    .sidebar-footer { margin-top:auto; }
+    .logout-btn { display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:10px;background:transparent;border:1px solid var(--border);color:var(--text-muted);font-size:.875rem;font-weight:500;cursor:pointer;transition:background .2s,color .2s,border-color .2s; }
+    .logout-btn svg { width:17px;height:17px; }
+    .logout-btn:hover { background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.25);color:#fca5a5; }
+    .main { flex:1;display:flex;flex-direction:column;overflow:hidden; }
+    .topbar { background:var(--bg2);border-bottom:1px solid var(--border);padding:16px 28px;display:flex;align-items:center;justify-content:space-between; }
+    .topbar h1 { font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700; }
+    .user-badge { display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--border);font-size:.8rem;color:var(--text-muted); }
+    .user-badge svg { width:14px;height:14px;color:var(--purple-l); }
+    .content { flex:1;overflow-y:auto;padding:28px; }
+    .stats-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px; }
+    .stat-card { background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;transition:border-color .3s,transform .3s; }
+    .stat-card:hover { border-color:rgba(37,99,235,.3);transform:translateY(-3px); }
+    .stat-icon { width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px; }
+    .stat-icon svg { width:20px;height:20px; }
+    .si-blue { background:rgba(37,99,235,.15);border:1px solid rgba(37,99,235,.2);color:var(--purple-l); }
+    .si-cyan { background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.2);color:#67e8f9; }
+    .si-green { background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.2);color:#6ee7b7; }
+    .si-yellow { background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.2);color:#fcd34d; }
+    .stat-label { font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:6px; }
+    .stat-value { font-family:'Space Grotesk',sans-serif;font-size:1.9rem;font-weight:700;color:#fff; }
+    .panels-grid { display:grid;grid-template-columns:1fr 1fr;gap:20px; }
+    .panel { background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px; }
+    .panel-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:20px; }
+    .panel-title { font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600; }
+    .panel-badge { font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:999px;background:rgba(37,99,235,.12);color:var(--purple-l);border:1px solid rgba(37,99,235,.2); }
+    .revenue-list { list-style:none; }
+    .revenue-item { display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--border);font-size:.875rem; }
+    .revenue-item:last-child { border-bottom:none; }
+    .revenue-month { color:var(--text-muted); }
+    .revenue-bar-wrap { flex:1;margin:0 16px;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden; }
+    .revenue-bar { height:100%;background:linear-gradient(90deg,var(--purple),var(--cyan));border-radius:3px;transition:width .6s ease; }
+    .revenue-amount { font-weight:600;color:#6ee7b7;font-family:'Space Grotesk',sans-serif;min-width:70px;text-align:right; }
+    .status-list { list-style:none; }
+    .status-item { display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border);font-size:.875rem; }
+    .status-item:last-child { border-bottom:none; }
+    .status-dot { width:8px;height:8px;border-radius:50%;margin-right:10px;flex-shrink:0; }
+    .status-left { display:flex;align-items:center; }
+    .status-count { font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem; }
+    .empty-state { text-align:center;padding:40px;color:var(--text-muted);font-size:.875rem; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <aside class="sidebar">
-      <div class="logo">📊 Contabilidad</div>
-      <ul class="nav-menu">
-        <li class="nav-item"><a href="/accounting/dashboard" class="nav-link">📈 Dashboard</a></li>
-        <li class="nav-item"><a href="/accounting/invoices" class="nav-link">📄 Facturas</a></li>
-        <li class="nav-item"><a href="/accounting/clients" class="nav-link">👥 Clientes</a></li>
-        <li class="nav-item"><a href="/accounting/reports" class="nav-link active">📋 Reportes</a></li>
-      </ul>
-      <button class="logout-btn" onclick="logout()">🚪 Cerrar Sesión</button>
-    </aside>
+  <aside class="sidebar">
+    <div class="sidebar-logo"><div class="logo-hex">⬡</div><span>Contabilidad</span></div>
+    <div class="nav-section-label">Menú</div>
+    <ul class="nav-menu">
+      <li><a href="/accounting/dashboard" class="nav-link"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+      <li><a href="/accounting/invoices" class="nav-link"><i data-lucide="file-text"></i> Facturas</a></li>
+      <li><a href="/accounting/clients" class="nav-link"><i data-lucide="users"></i> Clientes</a></li>
+      <li><a href="/accounting/reports" class="nav-link active"><i data-lucide="bar-chart-2"></i> Reportes</a></li>
+    </ul>
+    <div class="sidebar-footer"><button class="logout-btn" onclick="logout()"><i data-lucide="log-out"></i> Cerrar Sesión</button></div>
+  </aside>
 
-    <main class="main">
-      <header class="header">
-        <h1>Reportes</h1>
-      </header>
+  <main class="main">
+    <div class="topbar">
+      <h1>Reportes</h1>
+      <div class="user-badge"><i data-lucide="user"></i><span id="userEmail">—</span></div>
+    </div>
+    <div class="content">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon si-green"><i data-lucide="dollar-sign"></i></div><div class="stat-label">Ingresos Totales</div><div class="stat-value" id="totalRevenue">$0</div></div>
+        <div class="stat-card"><div class="stat-icon si-blue"><i data-lucide="file-text"></i></div><div class="stat-label">Total Facturas</div><div class="stat-value" id="totalInvoices">0</div></div>
+        <div class="stat-card"><div class="stat-icon si-cyan"><i data-lucide="users"></i></div><div class="stat-label">Clientes</div><div class="stat-value" id="totalClients">0</div></div>
+        <div class="stat-card"><div class="stat-icon si-yellow"><i data-lucide="clock"></i></div><div class="stat-label">Pendientes</div><div class="stat-value" id="pendingInvoices">0</div></div>
+      </div>
 
-      <div class="content">
-        <div class="grid">
-          <div class="card">
-            <div class="card-label">Ingresos Totales</div>
-            <div class="card-value" id="totalRevenue">$0.00</div>
-          </div>
-          <div class="card">
-            <div class="card-label">Facturas Pagadas</div>
-            <div class="card-value" id="paidInvoices">0</div>
-          </div>
-          <div class="card">
-            <div class="card-label">Clientes Activos</div>
-            <div class="card-value" id="activeClients">0</div>
-          </div>
+      <div class="panels-grid">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">Ingresos por Mes</span><span class="panel-badge">12 meses</span></div>
+          <ul class="revenue-list" id="revenueList"><li class="empty-state">Cargando...</li></ul>
         </div>
-
-        <div class="report-section">
-          <div class="report-title">Clientes Principales</div>
-          <table>
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Facturas</th>
-                <th>Total Gastado</th>
-              </tr>
-            </thead>
-            <tbody id="topClientsBody">
-              <tr><td colspan="3" style="text-align: center; color: #999;">Cargando...</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="report-section">
-          <div class="report-title">Ingresos por Período</div>
-          <table>
-            <thead>
-              <tr>
-                <th>Período</th>
-                <th>Facturas</th>
-                <th>Subtotal</th>
-                <th>IVA</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody id="revenueBody">
-              <tr><td colspan="5" style="text-align: center; color: #999;">Cargando...</td></tr>
-            </tbody>
-          </table>
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">Estado de Facturas</span><span class="panel-badge">Resumen</span></div>
+          <ul class="status-list" id="statusList">
+            <li class="status-item">
+              <div class="status-left"><div class="status-dot" style="background:#6ee7b7"></div><span>Pagadas</span></div>
+              <span class="status-count" id="paidCount">0</span>
+            </li>
+            <li class="status-item">
+              <div class="status-left"><div class="status-dot" style="background:#fcd34d"></div><span>Pendientes</span></div>
+              <span class="status-count" id="pendingCount">0</span>
+            </li>
+            <li class="status-item">
+              <div class="status-left"><div class="status-dot" style="background:#fca5a5"></div><span>Canceladas</span></div>
+              <span class="status-count" id="cancelledCount">0</span>
+            </li>
+          </ul>
         </div>
       </div>
-    </main>
-  </div>
+    </div>
+  </main>
 
   <script>
+    lucide.createIcons();
     async function loadReports() {
       try {
-        const dashResponse = await fetch('/api/reports/dashboard');
-        const dashboard = await dashResponse.json();
-
-        document.getElementById('totalRevenue').textContent = `$${parseFloat(dashboard.revenue).toFixed(2)}`;
-        document.getElementById('paidInvoices').textContent = dashboard.totalInvoices;
-        document.getElementById('activeClients').textContent = dashboard.totalClients;
-
-        // Top clients
-        const topClientsResponse = await fetch('/api/reports/clients/top');
-        const topClients = await topClientsResponse.json();
-
-        const topClientsBody = document.getElementById('topClientsBody');
-        if (topClients.length === 0) {
-          topClientsBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #999;">Sin datos</td></tr>';
-        } else {
-          topClientsBody.innerHTML = topClients.map(client => `
-            <tr>
-              <td>${client.name}</td>
-              <td>${client.invoice_count}</td>
-              <td>$${parseFloat(client.total_spent).toFixed(2)}</td>
-            </tr>
-          `).join('');
+        const res = await fetch('/api/reports/dashboard');
+        const data = await res.json();
+        document.getElementById('totalRevenue').textContent = `$${data.revenue.toFixed(2)}`;
+        document.getElementById('totalInvoices').textContent = data.totalInvoices;
+        document.getElementById('totalClients').textContent = data.totalClients;
+        document.getElementById('pendingInvoices').textContent = data.pendingInvoices;
+        document.getElementById('pendingCount').textContent = data.pendingInvoices;
+        document.getElementById('paidCount').textContent = data.paidInvoices || 0;
+        document.getElementById('cancelledCount').textContent = data.cancelledInvoices || 0;
+        const list = document.getElementById('revenueList');
+        if (!data.monthlyRevenue || !data.monthlyRevenue.length) {
+          list.innerHTML = '<li class="empty-state">Sin datos aún</li>'; return;
         }
-
-        // Revenue by period
-        const revenueResponse = await fetch('/api/reports/revenue?period=month');
-        const revenue = await revenueResponse.json();
-
-        const revenueBody = document.getElementById('revenueBody');
-        if (revenue.length === 0) {
-          revenueBody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #999;">Sin datos</td></tr>';
-        } else {
-          revenueBody.innerHTML = revenue.map(item => `
-            <tr>
-              <td>${item.period}</td>
-              <td>${item.invoice_count}</td>
-              <td>$${parseFloat(item.subtotal).toFixed(2)}</td>
-              <td>$${parseFloat(item.tax).toFixed(2)}</td>
-              <td><strong>$${parseFloat(item.total).toFixed(2)}</strong></td>
-            </tr>
-          `).join('');
-        }
-      } catch (err) {
-        console.error('Error:', err);
-      }
+        const max = Math.max(...data.monthlyRevenue.map(i => parseFloat(i.total)));
+        list.innerHTML = data.monthlyRevenue.map(i => {
+          const pct = max > 0 ? (parseFloat(i.total)/max*100).toFixed(1) : 0;
+          return `<li class="revenue-item"><span class="revenue-month">${i.month}</span><div class="revenue-bar-wrap"><div class="revenue-bar" style="width:${pct}%"></div></div><span class="revenue-amount">$${parseFloat(i.total).toFixed(2)}</span></li>`;
+        }).join('');
+      } catch(e) { console.error(e); }
     }
-
-    async function logout() {
-      try {
-        await fetch('/api/auth/logout', { method: 'POST' });
-        window.location.href = '/accounting/login';
-      } catch (err) {
-        console.error('Error:', err);
-      }
-    }
-
-    window.addEventListener('load', loadReports);
+    async function loadUser() { try{const res=await fetch('/api/auth/me');const u=await res.json();document.getElementById('userEmail').textContent=u.email;}catch(e){} }
+    async function logout() { await fetch('/api/auth/logout',{method:'POST'}); window.location.href='/accounting/login'; }
+    loadReports(); loadUser();
   </script>
 </body>
 </html>

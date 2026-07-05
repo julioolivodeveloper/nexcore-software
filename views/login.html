@@ -3,260 +3,185 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contabilidad - Login</title>
+  <title>Login — Contabilidad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple: #2563eb; --purple-l: #60a5fa; --cyan: #06b6d4;
+      --green: #10b981; --bg: #07070f; --bg2: #0e0e1c; --bg3: #13132a;
+      --border: rgba(255,255,255,0.07); --text-muted: #94a3b8; --radius: 20px;
     }
-
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: #e2e8f0;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
     }
-
-    .login-container {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-      width: 100%;
-      max-width: 400px;
-      padding: 40px;
-      animation: slideIn 0.5s ease-out;
+    .bg-orb {
+      position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none;
     }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(37,99,235,.18), transparent 65%); top: -20%; left: -15%; }
+    .orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(6,182,212,.12), transparent 65%); bottom: -10%; right: -10%; }
+    .card {
+      background: rgba(14,14,28,.85);
+      border: 1px solid rgba(37,99,235,.2);
+      border-radius: var(--radius);
+      padding: 44px 40px;
+      width: 100%; max-width: 420px;
+      box-shadow: 0 32px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.03);
+      backdrop-filter: blur(20px);
+      animation: card-in .6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+      position: relative; z-index: 1;
     }
-
-    .logo {
-      text-align: center;
-      margin-bottom: 30px;
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-
+    .logo { text-align: center; margin-bottom: 36px; }
+    .logo-hex {
+      width: 52px; height: 52px; margin: 0 auto 14px;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 8px 30px rgba(37,99,235,.4);
+    }
     .logo h1 {
-      color: #333;
-      font-size: 28px;
-      margin-bottom: 5px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 4px;
     }
-
-    .logo p {
-      color: #999;
-      font-size: 14px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: #333;
-      font-weight: 500;
-      font-size: 14px;
-    }
-
+    .logo p { font-size: .85rem; color: var(--text-muted); }
+    .divider { height: 1px; background: var(--border); margin: 0 0 28px; }
+    .form-group { margin-bottom: 18px; }
+    label { display: block; margin-bottom: 8px; font-size: .85rem; font-weight: 500; color: #cbd5e1; }
+    .input-wrap { position: relative; }
+    .input-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--text-muted); }
     input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 14px;
-      transition: border-color 0.3s;
+      width: 100%; padding: 12px 14px 12px 42px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: #e2e8f0; font-size: .9rem; font-family: 'Inter', sans-serif;
+      transition: border-color .25s, box-shadow .25s, background .25s;
     }
-
-    input:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
-    }
-
+    input:focus { outline: none; border-color: rgba(37,99,235,.5); background: rgba(37,99,235,.05); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+    input::placeholder { color: #475569; }
     .btn {
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      margin-top: 10px;
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg, var(--purple), #1d4ed8);
+      color: #fff; border: none; border-radius: 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem; font-weight: 600; cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 4px 24px rgba(37,99,235,.4);
+      transition: transform .25s cubic-bezier(0.34,1.56,0.64,1), box-shadow .25s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
     }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(37,99,235,.55); }
+    .btn:active { transform: translateY(0); }
+    .btn svg { width: 18px; height: 18px; }
+    .msg {
+      margin-top: 14px; padding: 12px 16px; border-radius: 10px;
+      font-size: .85rem; display: none; align-items: center; gap: 8px;
     }
-
-    .btn:active {
-      transform: translateY(0);
-    }
-
-    .error {
-      color: #e74c3c;
-      font-size: 14px;
-      margin-top: 10px;
-      padding: 10px;
-      background: #fadbd8;
-      border-radius: 5px;
-      display: none;
-    }
-
-    .success {
-      color: #27ae60;
-      font-size: 14px;
-      margin-top: 10px;
-      padding: 10px;
-      background: #d5f4e6;
-      border-radius: 5px;
-      display: none;
-    }
-
-    .loading {
-      display: none;
-      text-align: center;
-      color: #999;
-      font-size: 14px;
-    }
-
-    .spinner {
-      display: inline-block;
-      width: 14px;
-      height: 14px;
-      border: 2px solid #f3f3f3;
-      border-top: 2px solid #667eea;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin-right: 8px;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .form-footer {
-      text-align: center;
-      margin-top: 20px;
-      color: #999;
-      font-size: 13px;
-    }
-
-    .credentials {
-      background: #f0f3ff;
-      padding: 15px;
-      border-radius: 5px;
-      margin-bottom: 20px;
-      font-size: 13px;
-    }
-
-    .credentials strong {
-      color: #667eea;
-    }
+    .msg svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .msg-error { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.25); color: #fca5a5; }
+    .msg-success { background: rgba(16,185,129,.1); border: 1px solid rgba(16,185,129,.25); color: #6ee7b7; }
+    .footer-note { text-align: center; margin-top: 24px; font-size: .78rem; color: #475569; }
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <div class="logo">
-      <h1>Contabilidad</h1>
-      <p>Sistema Privado de Facturación</p>
-    </div>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
 
-    <div class="credentials">
-      <strong>Acceso Admin:</strong><br>
-      📧 jojulioneto1@gmail.com<br>
-      🔒 Julioolivo94@
+  <div class="card">
+    <div class="logo">
+      <div class="logo-hex">⬡</div>
+      <h1>Financial Innovation</h1>
+      <p>Sistema Privado de Contabilidad</p>
     </div>
+    <div class="divider"></div>
 
     <form id="loginForm">
       <div class="form-group">
-        <label for="email">Correo Electrónico</label>
-        <input type="email" id="email" name="email" required placeholder="tu@email.com">
+        <label>Correo Electrónico</label>
+        <div class="input-wrap">
+          <i data-lucide="mail"></i>
+          <input type="email" id="email" required placeholder="tu@email.com">
+        </div>
       </div>
-
       <div class="form-group">
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" name="password" required placeholder="••••••••">
+        <label>Contraseña</label>
+        <div class="input-wrap">
+          <i data-lucide="lock"></i>
+          <input type="password" id="password" required placeholder="••••••••">
+        </div>
       </div>
 
-      <button type="submit" class="btn">
-        <span class="spinner loading"></span>
-        <span class="btn-text">Iniciar Sesión</span>
+      <button type="submit" class="btn" id="submitBtn">
+        <i data-lucide="log-in"></i>
+        <span id="btnText">Iniciar Sesión</span>
       </button>
 
-      <div class="error" id="errorMsg"></div>
-      <div class="success" id="successMsg"></div>
-      <div class="loading" id="loadingMsg">
-        <div class="spinner"></div> Verificando...
+      <div class="msg msg-error" id="errorMsg">
+        <i data-lucide="alert-circle"></i>
+        <span id="errorText"></span>
+      </div>
+      <div class="msg msg-success" id="successMsg">
+        <i data-lucide="check-circle"></i>
+        <span>Acceso correcto. Redirigiendo...</span>
       </div>
     </form>
 
-    <div class="form-footer">
-      Sistema de contabilidad privado para Nexcore Software
-    </div>
+    <div class="footer-note">Acceso restringido · Financial Innovation</div>
   </div>
 
   <script>
+    lucide.createIcons();
     const form = document.getElementById('loginForm');
+    const btnText = document.getElementById('btnText');
+    const submitBtn = document.getElementById('submitBtn');
     const errorMsg = document.getElementById('errorMsg');
     const successMsg = document.getElementById('successMsg');
-    const loadingMsg = document.getElementById('loadingMsg');
-    const spinner = document.querySelector('.spinner');
-    const btnText = document.querySelector('.btn-text');
+    const errorText = document.getElementById('errorText');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
       errorMsg.style.display = 'none';
       successMsg.style.display = 'none';
-      spinner.style.display = 'inline-block';
+      submitBtn.disabled = true;
       btnText.textContent = 'Verificando...';
-      form.querySelector('button').disabled = true;
 
       try {
-        const response = await fetch('/api/auth/login', {
+        const res = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
+          body: JSON.stringify({
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value
+          })
         });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          successMsg.textContent = '✓ Sesión iniciada. Redirigiendo...';
-          successMsg.style.display = 'block';
-          setTimeout(() => {
-            window.location.href = '/accounting/dashboard';
-          }, 1000);
+        const data = await res.json();
+        if (res.ok) {
+          successMsg.style.display = 'flex';
+          setTimeout(() => window.location.href = '/accounting/dashboard', 1000);
         } else {
-          errorMsg.textContent = '✗ ' + data.error;
-          errorMsg.style.display = 'block';
+          errorText.textContent = data.error || 'Credenciales inválidas';
+          errorMsg.style.display = 'flex';
         }
-      } catch (err) {
-        errorMsg.textContent = '✗ Error de conexión';
-        errorMsg.style.display = 'block';
+      } catch {
+        errorText.textContent = 'Error de conexión';
+        errorMsg.style.display = 'flex';
       } finally {
-        spinner.style.display = 'none';
+        submitBtn.disabled = false;
         btnText.textContent = 'Iniciar Sesión';
-        form.querySelector('button').disabled = false;
+        lucide.createIcons();
       }
     });
   </script>
