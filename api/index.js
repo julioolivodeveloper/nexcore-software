@@ -33,6 +33,10 @@ let clients = [
   { id: 22, name: 'Hammers Down Construction',  email: '', phone: '', company: '', address: '', created_at: '2025-01-14' },
   { id: 23, name: 'Mobile Check Deposit',       email: '', phone: '', company: '', address: '', created_at: '2025-01-21' },
   { id: 24, name: 'Alejandra Ramos',            email: '', phone: '', company: '', address: '', created_at: '2025-03-04' },
+  { id: 25, name: 'Tres Estrellas de Oro Inc', email: '', phone: '', company: '', address: '', created_at: '2025-04-25' },
+  { id: 26, name: 'Zela Murray',               email: '', phone: '', company: '', address: '', created_at: '2025-03-28' },
+  { id: 27, name: 'Montero Western',           email: '', phone: '', company: '', address: '', created_at: '2025-03-20' },
+  { id: 28, name: 'Jesse AAA California Clean',email: '', phone: '', company: '', address: '', created_at: '2025-04-30' },
 ];
 
 let invoices = [
@@ -78,11 +82,31 @@ let invoices = [
   { id: 48, client_name: 'Hammers Down Construction',issue_date: '2025-01-14', due_date: '2025-02-14', status: 'paid', total: 50.00,    notes: 'Zelle',                         items: [{description:'Servicios', quantity:1, unit_price:50}] },
   { id: 49, client_name: 'Mobile Check Deposit',     issue_date: '2025-01-21', due_date: '2025-02-21', status: 'paid', total: 1200.00,  notes: 'Cheque',                        items: [{description:'Servicios', quantity:1, unit_price:1200}] },
   { id: 50, client_name: 'Mobile Check Deposit',     issue_date: '2025-02-24', due_date: '2025-03-24', status: 'paid', total: 1200.00,  notes: 'Cheque',                        items: [{description:'Servicios', quantity:1, unit_price:1200}] },
-  { id: 51, client_name: 'Alejandra Ramos',          issue_date: '2025-03-04', due_date: '2025-04-04', status: 'paid', total: 200.00,   notes: 'Zelle',                         items: [{description:'Servicios', quantity:1, unit_price:200}] },
+  { id: 51, client_name: 'Alejandra Ramos',           issue_date: '2025-03-04', due_date: '2025-04-04', status: 'paid', total: 200.00,   notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:200}] },
+  { id: 52, client_name: 'CBP Construction, Inc.',   issue_date: '2025-03-20', due_date: '2025-04-20', status: 'paid', total: 1000.00,  notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:1000}] },
+  { id: 53, client_name: 'Montero Western',          issue_date: '2025-03-20', due_date: '2025-04-20', status: 'paid', total: 1200.00,  notes: 'Cheque',       items: [{description:'Servicios', quantity:1, unit_price:1200}] },
+  { id: 54, client_name: 'Zela Murray',              issue_date: '2025-03-28', due_date: '2025-04-28', status: 'paid', total: 500.00,   notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:500}] },
+  { id: 55, client_name: 'Zela Murray',              issue_date: '2025-04-03', due_date: '2025-05-03', status: 'paid', total: 200.00,   notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:200}] },
+  { id: 56, client_name: 'Montero Western',          issue_date: '2025-04-08', due_date: '2025-05-08', status: 'paid', total: 900.00,   notes: 'Cheque',       items: [{description:'Servicios', quantity:1, unit_price:900}] },
+  { id: 57, client_name: 'Zoila Camacho',            issue_date: '2025-04-17', due_date: '2025-05-17', status: 'paid', total: 230.00,   notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:230}] },
+  { id: 58, client_name: 'Zoila Camacho',            issue_date: '2025-04-21', due_date: '2025-05-21', status: 'paid', total: 20.00,    notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:20}] },
+  { id: 59, client_name: 'Zoila Camacho',            issue_date: '2025-04-24', due_date: '2025-05-24', status: 'paid', total: 230.00,   notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:230}] },
+  { id: 60, client_name: 'Montero Western',          issue_date: '2025-04-24', due_date: '2025-05-24', status: 'paid', total: 1200.00,  notes: 'Transferencia',items: [{description:'Servicios', quantity:1, unit_price:1200}] },
+  { id: 61, client_name: 'Tres Estrellas de Oro Inc',issue_date: '2025-04-25', due_date: '2025-05-25', status: 'paid', total: 300.00,   notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:300}] },
+  { id: 62, client_name: 'Zoila Camacho',            issue_date: '2025-04-28', due_date: '2025-05-28', status: 'paid', total: 50.00,    notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:50}] },
+  { id: 63, client_name: 'Jesse AAA California Clean',issue_date: '2025-04-30', due_date: '2025-05-30', status: 'paid', total: 25.00,   notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:25}] },
+  { id: 64, client_name: 'Tres Estrellas de Oro Inc',issue_date: '2025-05-09', due_date: '2025-06-09', status: 'paid', total: 300.00,   notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:300}] },
+  { id: 65, client_name: 'Tres Estrellas de Oro Inc',issue_date: '2025-05-20', due_date: '2025-06-20', status: 'paid', total: 300.00,   notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:300}] },
+  { id: 66, client_name: 'Montero Western',          issue_date: '2025-05-23', due_date: '2025-06-23', status: 'paid', total: 1200.00,  notes: 'Transferencia',items: [{description:'Servicios', quantity:1, unit_price:1200}] },
+  { id: 67, client_name: 'Zoila Camacho',            issue_date: '2025-05-27', due_date: '2025-06-27', status: 'paid', total: 60.00,    notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:60}] },
+  { id: 68, client_name: 'Tres Estrellas de Oro Inc',issue_date: '2025-06-02', due_date: '2025-07-02', status: 'paid', total: 300.00,   notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:300}] },
+  { id: 69, client_name: 'Nabor Saldivar',           issue_date: '2025-06-04', due_date: '2025-07-04', status: 'paid', total: 30.00,    notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:30}] },
+  { id: 70, client_name: 'Zoila Camacho',            issue_date: '2025-06-09', due_date: '2025-07-09', status: 'paid', total: 220.00,   notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:220}] },
+  { id: 71, client_name: 'Tres Estrellas de Oro Inc',issue_date: '2025-06-10', due_date: '2025-07-10', status: 'paid', total: 300.00,   notes: 'Zelle',        items: [{description:'Servicios', quantity:1, unit_price:300}] },
 ];
 
-let nextClientId = 25;
-let nextInvoiceId = 52;
+let nextClientId = 29;
+let nextInvoiceId = 72;
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 
