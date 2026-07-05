@@ -204,10 +204,14 @@ let invoices = [
 let nextClientId = 32;
 let nextInvoiceId = 167;
 
+let expenses = [];
+let nextExpenseId = 1;
+
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 
 function computeDashboard() {
-  const revenue = invoices.filter(i => i.status === 'paid').reduce((s, i) => s + i.total, 0);
+  const revenue  = invoices.filter(i => i.status === 'paid').reduce((s, i) => s + i.total, 0);
+  const totalExp = expenses.reduce((s, e) => s + e.amount, 0);
   const byMonth = {};
   invoices.forEach(inv => {
     if (!inv.issue_date) return;
@@ -229,6 +233,8 @@ function computeDashboard() {
     paidInvoices: invoices.filter(i => i.status === 'paid').length,
     cancelledInvoices: invoices.filter(i => i.status === 'cancelled').length,
     revenue,
+    totalExpenses: totalExp,
+    netIncome: revenue - totalExp,
     monthlyRevenue
   };
 }
@@ -244,6 +250,7 @@ app.get('/accounting/dashboard', (req, res) => res.sendFile(path.join(__dirname,
 app.get('/accounting/clients',   (req, res) => res.sendFile(path.join(__dirname, '..', 'views', 'clients.html')));
 app.get('/accounting/invoices',  (req, res) => res.sendFile(path.join(__dirname, '..', 'views', 'invoices.html')));
 app.get('/accounting/reports',   (req, res) => res.sendFile(path.join(__dirname, '..', 'views', 'reports.html')));
+app.get('/accounting/expenses',  (req, res) => res.sendFile(path.join(__dirname, '..', 'views', 'expenses.html')));
 
 // ── AUTH ──────────────────────────────────────────────────────────────────────
 app.post('/api/auth/login', (req, res) => {
@@ -311,6 +318,33 @@ app.get('/api/invoices/:id/pdf', (req, res) => {
   </tbody></table>
   <div class="total">Total: $${inv.total.toFixed(2)}</div>
   <script>window.print();</script></body></html>`);
+});
+
+// ── EXPENSES ─────────────────────────────────────────────────────────────────
+app.get('/api/expenses', (req, res) => {
+  res.json([...expenses].sort((a, b) => b.date.localeCompare(a.date)));
+});
+
+app.post('/api/expenses', (req, res) => {
+  const { date, category, description, amount, method, notes } = req.body;
+  if (!description || !amount) return res.status(400).json({ error: 'Descripción y monto requeridos' });
+  const expense = {
+    id: nextExpenseId++,
+    date: date || new Date().toISOString().split('T')[0],
+    category: category || 'Otros',
+    description,
+    amount: parseFloat(amount),
+    method: method || '',
+    notes: notes || ''
+  };
+  expenses.push(expense);
+  res.status(201).json(expense);
+});
+
+app.delete('/api/expenses/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  expenses = expenses.filter(e => e.id !== id);
+  res.json({ success: true });
 });
 
 // ── REPORTS ───────────────────────────────────────────────────────────────────

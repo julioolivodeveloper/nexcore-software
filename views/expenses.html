@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gastos — Contabilidad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple:#2563eb; --purple-l:#60a5fa; --cyan:#06b6d4; --green:#10b981;
+      --yellow:#f59e0b; --red:#ef4444;
+      --bg:#07070f; --bg2:#0e0e1c; --bg3:#13132a;
+      --border:rgba(255,255,255,0.07); --text-muted:#94a3b8; --radius:16px;
+    }
+    body { font-family:'Inter',sans-serif; background:var(--bg); color:#e2e8f0; display:flex; height:100vh; overflow:hidden; }
+
+    .sidebar { width:240px; flex-shrink:0; background:var(--bg2); border-right:1px solid var(--border); display:flex; flex-direction:column; padding:24px 16px; }
+    .sidebar-logo { display:flex; align-items:center; gap:10px; padding:0 8px 24px; border-bottom:1px solid var(--border); margin-bottom:20px; }
+    .logo-hex { width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,var(--purple),var(--cyan)); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+    .sidebar-logo span { font-family:'Space Grotesk',sans-serif; font-size:.95rem; font-weight:700; color:#fff; }
+    .nav-section-label { font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#475569; padding:0 8px; margin-bottom:6px; }
+    .nav-menu { list-style:none; display:flex; flex-direction:column; gap:2px; margin-bottom:20px; }
+    .nav-link { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; color:var(--text-muted); font-size:.875rem; font-weight:500; text-decoration:none; transition:background .2s,color .2s; }
+    .nav-link svg { width:17px; height:17px; flex-shrink:0; }
+    .nav-link:hover { background:rgba(255,255,255,.05); color:#e2e8f0; }
+    .nav-link.active { background:rgba(239,68,68,.12); color:#fca5a5; border:1px solid rgba(239,68,68,.2); }
+    .sidebar-footer { margin-top:auto; }
+    .logout-btn { display:flex; align-items:center; gap:10px; width:100%; padding:10px 12px; border-radius:10px; background:transparent; border:1px solid var(--border); color:var(--text-muted); font-size:.875rem; font-weight:500; cursor:pointer; transition:background .2s,color .2s,border-color .2s; }
+    .logout-btn svg { width:17px; height:17px; }
+    .logout-btn:hover { background:rgba(239,68,68,.08); border-color:rgba(239,68,68,.25); color:#fca5a5; }
+
+    .main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+    .topbar { background:var(--bg2); border-bottom:1px solid var(--border); padding:16px 28px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+    .topbar h1 { font-family:'Space Grotesk',sans-serif; font-size:1.3rem; font-weight:700; }
+    .topbar-right { display:flex; align-items:center; gap:12px; }
+    .user-badge { display:flex; align-items:center; gap:8px; padding:7px 14px; border-radius:999px; background:rgba(255,255,255,.04); border:1px solid var(--border); font-size:.8rem; color:var(--text-muted); }
+    .user-badge svg { width:14px; height:14px; color:var(--purple-l); }
+    .content { flex:1; overflow-y:auto; padding:24px 28px; display:flex; flex-direction:column; gap:20px; }
+
+    .btn { display:inline-flex; align-items:center; gap:7px; padding:9px 18px; border-radius:10px; font-size:.875rem; font-weight:600; cursor:pointer; border:none; transition:opacity .2s,transform .15s; font-family:'Inter',sans-serif; }
+    .btn:hover { opacity:.85; }
+    .btn:active { transform:scale(.97); }
+    .btn svg { width:16px; height:16px; }
+    .btn-red { background:var(--red); color:#fff; }
+    .btn-ghost { background:transparent; border:1px solid var(--border); color:var(--text-muted); }
+    .btn-ghost:hover { background:rgba(255,255,255,.04); color:#e2e8f0; }
+    .btn-sm { padding:6px 12px; font-size:.78rem; }
+
+    /* STATS */
+    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    .stat-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:20px; }
+    .stat-icon { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
+    .stat-icon svg { width:18px; height:18px; }
+    .si-red    { background:rgba(239,68,68,.12);  border:1px solid rgba(239,68,68,.2);   color:#fca5a5; }
+    .si-green  { background:rgba(16,185,129,.15); border:1px solid rgba(16,185,129,.2);  color:#6ee7b7; }
+    .si-yellow { background:rgba(245,158,11,.15); border:1px solid rgba(245,158,11,.2);  color:#fcd34d; }
+    .si-cyan   { background:rgba(6,182,212,.15);  border:1px solid rgba(6,182,212,.2);   color:#67e8f9; }
+    .stat-label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); margin-bottom:4px; }
+    .stat-value { font-family:'Space Grotesk',sans-serif; font-size:1.75rem; font-weight:700; color:#fff; }
+    .stat-sub { font-size:.73rem; color:var(--text-muted); margin-top:4px; }
+
+    /* FILTER */
+    .filter-bar { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
+    .filter-group { display:flex; flex-direction:column; gap:5px; }
+    .filter-group label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); }
+    .filter-input { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:7px 12px; color:#e2e8f0; font-size:.875rem; font-family:'Inter',sans-serif; outline:none; transition:border-color .2s; min-width:140px; }
+    .filter-input:focus { border-color:rgba(239,68,68,.4); }
+    select.filter-input { cursor:pointer; }
+    select.filter-input option { background:var(--bg2); }
+
+    /* TABLE PANEL */
+    .table-panel { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:22px; }
+    .table-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+    .panel-title { font-family:'Space Grotesk',sans-serif; font-size:1rem; font-weight:600; }
+    .result-count { font-size:.8rem; color:var(--text-muted); }
+    .tbl-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:.875rem; }
+    thead th { padding:10px 14px; text-align:left; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); border-bottom:1px solid var(--border); white-space:nowrap; }
+    tbody tr { transition:background .15s; }
+    tbody tr:hover { background:rgba(255,255,255,.03); }
+    tbody td { padding:11px 14px; border-bottom:1px solid rgba(255,255,255,.04); vertical-align:middle; }
+    tbody tr:last-child td { border-bottom:none; }
+    .td-date { color:var(--text-muted); font-size:.8rem; white-space:nowrap; }
+    .td-amount { font-family:'Space Grotesk',sans-serif; font-weight:700; color:#fca5a5; text-align:right; white-space:nowrap; }
+    .badge-cat { font-size:.7rem; font-weight:600; padding:3px 9px; border-radius:6px; border:1px solid var(--border); color:var(--text-muted); background:rgba(255,255,255,.04); }
+    .empty-state { text-align:center; padding:48px; color:var(--text-muted); font-size:.875rem; }
+    .total-row { display:flex; align-items:center; justify-content:space-between; padding:14px 14px 0; border-top:1px solid var(--border); margin-top:8px; }
+    .total-row-label { font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--text-muted); }
+    .total-row-value { font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:700; color:#fca5a5; }
+
+    /* MODAL */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.7); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; z-index:100; opacity:0; pointer-events:none; transition:opacity .2s; }
+    .modal-overlay.open { opacity:1; pointer-events:all; }
+    .modal { background:var(--bg2); border:1px solid var(--border); border-radius:20px; padding:28px; width:100%; max-width:480px; box-shadow:0 24px 48px rgba(0,0,0,.5); }
+    .modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; }
+    .modal-title { font-family:'Space Grotesk',sans-serif; font-size:1.1rem; font-weight:700; }
+    .modal-close { background:transparent; border:none; color:var(--text-muted); cursor:pointer; padding:4px; border-radius:8px; transition:color .2s; }
+    .modal-close:hover { color:#e2e8f0; }
+    .modal-close svg { width:20px; height:20px; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .form-full { grid-column:1/-1; }
+    .form-group { display:flex; flex-direction:column; gap:6px; }
+    .form-label { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); }
+    .form-input { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:10px 14px; color:#e2e8f0; font-size:.9rem; font-family:'Inter',sans-serif; outline:none; transition:border-color .2s; width:100%; }
+    .form-input:focus { border-color:rgba(239,68,68,.4); }
+    select.form-input { cursor:pointer; }
+    select.form-input option { background:var(--bg2); }
+    .modal-footer { display:flex; gap:10px; justify-content:flex-end; margin-top:22px; }
+    .btn-save { background:var(--red); color:#fff; padding:10px 24px; border-radius:10px; font-size:.9rem; font-weight:600; cursor:pointer; border:none; font-family:'Inter',sans-serif; transition:opacity .2s; }
+    .btn-save:hover { opacity:.85; }
+    .btn-cancel-modal { background:transparent; border:1px solid var(--border); color:var(--text-muted); padding:10px 20px; border-radius:10px; font-size:.9rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:background .2s,color .2s; }
+    .btn-cancel-modal:hover { background:rgba(255,255,255,.04); color:#e2e8f0; }
+    .delete-btn { background:transparent; border:none; color:var(--text-muted); cursor:pointer; padding:6px; border-radius:8px; transition:color .2s,background .2s; }
+    .delete-btn:hover { color:#fca5a5; background:rgba(239,68,68,.1); }
+    .delete-btn svg { width:15px; height:15px; }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-logo"><div class="logo-hex">⬡</div><span>Contabilidad</span></div>
+    <div class="nav-section-label">Menú</div>
+    <ul class="nav-menu">
+      <li><a href="/accounting/dashboard" class="nav-link"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+      <li><a href="/accounting/invoices" class="nav-link"><i data-lucide="file-text"></i> Facturas</a></li>
+      <li><a href="/accounting/clients" class="nav-link"><i data-lucide="users"></i> Clientes</a></li>
+      <li><a href="/accounting/expenses" class="nav-link active"><i data-lucide="credit-card"></i> Gastos</a></li>
+      <li><a href="/accounting/reports" class="nav-link"><i data-lucide="bar-chart-2"></i> Reportes</a></li>
+    </ul>
+    <div class="sidebar-footer"><button class="logout-btn" onclick="logout()"><i data-lucide="log-out"></i> Cerrar Sesión</button></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h1>Gastos</h1>
+      <div class="topbar-right">
+        <button class="btn btn-red" onclick="openModal()"><i data-lucide="plus"></i> Nuevo Gasto</button>
+        <div class="user-badge"><i data-lucide="user"></i><span id="userEmail">—</span></div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon si-red"><i data-lucide="trending-down"></i></div>
+          <div class="stat-label">Total Gastos</div>
+          <div class="stat-value" id="sTotal">$0</div>
+          <div class="stat-sub" id="sSub">— gastos registrados</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-yellow"><i data-lucide="calendar"></i></div>
+          <div class="stat-label">Este Mes</div>
+          <div class="stat-value" id="sMonth">$0</div>
+          <div class="stat-sub" id="sMonthSub">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-cyan"><i data-lucide="tag"></i></div>
+          <div class="stat-label">Mayor Categoría</div>
+          <div class="stat-value" id="sTopCat" style="font-size:1rem">—</div>
+          <div class="stat-sub" id="sTopCatVal">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-green"><i data-lucide="dollar-sign"></i></div>
+          <div class="stat-label">Ingreso Neto</div>
+          <div class="stat-value" id="sNet">$0</div>
+          <div class="stat-sub">ingresos − gastos</div>
+        </div>
+      </div>
+
+      <!-- FILTROS -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label>Desde</label>
+          <input type="date" id="fFrom" class="filter-input" oninput="renderTable()">
+        </div>
+        <div class="filter-group">
+          <label>Hasta</label>
+          <input type="date" id="fTo" class="filter-input" oninput="renderTable()">
+        </div>
+        <div class="filter-group">
+          <label>Categoría</label>
+          <select id="fCat" class="filter-input" onchange="renderTable()">
+            <option value="">Todas</option>
+            <option>Software / Herramientas</option>
+            <option>Marketing</option>
+            <option>Oficina</option>
+            <option>Transporte</option>
+            <option>Impuestos</option>
+            <option>Nómina</option>
+            <option>Servicios Públicos</option>
+            <option>Suscripciones</option>
+            <option>Otros</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Buscar</label>
+          <input type="text" id="fSearch" class="filter-input" placeholder="Descripción..." oninput="renderTable()">
+        </div>
+        <div style="margin-left:auto;display:flex;align-items:flex-end">
+          <button class="btn btn-ghost btn-sm" onclick="clearFilters()"><i data-lucide="x"></i> Limpiar</button>
+        </div>
+      </div>
+
+      <!-- TABLA -->
+      <div class="table-panel">
+        <div class="table-header">
+          <span class="panel-title">Registro de Gastos</span>
+          <span class="result-count" id="resultCount">— registros</span>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Método</th>
+                <th>Notas</th>
+                <th style="text-align:right">Monto</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="expTable"></tbody>
+          </table>
+        </div>
+        <div class="total-row">
+          <span class="total-row-label">Total filtrado</span>
+          <span class="total-row-value" id="tableTotal">$0.00</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">Nuevo Gasto</span>
+        <button class="modal-close" onclick="closeModal()"><i data-lucide="x"></i></button>
+      </div>
+      <form id="expenseForm" onsubmit="saveExpense(event)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Fecha</label>
+            <input type="date" id="eDate" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Monto ($)</label>
+            <input type="number" id="eAmount" class="form-input" placeholder="0.00" step="0.01" min="0.01" required>
+          </div>
+          <div class="form-group form-full">
+            <label class="form-label">Descripción</label>
+            <input type="text" id="eDesc" class="form-input" placeholder="Ej. Suscripción Adobe" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Categoría</label>
+            <select id="eCat" class="form-input">
+              <option>Software / Herramientas</option>
+              <option>Marketing</option>
+              <option>Oficina</option>
+              <option>Transporte</option>
+              <option>Impuestos</option>
+              <option>Nómina</option>
+              <option>Servicios Públicos</option>
+              <option>Suscripciones</option>
+              <option>Otros</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Método de Pago</label>
+            <select id="eMethod" class="form-input">
+              <option>Tarjeta de Crédito</option>
+              <option>Tarjeta de Débito</option>
+              <option>Zelle</option>
+              <option>Cheque</option>
+              <option>Efectivo</option>
+              <option>Transferencia</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="form-group form-full">
+            <label class="form-label">Notas (opcional)</label>
+            <input type="text" id="eNotes" class="form-input" placeholder="Notas adicionales...">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel-modal" onclick="closeModal()">Cancelar</button>
+          <button type="submit" class="btn-save"><i data-lucide="save"></i> Guardar Gasto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    let allExpenses = [];
+    let totalRevenue = 0;
+
+    const fmt = n => '$' + parseFloat(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+    const fmtDate = d => { if (!d) return '—'; const [y,m,day] = d.split('-'); return `${day}/${m}/${y}`; };
+
+    async function init() {
+      try {
+        const [expRes, dashRes, userRes] = await Promise.all([
+          fetch('/api/expenses'),
+          fetch('/api/reports/dashboard'),
+          fetch('/api/auth/me')
+        ]);
+        allExpenses = await expRes.json();
+        const dash = await dashRes.json();
+        const user = await userRes.json();
+        totalRevenue = dash.revenue || 0;
+        document.getElementById('userEmail').textContent = user.email;
+        renderStats();
+        renderTable();
+      } catch(e) { console.error(e); }
+    }
+
+    function renderStats() {
+      const total = allExpenses.reduce((s,e)=>s+e.amount, 0);
+      const now   = new Date();
+      const ym    = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+      const monthExp = allExpenses.filter(e=>e.date&&e.date.startsWith(ym)).reduce((s,e)=>s+e.amount,0);
+      const net = totalRevenue - total;
+
+      document.getElementById('sTotal').textContent = fmt(total);
+      document.getElementById('sSub').textContent   = `${allExpenses.length} gastos registrados`;
+      document.getElementById('sMonth').textContent  = fmt(monthExp);
+      document.getElementById('sMonthSub').textContent = `${now.toLocaleString('es',{month:'long',year:'numeric'})}`;
+      document.getElementById('sNet').textContent    = fmt(net);
+      document.getElementById('sNet').style.color   = net >= 0 ? '#6ee7b7' : '#fca5a5';
+
+      const byCat = {};
+      allExpenses.forEach(e => { byCat[e.category] = (byCat[e.category]||0) + e.amount; });
+      const topCat = Object.entries(byCat).sort((a,b)=>b[1]-a[1])[0];
+      document.getElementById('sTopCat').textContent    = topCat?.[0] || '—';
+      document.getElementById('sTopCatVal').textContent = topCat ? fmt(topCat[1]) : '—';
+    }
+
+    function getFiltered() {
+      const from   = document.getElementById('fFrom').value;
+      const to     = document.getElementById('fTo').value;
+      const cat    = document.getElementById('fCat').value;
+      const search = document.getElementById('fSearch').value.toLowerCase().trim();
+      return allExpenses.filter(e => {
+        if (from && e.date < from) return false;
+        if (to   && e.date > to)   return false;
+        if (cat  && e.category !== cat) return false;
+        if (search && !e.description.toLowerCase().includes(search) && !(e.notes||'').toLowerCase().includes(search)) return false;
+        return true;
+      });
+    }
+
+    function renderTable() {
+      const data = getFiltered();
+      const total = data.reduce((s,e)=>s+e.amount, 0);
+      document.getElementById('resultCount').textContent = `${data.length} registro${data.length!==1?'s':''}`;
+      document.getElementById('tableTotal').textContent  = fmt(total);
+      const tbody = document.getElementById('expTable');
+      if (!data.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No hay gastos registrados</td></tr>'; return;
+      }
+      tbody.innerHTML = data.map(e => `
+        <tr>
+          <td class="td-date">${fmtDate(e.date)}</td>
+          <td style="font-weight:500">${e.description}</td>
+          <td><span class="badge-cat">${e.category}</span></td>
+          <td style="color:var(--text-muted);font-size:.82rem">${e.method||'—'}</td>
+          <td style="color:var(--text-muted);font-size:.82rem">${e.notes||'—'}</td>
+          <td class="td-amount">${fmt(e.amount)}</td>
+          <td><button class="delete-btn" onclick="deleteExpense(${e.id})" title="Eliminar"><i data-lucide="trash-2"></i></button></td>
+        </tr>`).join('');
+      lucide.createIcons();
+    }
+
+    function clearFilters() {
+      ['fFrom','fTo','fSearch'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('fCat').value='';
+      renderTable();
+    }
+
+    function openModal(prefillDate) {
+      const today = prefillDate || new Date().toISOString().split('T')[0];
+      document.getElementById('eDate').value = today;
+      document.getElementById('eAmount').value = '';
+      document.getElementById('eDesc').value = '';
+      document.getElementById('eNotes').value = '';
+      document.getElementById('modalOverlay').classList.add('open');
+      lucide.createIcons();
+      setTimeout(()=>document.getElementById('eDesc').focus(), 50);
+    }
+
+    function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+    function handleOverlayClick(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+
+    async function saveExpense(e) {
+      e.preventDefault();
+      const body = {
+        date:        document.getElementById('eDate').value,
+        amount:      document.getElementById('eAmount').value,
+        description: document.getElementById('eDesc').value,
+        category:    document.getElementById('eCat').value,
+        method:      document.getElementById('eMethod').value,
+        notes:       document.getElementById('eNotes').value,
+      };
+      try {
+        const res = await fetch('/api/expenses', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
+        if (!res.ok) throw new Error();
+        const saved = await res.json();
+        allExpenses.unshift(saved);
+        closeModal();
+        renderStats();
+        renderTable();
+      } catch(err) { alert('Error al guardar el gasto'); }
+    }
+
+    async function deleteExpense(id) {
+      if (!confirm('¿Eliminar este gasto?')) return;
+      await fetch(`/api/expenses/${id}`, { method:'DELETE' });
+      allExpenses = allExpenses.filter(e=>e.id!==id);
+      renderStats();
+      renderTable();
+    }
+
+    async function logout() { await fetch('/api/auth/logout',{method:'POST'}); window.location.href='/accounting/login'; }
+
+    init();
+  </script>
+</body>
+</html>
