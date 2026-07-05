@@ -219,10 +219,16 @@
 
     /* ── HERO ───────────────────────────────────────── */
     .hero {
-      min-height: 100vh;
+      min-height: auto;
       display: flex; align-items: center;
       padding-top: 90px;
       position: relative; overflow: hidden;
+    }
+
+    @media (min-width: 861px) {
+      .hero {
+        min-height: 100vh;
+      }
     }
     .hero-bg {
       position: absolute; inset: 0; pointer-events: none; z-index: 0;
