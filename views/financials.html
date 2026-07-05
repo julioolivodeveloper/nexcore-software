@@ -388,7 +388,7 @@
 
     // service classification
     function classify(inv) {
-      const d = (inv.description||'').toLowerCase();
+      const d = ((inv.description || (inv.items&&inv.items[0]&&inv.items[0].description) || '')).toLowerCase();
       const n = (inv.client_name||'').toLowerCase();
       if (d.includes('tiktok') || d.includes('ads') || d.includes('marketing') || d.includes('administraci')) return 'Marketing';
       if (d.includes('software') || d.includes('web') || d.includes('app') || d.includes('desarrollo') || d.includes('sistema')) return 'Desarrollo de Software';
@@ -426,11 +426,11 @@
 
     function render() {
       const paidInv = allInvoices.filter(i => i.status === 'paid');
-      const filtInv = filterByYear(paidInv, 'date');
+      const filtInv = filterByYear(paidInv, 'issue_date');
       const filtExp = filterByYear(allExpenses, 'date');
 
       // totals
-      const totalInc = filtInv.reduce((s,i) => s + parseFloat(i.amount||0), 0);
+      const totalInc = filtInv.reduce((s,i) => s + parseFloat(i.total||0), 0);
       const totalExp = filtExp.reduce((s,e) => s + parseFloat(e.amount||0), 0);
       const netProfit = totalInc - totalExp;
       const margin = totalInc > 0 ? netProfit / totalInc : 0;
@@ -455,8 +455,8 @@
       months.forEach(m => { monthlyInc[m] = 0; monthlyExp[m] = 0; });
 
       filtInv.forEach(i => {
-        const ym = (i.date||'').substring(0,7);
-        if (monthlyInc[ym] !== undefined) monthlyInc[ym] += parseFloat(i.amount||0);
+        const ym = (i.issue_date||'').substring(0,7);
+        if (monthlyInc[ym] !== undefined) monthlyInc[ym] += parseFloat(i.total||0);
       });
       filtExp.forEach(e => {
         const ym = (e.date||'').substring(0,7);
@@ -597,7 +597,7 @@
 
     function buildMonths() {
       if (currentYear === 'all') {
-        const allDates = [...allInvoices.map(i=>i.date), ...allExpenses.map(e=>e.date)].filter(Boolean);
+        const allDates = [...allInvoices.map(i=>i.issue_date), ...allExpenses.map(e=>e.date)].filter(Boolean);
         if (!allDates.length) return [];
         const minYM = allDates.map(d=>d.substring(0,7)).sort()[0];
         const maxYM = allDates.map(d=>d.substring(0,7)).sort().reverse()[0];
@@ -619,9 +619,9 @@
 
     // ── TAX CALCULATOR ──
     function autoFill() {
-      const paidInv = filterByYear(allInvoices.filter(i=>i.status==='paid'), 'date');
+      const paidInv = filterByYear(allInvoices.filter(i=>i.status==='paid'), 'issue_date');
       const filtExp = filterByYear(allExpenses, 'date');
-      const income = paidInv.reduce((s,i) => s+parseFloat(i.amount||0), 0);
+      const income = paidInv.reduce((s,i) => s+parseFloat(i.total||0), 0);
       const expenses = filtExp.reduce((s,e) => s+parseFloat(e.amount||0), 0);
       document.getElementById('t-gross').value = Math.round(income);
       document.getElementById('t-deductions').value = Math.round(expenses);
