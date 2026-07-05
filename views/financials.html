@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financiero — Contabilidad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple: #2563eb; --purple-l: #60a5fa; --cyan: #06b6d4; --green: #10b981;
+      --yellow: #f59e0b; --pink: #ec4899; --red: #ef4444;
+      --bg: #07070f; --bg2: #0e0e1c; --bg3: #13132a;
+      --border: rgba(255,255,255,0.07); --text-muted: #94a3b8; --radius: 16px;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: #e2e8f0; display: flex; height: 100vh; overflow: hidden; }
+
+    /* SIDEBAR */
+    .sidebar { width: 240px; flex-shrink: 0; background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 24px 16px; }
+    .sidebar-logo { display: flex; align-items: center; gap: 10px; padding: 0 8px 24px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+    .logo-hex { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--purple), var(--cyan)); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .sidebar-logo span { font-family: 'Space Grotesk', sans-serif; font-size: .95rem; font-weight: 700; color: #fff; }
+    .nav-section-label { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #475569; padding: 0 8px; margin-bottom: 6px; }
+    .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 2px; margin-bottom: 20px; }
+    .nav-link { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; color: var(--text-muted); font-size: .875rem; font-weight: 500; text-decoration: none; transition: background .2s, color .2s; }
+    .nav-link svg { width: 17px; height: 17px; flex-shrink: 0; }
+    .nav-link:hover { background: rgba(255,255,255,.05); color: #e2e8f0; }
+    .nav-link.active { background: rgba(37,99,235,.15); color: var(--purple-l); border: 1px solid rgba(37,99,235,.2); }
+    .sidebar-footer { margin-top: auto; }
+    .logout-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px; border-radius: 10px; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-size: .875rem; font-weight: 500; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+    .logout-btn svg { width: 17px; height: 17px; }
+    .logout-btn:hover { background: rgba(239,68,68,.08); border-color: rgba(239,68,68,.25); color: #fca5a5; }
+
+    /* MAIN */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .topbar { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; }
+    .topbar h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .user-badge { display: flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,.04); border: 1px solid var(--border); font-size: .8rem; color: var(--text-muted); }
+    .user-badge svg { width: 14px; height: 14px; color: var(--purple-l); }
+    .content { flex: 1; overflow-y: auto; padding: 28px; }
+
+    /* YEAR FILTER */
+    .year-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+    .year-btn { padding: 7px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg2); color: var(--text-muted); font-size: .8rem; font-weight: 600; cursor: pointer; transition: all .2s; }
+    .year-btn:hover, .year-btn.active { background: rgba(37,99,235,.15); border-color: rgba(37,99,235,.3); color: var(--purple-l); }
+    .year-label { font-size: .8rem; color: var(--text-muted); font-weight: 600; margin-right: 4px; }
+
+    /* STAT CARDS */
+    .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 24px; }
+    .stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; transition: border-color .3s, transform .3s; }
+    .stat-card:hover { border-color: rgba(37,99,235,.3); transform: translateY(-2px); }
+    .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+    .stat-icon svg { width: 18px; height: 18px; }
+    .si-blue   { background: rgba(37,99,235,.15); border: 1px solid rgba(37,99,235,.2);  color: var(--purple-l); }
+    .si-cyan   { background: rgba(6,182,212,.15);  border: 1px solid rgba(6,182,212,.2);  color: #67e8f9; }
+    .si-green  { background: rgba(16,185,129,.15); border: 1px solid rgba(16,185,129,.2); color: #6ee7b7; }
+    .si-yellow { background: rgba(245,158,11,.15); border: 1px solid rgba(245,158,11,.2); color: #fcd34d; }
+    .si-red    { background: rgba(239,68,68,.12);  border: 1px solid rgba(239,68,68,.2);  color: #fca5a5; }
+    .si-pink   { background: rgba(236,72,153,.12); border: 1px solid rgba(236,72,153,.2); color: #f9a8d4; }
+    .stat-label { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); margin-bottom: 4px; }
+    .stat-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: 700; color: #fff; }
+    .stat-sub { font-size: .75rem; color: var(--text-muted); margin-top: 4px; }
+
+    /* CHARTS GRID */
+    .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    .charts-row-3 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px; }
+
+    /* PANEL */
+    .panel { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .panel-title { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; }
+    .panel-badge { font-size: .72rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+    .badge-blue   { background: rgba(37,99,235,.12); color: var(--purple-l); border: 1px solid rgba(37,99,235,.2); }
+    .badge-green  { background: rgba(16,185,129,.12); color: #6ee7b7; border: 1px solid rgba(16,185,129,.2); }
+    .badge-yellow { background: rgba(245,158,11,.12); color: #fcd34d; border: 1px solid rgba(245,158,11,.2); }
+    .chart-wrap { position: relative; height: 280px; }
+    .chart-wrap-sm { position: relative; height: 240px; }
+
+    /* P&L TABLE */
+    .pl-table { width: 100%; border-collapse: collapse; }
+    .pl-table th { text-align: left; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); padding: 10px 12px; border-bottom: 1px solid var(--border); }
+    .pl-table td { padding: 12px 12px; font-size: .85rem; border-bottom: 1px solid rgba(255,255,255,.03); }
+    .pl-table tr:last-child td { border-bottom: none; }
+    .pl-table tr:hover td { background: rgba(255,255,255,.02); }
+    .pl-total { background: rgba(37,99,235,.06) !important; font-weight: 700; }
+    .pl-total td { border-top: 1px solid rgba(37,99,235,.2); font-weight: 700; font-size: .9rem; }
+    td.c-green { color: #6ee7b7; font-family: 'Space Grotesk', sans-serif; font-weight: 600; }
+    td.c-red   { color: #fca5a5; font-family: 'Space Grotesk', sans-serif; font-weight: 600; }
+    td.c-blue  { color: var(--purple-l); font-family: 'Space Grotesk', sans-serif; font-weight: 600; }
+    td.c-muted { color: var(--text-muted); }
+
+    /* TAX CALCULATOR */
+    .tax-section { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; }
+    .tax-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+    .tax-sub { font-size: .8rem; color: var(--text-muted); margin-bottom: 24px; }
+    .tax-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .field-group { display: flex; flex-direction: column; gap: 6px; }
+    .field-label { font-size: .75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; }
+    .field-input {
+      padding: 11px 14px; background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; color: #e2e8f0; font-size: .9rem; font-family: 'Space Grotesk', sans-serif;
+      outline: none; transition: border-color .2s;
+    }
+    .field-input:focus { border-color: var(--purple); }
+    .field-hint { font-size: .72rem; color: #475569; }
+    .calc-btn {
+      display: flex; align-items: center; gap: 8px; padding: 11px 22px;
+      background: linear-gradient(135deg, var(--purple), #1d4ed8); border: none; border-radius: 10px;
+      color: #fff; font-size: .875rem; font-weight: 600; font-family: 'Inter', sans-serif;
+      cursor: pointer; transition: opacity .2s; width: fit-content;
+    }
+    .calc-btn:hover { opacity: .85; }
+    .calc-btn svg { width: 16px; height: 16px; }
+
+    .tax-results { display: none; }
+    .tax-results.show { display: block; }
+    .tax-divider { height: 1px; background: var(--border); margin: 24px 0; }
+    .tax-results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .tax-breakdown { background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+    .tax-breakdown-title { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); margin-bottom: 16px; }
+    .tax-line { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.04); font-size: .85rem; }
+    .tax-line:last-child { border-bottom: none; }
+    .tax-line-label { color: var(--text-muted); }
+    .tax-line-val { font-family: 'Space Grotesk', sans-serif; font-weight: 600; }
+    .tax-line.highlight { background: rgba(37,99,235,.06); margin: 0 -12px; padding: 10px 12px; border-radius: 8px; border: none; }
+    .tax-line.highlight .tax-line-label { color: #e2e8f0; font-weight: 600; }
+    .tax-summary-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
+    .tax-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+    .tax-card-val { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+    .tax-card-label { font-size: .7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+    .tax-quarterly { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.2); border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+    .tax-quarterly svg { width: 20px; height: 20px; color: #fcd34d; flex-shrink: 0; }
+    .tax-quarterly p { font-size: .85rem; color: #fcd34d; font-weight: 500; }
+    .tax-quarterly span { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; }
+    .disclaimer { font-size: .72rem; color: #475569; margin-top: 16px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-hex">⬡</div>
+      <span>Contabilidad</span>
+    </div>
+    <div class="nav-section-label">Menú</div>
+    <ul class="nav-menu">
+      <li><a href="/accounting/dashboard"   class="nav-link"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+      <li><a href="/accounting/invoices"    class="nav-link"><i data-lucide="file-text"></i> Facturas</a></li>
+      <li><a href="/accounting/clients"     class="nav-link"><i data-lucide="users"></i> Clientes</a></li>
+      <li><a href="/accounting/expenses"    class="nav-link"><i data-lucide="credit-card"></i> Gastos</a></li>
+      <li><a href="/accounting/financials"  class="nav-link active"><i data-lucide="trending-up"></i> Financiero</a></li>
+      <li><a href="/accounting/reports"     class="nav-link"><i data-lucide="bar-chart-2"></i> Reportes</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="logout()"><i data-lucide="log-out"></i> Cerrar Sesión</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h1>Financiero</h1>
+      <div class="topbar-right">
+        <div class="user-badge"><i data-lucide="user"></i><span id="userEmail">—</span></div>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- Year filter -->
+      <div class="year-bar">
+        <span class="year-label">Año:</span>
+        <button class="year-btn" data-y="2024" onclick="setYear(2024)">2024</button>
+        <button class="year-btn active" data-y="2025" onclick="setYear(2025)">2025</button>
+        <button class="year-btn" data-y="2026" onclick="setYear(2026)">2026</button>
+        <button class="year-btn" data-y="all" onclick="setYear('all')">Todo</button>
+      </div>
+
+      <!-- Summary cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon si-green"><i data-lucide="trending-up"></i></div>
+          <div class="stat-label">Ingresos</div>
+          <div class="stat-value" id="s-income">$0</div>
+          <div class="stat-sub" id="s-income-count">0 facturas pagadas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-red"><i data-lucide="trending-down"></i></div>
+          <div class="stat-label">Gastos</div>
+          <div class="stat-value" id="s-expenses">$0</div>
+          <div class="stat-sub" id="s-exp-count">0 transacciones</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-cyan"><i data-lucide="activity"></i></div>
+          <div class="stat-label">Ganancia Neta</div>
+          <div class="stat-value" id="s-net">$0</div>
+          <div class="stat-sub" id="s-margin">Margen: 0%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-yellow"><i data-lucide="percent"></i></div>
+          <div class="stat-label">Margen %</div>
+          <div class="stat-value" id="s-margin-val">0%</div>
+          <div class="stat-sub">Ganancia / Ingreso</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-blue"><i data-lucide="calendar"></i></div>
+          <div class="stat-label">Mejor Mes</div>
+          <div class="stat-value" id="s-best-month" style="font-size:1.1rem">—</div>
+          <div class="stat-sub" id="s-best-amt">$0 neto</div>
+        </div>
+      </div>
+
+      <!-- Charts row 1: monthly P&L + services breakdown -->
+      <div class="charts-row" style="margin-bottom:20px">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Ingresos vs Gastos Mensuales</span>
+            <span class="panel-badge badge-blue" id="chartYearLabel">2025</span>
+          </div>
+          <div class="chart-wrap"><canvas id="plChart"></canvas></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Ingresos por Tipo de Servicio</span>
+            <span class="panel-badge badge-green">Distribución</span>
+          </div>
+          <div class="chart-wrap"><canvas id="serviceChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Charts row 2: cumulative net + expenses breakdown -->
+      <div class="charts-row" style="margin-bottom:20px">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Ganancia Neta Acumulada</span>
+            <span class="panel-badge badge-blue">Tendencia</span>
+          </div>
+          <div class="chart-wrap"><canvas id="cumulChart"></canvas></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Gastos por Categoría</span>
+            <span class="panel-badge badge-yellow">Distribución</span>
+          </div>
+          <div class="chart-wrap"><canvas id="expCatChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- P&L Table -->
+      <div class="panel" style="margin-bottom:20px">
+        <div class="panel-header">
+          <span class="panel-title">Estado de Resultados Mensual (P&amp;L)</span>
+          <span class="panel-badge badge-blue" id="plYearLabel">2025</span>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="pl-table">
+            <thead>
+              <tr>
+                <th>Mes</th>
+                <th>Ingresos</th>
+                <th>Gastos</th>
+                <th>Ganancia Bruta</th>
+                <th>Margen</th>
+              </tr>
+            </thead>
+            <tbody id="plTableBody"></tbody>
+            <tfoot>
+              <tr class="pl-total">
+                <td>TOTAL</td>
+                <td class="c-green" id="pl-tot-income">$0</td>
+                <td class="c-red"   id="pl-tot-exp">$0</td>
+                <td class="c-blue"  id="pl-tot-net">$0</td>
+                <td class="c-muted" id="pl-tot-margin">0%</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAX CALCULATOR -->
+      <div class="tax-section">
+        <div class="tax-title"><i data-lucide="calculator" style="display:inline;vertical-align:middle;margin-right:8px;width:20px;height:20px"></i>Calculadora de Impuestos — Freelancer California</div>
+        <div class="tax-sub">Estimado para freelancer (sole proprietor / self-employed) en California. Usa tasas 2025. Solo orientativo — consulta un CPA.</div>
+        <div class="tax-inputs">
+          <div class="field-group">
+            <label class="field-label">Ingreso Bruto Anual ($)</label>
+            <input class="field-input" id="t-gross" type="number" placeholder="Ej: 80000" min="0" step="100">
+            <span class="field-hint">Total facturado/cobrado en el año</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Gastos Deducibles Anuales ($)</label>
+            <input class="field-input" id="t-deductions" type="number" placeholder="Ej: 15000" min="0" step="100">
+            <span class="field-hint">Software, marketing, oficina, etc.</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Estado Civil</label>
+            <select class="field-input" id="t-filing">
+              <option value="single">Soltero / Single</option>
+              <option value="mfj">Casado conjunto / MFJ</option>
+            </select>
+            <span class="field-hint">Filing status federal</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <button class="calc-btn" onclick="calcTaxes()"><i data-lucide="calculator"></i> Calcular Impuestos</button>
+          <button class="calc-btn" onclick="autoFill()" style="background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.2);color:#67e8f9">
+            <i data-lucide="download"></i> Usar datos del sistema
+          </button>
+        </div>
+
+        <div class="tax-results" id="taxResults">
+          <div class="tax-divider"></div>
+
+          <div class="tax-summary-cards">
+            <div class="tax-card">
+              <div class="tax-card-val" id="r-total-tax" style="color:#fca5a5">$0</div>
+              <div class="tax-card-label">Total Impuestos</div>
+            </div>
+            <div class="tax-card">
+              <div class="tax-card-val" id="r-net-take" style="color:#6ee7b7">$0</div>
+              <div class="tax-card-label">Neto después de impuestos</div>
+            </div>
+            <div class="tax-card">
+              <div class="tax-card-val" id="r-eff-rate" style="color:#fcd34d">0%</div>
+              <div class="tax-card-label">Tasa efectiva total</div>
+            </div>
+            <div class="tax-card">
+              <div class="tax-card-val" id="r-monthly" style="color:var(--purple-l)">$0</div>
+              <div class="tax-card-label">Neto mensual estimado</div>
+            </div>
+          </div>
+
+          <div class="tax-results-grid" style="margin-top:20px">
+            <div class="tax-breakdown">
+              <div class="tax-breakdown-title">Cálculo Paso a Paso</div>
+              <div class="tax-line"><span class="tax-line-label">Ingreso bruto</span><span class="tax-line-val c-green" id="r1-gross">$0</span></div>
+              <div class="tax-line"><span class="tax-line-label">- Gastos deducibles</span><span class="tax-line-val c-red" id="r1-biz">-$0</span></div>
+              <div class="tax-line highlight"><span class="tax-line-label">= Ingreso Neto del Negocio</span><span class="tax-line-val c-blue" id="r1-net">$0</span></div>
+              <div class="tax-line" style="margin-top:8px"><span class="tax-line-label">Self-Employment Tax base (×92.35%)</span><span class="tax-line-val" id="r1-se-base">$0</span></div>
+              <div class="tax-line"><span class="tax-line-label">SE Tax (15.3%)</span><span class="tax-line-val c-red" id="r1-se-tax">$0</span></div>
+              <div class="tax-line"><span class="tax-line-label">- Deducción 50% SE Tax</span><span class="tax-line-val" id="r1-se-ded">-$0</span></div>
+              <div class="tax-line"><span class="tax-line-label">- Deducción estándar federal</span><span class="tax-line-val" id="r1-std">-$0</span></div>
+              <div class="tax-line highlight"><span class="tax-line-label">= Ingreso Imponible Federal</span><span class="tax-line-val c-blue" id="r1-fed-tax-base">$0</span></div>
+            </div>
+            <div class="tax-breakdown">
+              <div class="tax-breakdown-title">Desglose de Impuestos</div>
+              <div class="tax-line"><span class="tax-line-label">Self-Employment Tax</span><span class="tax-line-val c-red" id="r2-se">$0</span></div>
+              <div class="tax-line"><span class="tax-line-label">Impuesto Federal (income)</span><span class="tax-line-val c-red" id="r2-fed">$0</span></div>
+              <div class="tax-line"><span class="tax-line-label">Impuesto California (estatal)</span><span class="tax-line-val c-red" id="r2-ca">$0</span></div>
+              <div class="tax-line"><span class="tax-line-label">CA SDI (opcional, ~1.1%)</span><span class="tax-line-val c-red" id="r2-sdi">$0</span></div>
+              <div class="tax-line highlight"><span class="tax-line-label">Total Impuestos Estimados</span><span class="tax-line-val c-red" id="r2-total">$0</span></div>
+              <div class="tax-line" style="margin-top:8px"><span class="tax-line-label">Tasa efectiva federal</span><span class="tax-line-val" id="r2-eff-fed">0%</span></div>
+              <div class="tax-line"><span class="tax-line-label">Tasa efectiva California</span><span class="tax-line-val" id="r2-eff-ca">0%</span></div>
+              <div class="tax-line"><span class="tax-line-label">Tasa SE tax efectiva</span><span class="tax-line-val" id="r2-eff-se">0%</span></div>
+            </div>
+          </div>
+
+          <div class="tax-quarterly">
+            <i data-lucide="calendar-clock"></i>
+            <p>Pago trimestral estimado (IRS + CA): <span id="r-quarterly">$0</span> — Fechas: Abr 15, Jun 16, Sep 15, Ene 15</p>
+          </div>
+
+          <p class="disclaimer">⚠️ Este cálculo es una estimación orientativa. No incluye deducciones especiales (home office, health insurance, SEP-IRA), créditos fiscales, ni situaciones particulares. Las tasas de California pueden variar. Consulta a un contador (CPA) para asesoría oficial. Los pagos de impuestos trimestrales (estimated taxes) son obligatorios si esperas deber más de $1,000 al año.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+
+    let allInvoices = [], allExpenses = [];
+    let currentYear = 2025;
+
+    const COLORS = ['#2563eb','#06b6d4','#10b981','#f59e0b','#ec4899','#8b5cf6','#ef4444','#84cc16'];
+
+    function fmt(n) { return '$' + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+    function pct(n) { return (n*100).toFixed(1)+'%'; }
+    function mon(ym) {
+      if (!ym) return '';
+      const [y,m] = ym.split('-');
+      const names = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+      return names[parseInt(m)-1]+' '+y;
+    }
+
+    // service classification
+    function classify(inv) {
+      const d = (inv.description||'').toLowerCase();
+      const n = (inv.client_name||'').toLowerCase();
+      if (d.includes('tiktok') || d.includes('ads') || d.includes('marketing') || d.includes('administraci')) return 'Marketing';
+      if (d.includes('software') || d.includes('web') || d.includes('app') || d.includes('desarrollo') || d.includes('sistema')) return 'Desarrollo de Software';
+      if (d.includes('logo') || d.includes('diseño') || d.includes('imagen') || d.includes('design') || d.includes('branding')) return 'Diseño de Logos/Imágenes';
+      if (d.includes('video') || d.includes('edicion') || d.includes('edición') || d.includes('animacion')) return 'Edición de Video';
+      return 'Servicios Generales';
+    }
+
+    async function loadData() {
+      const [invRes, expRes] = await Promise.all([
+        fetch('/api/invoices'), fetch('/api/expenses')
+      ]);
+      allInvoices = await invRes.json();
+      allExpenses = await expRes.json();
+      render();
+    }
+
+    function setYear(y) {
+      currentYear = y;
+      document.querySelectorAll('.year-btn').forEach(b => {
+        b.classList.toggle('active', String(b.dataset.y) === String(y));
+      });
+      render();
+    }
+
+    function filterByYear(list, dateField) {
+      if (currentYear === 'all') return list;
+      return list.filter(i => {
+        const d = i[dateField] || '';
+        return d.startsWith(String(currentYear));
+      });
+    }
+
+    let plChart, serviceChart, cumulChart, expCatChart;
+
+    function render() {
+      const paidInv = allInvoices.filter(i => i.status === 'paid');
+      const filtInv = filterByYear(paidInv, 'date');
+      const filtExp = filterByYear(allExpenses, 'date');
+
+      // totals
+      const totalInc = filtInv.reduce((s,i) => s + parseFloat(i.amount||0), 0);
+      const totalExp = filtExp.reduce((s,e) => s + parseFloat(e.amount||0), 0);
+      const netProfit = totalInc - totalExp;
+      const margin = totalInc > 0 ? netProfit / totalInc : 0;
+
+      // summary cards
+      document.getElementById('s-income').textContent = fmt(totalInc);
+      document.getElementById('s-income-count').textContent = filtInv.length + ' facturas pagadas';
+      document.getElementById('s-expenses').textContent = fmt(totalExp);
+      document.getElementById('s-exp-count').textContent = filtExp.length + ' transacciones';
+
+      const netEl = document.getElementById('s-net');
+      netEl.textContent = fmt(netProfit);
+      netEl.style.color = netProfit >= 0 ? '#6ee7b7' : '#fca5a5';
+
+      const mEl = document.getElementById('s-margin-val');
+      mEl.textContent = pct(margin);
+      mEl.style.color = margin >= 0 ? '#fcd34d' : '#fca5a5';
+
+      // monthly data
+      const months = buildMonths();
+      const monthlyInc = {}, monthlyExp = {};
+      months.forEach(m => { monthlyInc[m] = 0; monthlyExp[m] = 0; });
+
+      filtInv.forEach(i => {
+        const ym = (i.date||'').substring(0,7);
+        if (monthlyInc[ym] !== undefined) monthlyInc[ym] += parseFloat(i.amount||0);
+      });
+      filtExp.forEach(e => {
+        const ym = (e.date||'').substring(0,7);
+        if (monthlyExp[ym] !== undefined) monthlyExp[ym] += parseFloat(e.amount||0);
+      });
+
+      const labels = months.map(m => mon(m));
+      const incArr = months.map(m => monthlyInc[m]);
+      const expArr = months.map(m => monthlyExp[m]);
+      const netArr = months.map(m => monthlyInc[m] - monthlyExp[m]);
+
+      // best month
+      let bestM = null, bestNet = -Infinity;
+      months.forEach(m => {
+        const n = monthlyInc[m] - monthlyExp[m];
+        if (n > bestNet) { bestNet = n; bestM = m; }
+      });
+      document.getElementById('s-best-month').textContent = bestM ? mon(bestM) : '—';
+      document.getElementById('s-best-amt').textContent = bestNet > -Infinity ? fmt(bestNet) + ' neto' : '$0 neto';
+
+      const yearStr = currentYear === 'all' ? 'Todo' : String(currentYear);
+      document.getElementById('chartYearLabel').textContent = yearStr;
+      document.getElementById('plYearLabel').textContent = yearStr;
+
+      // P&L chart
+      const plCtx = document.getElementById('plChart').getContext('2d');
+      if (plChart) plChart.destroy();
+      plChart = new Chart(plCtx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            { label: 'Ingresos', data: incArr, backgroundColor: 'rgba(16,185,129,.7)', borderColor: '#10b981', borderWidth: 1.5, borderRadius: 4 },
+            { label: 'Gastos',   data: expArr, backgroundColor: 'rgba(239,68,68,.6)',  borderColor: '#ef4444', borderWidth: 1.5, borderRadius: 4 },
+            { label: 'Ganancia', data: netArr, type: 'line', borderColor: '#60a5fa', backgroundColor: 'rgba(37,99,235,.08)', borderWidth: 2, pointRadius: 3, fill: true, tension: .3, yAxisID: 'y' }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } }, tooltip: { callbacks: { label: ctx => ' ' + fmt(ctx.parsed.y) } } },
+          scales: {
+            x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,.04)' } },
+            y: { ticks: { color: '#94a3b8', font: { size: 10 }, callback: v => '$'+v.toLocaleString() }, grid: { color: 'rgba(255,255,255,.06)' } }
+          }
+        }
+      });
+
+      // Service breakdown
+      const svcTotals = {};
+      filtInv.forEach(i => {
+        const s = classify(i);
+        svcTotals[s] = (svcTotals[s]||0) + parseFloat(i.amount||0);
+      });
+      const svcLabels = Object.keys(svcTotals);
+      const svcData = svcLabels.map(k => svcTotals[k]);
+      const svcCtx = document.getElementById('serviceChart').getContext('2d');
+      if (serviceChart) serviceChart.destroy();
+      serviceChart = new Chart(svcCtx, {
+        type: 'doughnut',
+        data: { labels: svcLabels, datasets: [{ data: svcData, backgroundColor: COLORS.slice(0,svcLabels.length), borderWidth: 2, borderColor: '#0e0e1c' }] },
+        options: {
+          responsive: true, maintainAspectRatio: false, cutout: '60%',
+          plugins: {
+            legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 }, padding: 12 } },
+            tooltip: { callbacks: { label: ctx => ' ' + fmt(ctx.parsed) + ' (' + pct(ctx.parsed / svcData.reduce((a,b)=>a+b,0)) + ')' } }
+          }
+        }
+      });
+
+      // Cumulative net
+      let cumul = 0;
+      const cumulArr = netArr.map(n => { cumul += n; return cumul; });
+      const cumulCtx = document.getElementById('cumulChart').getContext('2d');
+      if (cumulChart) cumulChart.destroy();
+      cumulChart = new Chart(cumulCtx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Ganancia Acumulada', data: cumulArr,
+            borderColor: '#06b6d4', backgroundColor: 'rgba(6,182,212,.1)',
+            borderWidth: 2.5, fill: true, tension: .3, pointRadius: 4,
+            pointBackgroundColor: cumulArr.map(v => v >= 0 ? '#10b981' : '#ef4444')
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' ' + fmt(ctx.parsed.y) } } },
+          scales: {
+            x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,.04)' } },
+            y: { ticks: { color: '#94a3b8', font: { size: 10 }, callback: v => '$'+v.toLocaleString() }, grid: { color: 'rgba(255,255,255,.06)' } }
+          }
+        }
+      });
+
+      // Expenses by category
+      const catTotals = {};
+      filtExp.forEach(e => { catTotals[e.category||'Otros'] = (catTotals[e.category||'Otros']||0) + parseFloat(e.amount||0); });
+      const catLabels = Object.keys(catTotals).sort((a,b) => catTotals[b]-catTotals[a]);
+      const catData = catLabels.map(k => catTotals[k]);
+      const expCatCtx = document.getElementById('expCatChart').getContext('2d');
+      if (expCatChart) expCatChart.destroy();
+      expCatChart = new Chart(expCatCtx, {
+        type: 'doughnut',
+        data: { labels: catLabels, datasets: [{ data: catData, backgroundColor: ['#ef4444','#f59e0b','#8b5cf6','#ec4899','#06b6d4','#10b981','#2563eb','#84cc16'], borderWidth: 2, borderColor: '#0e0e1c' }] },
+        options: {
+          responsive: true, maintainAspectRatio: false, cutout: '60%',
+          plugins: {
+            legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 }, padding: 10 } },
+            tooltip: { callbacks: { label: ctx => ' ' + fmt(ctx.parsed) + ' (' + pct(ctx.parsed / catData.reduce((a,b)=>a+b,0)) + ')' } }
+          }
+        }
+      });
+
+      // P&L table
+      const tbody = document.getElementById('plTableBody');
+      tbody.innerHTML = '';
+      let tInc=0, tExp=0;
+      months.forEach(m => {
+        const i = monthlyInc[m], e = monthlyExp[m], n = i - e, mg = i > 0 ? n/i : 0;
+        tInc += i; tExp += e;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${mon(m)}</td>
+          <td class="c-green">${fmt(i)}</td>
+          <td class="c-red">${fmt(e)}</td>
+          <td class="${n>=0?'c-blue':'c-red'}">${fmt(n)}</td>
+          <td class="c-muted">${pct(mg)}</td>`;
+        tbody.appendChild(tr);
+      });
+      const tNet = tInc - tExp;
+      document.getElementById('pl-tot-income').textContent  = fmt(tInc);
+      document.getElementById('pl-tot-exp').textContent    = fmt(tExp);
+      document.getElementById('pl-tot-net').textContent    = fmt(tNet);
+      document.getElementById('pl-tot-margin').textContent = tInc > 0 ? pct(tNet/tInc) : '0%';
+      document.getElementById('pl-tot-net').style.color = tNet >= 0 ? '' : '#fca5a5';
+    }
+
+    function buildMonths() {
+      if (currentYear === 'all') {
+        const allDates = [...allInvoices.map(i=>i.date), ...allExpenses.map(e=>e.date)].filter(Boolean);
+        if (!allDates.length) return [];
+        const minYM = allDates.map(d=>d.substring(0,7)).sort()[0];
+        const maxYM = allDates.map(d=>d.substring(0,7)).sort().reverse()[0];
+        return expandMonths(minYM, maxYM);
+      }
+      return expandMonths(`${currentYear}-01`, `${currentYear}-12`);
+    }
+
+    function expandMonths(start, end) {
+      const result = [];
+      let [y,m] = start.split('-').map(Number);
+      const [ey,em] = end.split('-').map(Number);
+      while (y < ey || (y === ey && m <= em)) {
+        result.push(`${y}-${String(m).padStart(2,'0')}`);
+        m++; if (m > 12) { m = 1; y++; }
+      }
+      return result;
+    }
+
+    // ── TAX CALCULATOR ──
+    function autoFill() {
+      const paidInv = filterByYear(allInvoices.filter(i=>i.status==='paid'), 'date');
+      const filtExp = filterByYear(allExpenses, 'date');
+      const income = paidInv.reduce((s,i) => s+parseFloat(i.amount||0), 0);
+      const expenses = filtExp.reduce((s,e) => s+parseFloat(e.amount||0), 0);
+      document.getElementById('t-gross').value = Math.round(income);
+      document.getElementById('t-deductions').value = Math.round(expenses);
+      calcTaxes();
+    }
+
+    function calcFedTax(taxable, filing) {
+      const brackets = filing === 'mfj'
+        ? [[23850,.10],[96950,.12],[206700,.22],[394600,.24],[501050,.32],[751600,.35],[Infinity,.37]]
+        : [[11925,.10],[48475,.12],[103350,.22],[197300,.24],[250525,.32],[626350,.35],[Infinity,.37]];
+      let tax = 0, prev = 0;
+      for (const [top, rate] of brackets) {
+        if (taxable <= prev) break;
+        tax += (Math.min(taxable, top) - prev) * rate;
+        prev = top;
+      }
+      return Math.max(0, tax);
+    }
+
+    function calcCATax(taxable) {
+      const brackets = [
+        [10756,.01],[25499,.02],[40245,.04],[55866,.06],[70606,.08],[360659,.093],[432787,.103],[721314,.113],[Infinity,.123]
+      ];
+      let tax = 0, prev = 0;
+      for (const [top, rate] of brackets) {
+        if (taxable <= prev) break;
+        tax += (Math.min(taxable, top) - prev) * rate;
+        prev = top;
+      }
+      return Math.max(0, tax);
+    }
+
+    function calcTaxes() {
+      const gross = parseFloat(document.getElementById('t-gross').value) || 0;
+      const bizDed = parseFloat(document.getElementById('t-deductions').value) || 0;
+      const filing = document.getElementById('t-filing').value;
+
+      const stdDed = filing === 'mfj' ? 30000 : 15000;
+      const caStd  = filing === 'mfj' ? 10726 :  5202;
+
+      const netBiz = Math.max(0, gross - bizDed);
+
+      // SE tax
+      const ssSsWage = 176100;
+      const seBase = netBiz * 0.9235;
+      let seTax = 0;
+      if (seBase <= ssSsWage) {
+        seTax = seBase * 0.153;
+      } else {
+        seTax = ssSsWage * 0.153 + (seBase - ssSsWage) * 0.029;
+      }
+      const seDed = seTax / 2;
+
+      // Federal AGI & income tax
+      const fedAGI = Math.max(0, netBiz - seDed);
+      const fedTaxable = Math.max(0, fedAGI - stdDed);
+      const fedTax = calcFedTax(fedTaxable, filing);
+
+      // California
+      const caTaxable = Math.max(0, netBiz - caStd);
+      const caTax = calcCATax(caTaxable);
+
+      // SDI (optional self-employed elective)
+      const sdi = netBiz * 0.011;
+
+      const totalTax = seTax + fedTax + caTax + sdi;
+      const netTake = gross - bizDed - totalTax;
+      const effRate = gross > 0 ? totalTax / gross : 0;
+      const quarterly = totalTax / 4;
+
+      // update UI
+      set('r1-gross',    fmt(gross));
+      set('r1-biz',     '-' + fmt(bizDed));
+      set('r1-net',      fmt(netBiz));
+      set('r1-se-base',  fmt(seBase));
+      set('r1-se-tax',   fmt(seTax));
+      set('r1-se-ded',  '-' + fmt(seDed));
+      set('r1-std',     '-' + fmt(stdDed));
+      set('r1-fed-tax-base', fmt(fedTaxable));
+
+      set('r2-se',    fmt(seTax));
+      set('r2-fed',   fmt(fedTax));
+      set('r2-ca',    fmt(caTax));
+      set('r2-sdi',   fmt(sdi));
+      set('r2-total', fmt(totalTax));
+      set('r2-eff-fed', pct(gross>0?fedTax/gross:0));
+      set('r2-eff-ca',  pct(gross>0?caTax/gross:0));
+      set('r2-eff-se',  pct(gross>0?seTax/gross:0));
+
+      document.getElementById('r-total-tax').textContent = fmt(totalTax);
+      document.getElementById('r-net-take').textContent  = fmt(Math.max(0,netTake));
+      document.getElementById('r-eff-rate').textContent  = pct(effRate);
+      document.getElementById('r-monthly').textContent   = fmt(Math.max(0,netTake)/12);
+      document.getElementById('r-quarterly').textContent = fmt(quarterly);
+
+      document.getElementById('taxResults').classList.add('show');
+      lucide.createIcons();
+    }
+
+    function set(id, val) { document.getElementById(id).textContent = val; }
+
+    async function loadUser() {
+      try { const r = await fetch('/api/auth/me'); const u = await r.json(); document.getElementById('userEmail').textContent = u.email; } catch(e){}
+    }
+    async function logout() { await fetch('/api/auth/logout',{method:'POST'}); window.location.href='/accounting/login'; }
+
+    loadData(); loadUser();
+  </script>
+</body>
+</html>

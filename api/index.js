@@ -414,7 +414,8 @@ app.get('/accounting/dashboard', (req, res) => res.sendFile(path.join(__dirname,
 app.get('/accounting/clients',   (req, res) => res.sendFile(path.join(__dirname, '..', 'views', 'clients.html')));
 app.get('/accounting/invoices',  (req, res) => res.sendFile(path.join(__dirname, '..', 'views', 'invoices.html')));
 app.get('/accounting/reports',   (req, res) => res.sendFile(path.join(__dirname, '..', 'views', 'reports.html')));
-app.get('/accounting/expenses',  (req, res) => res.sendFile(path.join(__dirname, '..', 'views', 'expenses.html')));
+app.get('/accounting/expenses',   (req, res) => res.sendFile(path.join(__dirname, '..', 'views', 'expenses.html')));
+app.get('/accounting/financials', (req, res) => res.sendFile(path.join(__dirname, '..', 'views', 'financials.html')));
 
 // ── AUTH ──────────────────────────────────────────────────────────────────────
 app.post('/api/auth/login', (req, res) => {
