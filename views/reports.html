@@ -10,58 +10,118 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --purple:#2563eb;--purple-l:#60a5fa;--cyan:#06b6d4;--green:#10b981;--yellow:#f59e0b;--bg:#07070f;--bg2:#0e0e1c;--border:rgba(255,255,255,0.07);--text-muted:#94a3b8;--radius:16px; }
-    body { font-family:'Inter',sans-serif;background:var(--bg);color:#e2e8f0;display:flex;height:100vh;overflow:hidden; }
-    .sidebar { width:240px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 16px; }
-    .sidebar-logo { display:flex;align-items:center;gap:10px;padding:0 8px 24px;border-bottom:1px solid var(--border);margin-bottom:20px; }
-    .logo-hex { width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--purple),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0; }
-    .sidebar-logo span { font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;color:#fff; }
-    .nav-section-label { font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#475569;padding:0 8px;margin-bottom:6px; }
-    .nav-menu { list-style:none;display:flex;flex-direction:column;gap:2px;margin-bottom:20px; }
-    .nav-link { display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:var(--text-muted);font-size:.875rem;font-weight:500;text-decoration:none;transition:background .2s,color .2s; }
-    .nav-link svg { width:17px;height:17px;flex-shrink:0; }
-    .nav-link:hover { background:rgba(255,255,255,.05);color:#e2e8f0; }
-    .nav-link.active { background:rgba(37,99,235,.15);color:var(--purple-l);border:1px solid rgba(37,99,235,.2); }
+    :root {
+      --purple:#2563eb; --purple-l:#60a5fa; --cyan:#06b6d4; --green:#10b981;
+      --yellow:#f59e0b; --red:#ef4444;
+      --bg:#07070f; --bg2:#0e0e1c; --bg3:#13132a;
+      --border:rgba(255,255,255,0.07); --text-muted:#94a3b8; --radius:16px;
+    }
+    body { font-family:'Inter',sans-serif; background:var(--bg); color:#e2e8f0; display:flex; height:100vh; overflow:hidden; }
+
+    /* SIDEBAR */
+    .sidebar { width:240px; flex-shrink:0; background:var(--bg2); border-right:1px solid var(--border); display:flex; flex-direction:column; padding:24px 16px; }
+    .sidebar-logo { display:flex; align-items:center; gap:10px; padding:0 8px 24px; border-bottom:1px solid var(--border); margin-bottom:20px; }
+    .logo-hex { width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,var(--purple),var(--cyan)); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+    .sidebar-logo span { font-family:'Space Grotesk',sans-serif; font-size:.95rem; font-weight:700; color:#fff; }
+    .nav-section-label { font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#475569; padding:0 8px; margin-bottom:6px; }
+    .nav-menu { list-style:none; display:flex; flex-direction:column; gap:2px; margin-bottom:20px; }
+    .nav-link { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; color:var(--text-muted); font-size:.875rem; font-weight:500; text-decoration:none; transition:background .2s,color .2s; }
+    .nav-link svg { width:17px; height:17px; flex-shrink:0; }
+    .nav-link:hover { background:rgba(255,255,255,.05); color:#e2e8f0; }
+    .nav-link.active { background:rgba(37,99,235,.15); color:var(--purple-l); border:1px solid rgba(37,99,235,.2); }
     .sidebar-footer { margin-top:auto; }
-    .logout-btn { display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:10px;background:transparent;border:1px solid var(--border);color:var(--text-muted);font-size:.875rem;font-weight:500;cursor:pointer;transition:background .2s,color .2s,border-color .2s; }
-    .logout-btn svg { width:17px;height:17px; }
-    .logout-btn:hover { background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.25);color:#fca5a5; }
-    .main { flex:1;display:flex;flex-direction:column;overflow:hidden; }
-    .topbar { background:var(--bg2);border-bottom:1px solid var(--border);padding:16px 28px;display:flex;align-items:center;justify-content:space-between; }
-    .topbar h1 { font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700; }
-    .user-badge { display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--border);font-size:.8rem;color:var(--text-muted); }
-    .user-badge svg { width:14px;height:14px;color:var(--purple-l); }
-    .content { flex:1;overflow-y:auto;padding:28px; }
-    .stats-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px; }
-    .stat-card { background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;transition:border-color .3s,transform .3s; }
-    .stat-card:hover { border-color:rgba(37,99,235,.3);transform:translateY(-3px); }
-    .stat-icon { width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px; }
-    .stat-icon svg { width:20px;height:20px; }
-    .si-blue { background:rgba(37,99,235,.15);border:1px solid rgba(37,99,235,.2);color:var(--purple-l); }
-    .si-cyan { background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.2);color:#67e8f9; }
-    .si-green { background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.2);color:#6ee7b7; }
-    .si-yellow { background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.2);color:#fcd34d; }
-    .stat-label { font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:6px; }
-    .stat-value { font-family:'Space Grotesk',sans-serif;font-size:1.9rem;font-weight:700;color:#fff; }
-    .panels-grid { display:grid;grid-template-columns:1fr 1fr;gap:20px; }
-    .panel { background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px; }
-    .panel-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:20px; }
-    .panel-title { font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600; }
-    .panel-badge { font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:999px;background:rgba(37,99,235,.12);color:var(--purple-l);border:1px solid rgba(37,99,235,.2); }
-    .revenue-list { list-style:none; }
-    .revenue-item { display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--border);font-size:.875rem; }
-    .revenue-item:last-child { border-bottom:none; }
-    .revenue-month { color:var(--text-muted); }
-    .revenue-bar-wrap { flex:1;margin:0 16px;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden; }
-    .revenue-bar { height:100%;background:linear-gradient(90deg,var(--purple),var(--cyan));border-radius:3px;transition:width .6s ease; }
-    .revenue-amount { font-weight:600;color:#6ee7b7;font-family:'Space Grotesk',sans-serif;min-width:70px;text-align:right; }
-    .status-list { list-style:none; }
-    .status-item { display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border);font-size:.875rem; }
+    .logout-btn { display:flex; align-items:center; gap:10px; width:100%; padding:10px 12px; border-radius:10px; background:transparent; border:1px solid var(--border); color:var(--text-muted); font-size:.875rem; font-weight:500; cursor:pointer; transition:background .2s,color .2s,border-color .2s; }
+    .logout-btn svg { width:17px; height:17px; }
+    .logout-btn:hover { background:rgba(239,68,68,.08); border-color:rgba(239,68,68,.25); color:#fca5a5; }
+
+    /* MAIN */
+    .main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+    .topbar { background:var(--bg2); border-bottom:1px solid var(--border); padding:16px 28px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+    .topbar h1 { font-family:'Space Grotesk',sans-serif; font-size:1.3rem; font-weight:700; }
+    .user-badge { display:flex; align-items:center; gap:8px; padding:7px 14px; border-radius:999px; background:rgba(255,255,255,.04); border:1px solid var(--border); font-size:.8rem; color:var(--text-muted); }
+    .user-badge svg { width:14px; height:14px; color:var(--purple-l); }
+    .content { flex:1; overflow-y:auto; padding:24px 28px; display:flex; flex-direction:column; gap:20px; }
+
+    /* FILTER BAR */
+    .filter-bar { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:18px 20px; display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; }
+    .filter-group { display:flex; flex-direction:column; gap:6px; }
+    .filter-group label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); }
+    .filter-input { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:8px 12px; color:#e2e8f0; font-size:.875rem; font-family:'Inter',sans-serif; outline:none; transition:border-color .2s; min-width:160px; }
+    .filter-input:focus { border-color:rgba(37,99,235,.5); }
+    select.filter-input { cursor:pointer; }
+    select.filter-input option { background:var(--bg2); }
+    .filter-actions { display:flex; gap:8px; align-items:flex-end; margin-left:auto; }
+    .btn { display:flex; align-items:center; gap:7px; padding:8px 16px; border-radius:10px; font-size:.85rem; font-weight:600; cursor:pointer; border:none; transition:opacity .2s,transform .15s; font-family:'Inter',sans-serif; }
+    .btn:hover { opacity:.85; }
+    .btn:active { transform:scale(.97); }
+    .btn-primary { background:var(--purple); color:#fff; }
+    .btn-ghost { background:transparent; border:1px solid var(--border); color:var(--text-muted); }
+    .btn-ghost:hover { background:rgba(255,255,255,.04); color:#e2e8f0; }
+    .btn svg { width:15px; height:15px; }
+
+    /* STATS */
+    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    .stat-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:20px; transition:border-color .3s,transform .3s; }
+    .stat-card:hover { border-color:rgba(37,99,235,.3); transform:translateY(-2px); }
+    .stat-icon { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
+    .stat-icon svg { width:18px; height:18px; }
+    .si-green  { background:rgba(16,185,129,.15); border:1px solid rgba(16,185,129,.2); color:#6ee7b7; }
+    .si-blue   { background:rgba(37,99,235,.15);  border:1px solid rgba(37,99,235,.2);  color:var(--purple-l); }
+    .si-cyan   { background:rgba(6,182,212,.15);  border:1px solid rgba(6,182,212,.2);  color:#67e8f9; }
+    .si-yellow { background:rgba(245,158,11,.15); border:1px solid rgba(245,158,11,.2); color:#fcd34d; }
+    .stat-label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); margin-bottom:4px; }
+    .stat-value { font-family:'Space Grotesk',sans-serif; font-size:1.75rem; font-weight:700; color:#fff; }
+    .stat-sub { font-size:.75rem; color:var(--text-muted); margin-top:3px; }
+
+    /* PANELS ROW */
+    .panels-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+    /* CHART PANEL */
+    .panel { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:22px; }
+    .panel-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+    .panel-title { font-family:'Space Grotesk',sans-serif; font-size:1rem; font-weight:600; }
+    .panel-badge { font-size:.7rem; font-weight:700; padding:3px 10px; border-radius:999px; background:rgba(37,99,235,.12); color:var(--purple-l); border:1px solid rgba(37,99,235,.2); }
+    .chart-item { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); font-size:.82rem; }
+    .chart-item:last-child { border-bottom:none; }
+    .chart-month { color:var(--text-muted); min-width:56px; }
+    .chart-bar-wrap { flex:1; height:6px; background:rgba(255,255,255,.06); border-radius:3px; overflow:hidden; }
+    .chart-bar { height:100%; background:linear-gradient(90deg,var(--purple),var(--cyan)); border-radius:3px; transition:width .5s ease; }
+    .chart-amount { font-weight:600; color:#6ee7b7; font-family:'Space Grotesk',sans-serif; min-width:76px; text-align:right; }
+
+    /* STATUS PANEL */
+    .status-item { display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border); font-size:.875rem; }
     .status-item:last-child { border-bottom:none; }
-    .status-dot { width:8px;height:8px;border-radius:50%;margin-right:10px;flex-shrink:0; }
-    .status-left { display:flex;align-items:center; }
-    .status-count { font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem; }
-    .empty-state { text-align:center;padding:40px;color:var(--text-muted);font-size:.875rem; }
+    .status-left { display:flex; align-items:center; gap:10px; }
+    .status-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .status-count { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.05rem; }
+    .status-pct { font-size:.75rem; color:var(--text-muted); margin-left:6px; }
+
+    /* TABLE */
+    .table-panel { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:22px; }
+    .table-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+    .result-count { font-size:.8rem; color:var(--text-muted); }
+    .tbl-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:.85rem; }
+    thead th { padding:10px 14px; text-align:left; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); border-bottom:1px solid var(--border); white-space:nowrap; }
+    tbody tr { transition:background .15s; }
+    tbody tr:hover { background:rgba(255,255,255,.03); }
+    tbody td { padding:11px 14px; border-bottom:1px solid rgba(255,255,255,.04); vertical-align:middle; }
+    tbody tr:last-child td { border-bottom:none; }
+    .td-date { color:var(--text-muted); font-size:.8rem; white-space:nowrap; }
+    .td-client { font-weight:500; }
+    .td-desc { color:var(--text-muted); max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .td-method .badge-method { font-size:.7rem; padding:3px 8px; border-radius:6px; background:rgba(255,255,255,.06); color:var(--text-muted); }
+    .td-amount { font-family:'Space Grotesk',sans-serif; font-weight:700; color:#6ee7b7; text-align:right; white-space:nowrap; }
+    .badge-status { font-size:.68rem; font-weight:700; padding:3px 9px; border-radius:999px; }
+    .s-paid      { background:rgba(16,185,129,.15); color:#6ee7b7; border:1px solid rgba(16,185,129,.2); }
+    .s-pending   { background:rgba(245,158,11,.15); color:#fcd34d; border:1px solid rgba(245,158,11,.2); }
+    .s-cancelled { background:rgba(239,68,68,.12);  color:#fca5a5; border:1px solid rgba(239,68,68,.2);  }
+    .empty-state { text-align:center; padding:48px; color:var(--text-muted); font-size:.875rem; }
+
+    /* TOTAL ROW */
+    .total-row { display:flex; align-items:center; justify-content:space-between; padding:14px 14px 0; border-top:1px solid var(--border); margin-top:8px; }
+    .total-row-label { font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--text-muted); }
+    .total-row-value { font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:700; color:#6ee7b7; }
   </style>
 </head>
 <body>
@@ -82,67 +142,270 @@
       <h1>Reportes</h1>
       <div class="user-badge"><i data-lucide="user"></i><span id="userEmail">—</span></div>
     </div>
+
     <div class="content">
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-icon si-green"><i data-lucide="dollar-sign"></i></div><div class="stat-label">Ingresos Totales</div><div class="stat-value" id="totalRevenue">$0</div></div>
-        <div class="stat-card"><div class="stat-icon si-blue"><i data-lucide="file-text"></i></div><div class="stat-label">Total Facturas</div><div class="stat-value" id="totalInvoices">0</div></div>
-        <div class="stat-card"><div class="stat-icon si-cyan"><i data-lucide="users"></i></div><div class="stat-label">Clientes</div><div class="stat-value" id="totalClients">0</div></div>
-        <div class="stat-card"><div class="stat-icon si-yellow"><i data-lucide="clock"></i></div><div class="stat-label">Pendientes</div><div class="stat-value" id="pendingInvoices">0</div></div>
+
+      <!-- FILTROS -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label>Desde</label>
+          <input type="date" id="fDateFrom" class="filter-input" onchange="applyFilters()">
+        </div>
+        <div class="filter-group">
+          <label>Hasta</label>
+          <input type="date" id="fDateTo" class="filter-input" onchange="applyFilters()">
+        </div>
+        <div class="filter-group">
+          <label>Cliente</label>
+          <select id="fClient" class="filter-input" onchange="applyFilters()">
+            <option value="">Todos los clientes</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Servicio / Notas</label>
+          <input type="text" id="fService" class="filter-input" placeholder="Buscar..." oninput="applyFilters()">
+        </div>
+        <div class="filter-group">
+          <label>Estado</label>
+          <select id="fStatus" class="filter-input" onchange="applyFilters()">
+            <option value="">Todos</option>
+            <option value="paid">Pagado</option>
+            <option value="pending">Pendiente</option>
+            <option value="cancelled">Cancelado</option>
+          </select>
+        </div>
+        <div class="filter-actions">
+          <button class="btn btn-ghost" onclick="clearFilters()"><i data-lucide="x"></i> Limpiar</button>
+        </div>
       </div>
 
-      <div class="panels-grid">
-        <div class="panel">
-          <div class="panel-header"><span class="panel-title">Ingresos por Mes</span><span class="panel-badge">12 meses</span></div>
-          <ul class="revenue-list" id="revenueList"><li class="empty-state">Cargando...</li></ul>
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon si-green"><i data-lucide="dollar-sign"></i></div>
+          <div class="stat-label">Total Ingresos</div>
+          <div class="stat-value" id="sTotal">$0</div>
+          <div class="stat-sub" id="sSub">del período</div>
         </div>
-        <div class="panel">
-          <div class="panel-header"><span class="panel-title">Estado de Facturas</span><span class="panel-badge">Resumen</span></div>
-          <ul class="status-list" id="statusList">
-            <li class="status-item">
-              <div class="status-left"><div class="status-dot" style="background:#6ee7b7"></div><span>Pagadas</span></div>
-              <span class="status-count" id="paidCount">0</span>
-            </li>
-            <li class="status-item">
-              <div class="status-left"><div class="status-dot" style="background:#fcd34d"></div><span>Pendientes</span></div>
-              <span class="status-count" id="pendingCount">0</span>
-            </li>
-            <li class="status-item">
-              <div class="status-left"><div class="status-dot" style="background:#fca5a5"></div><span>Canceladas</span></div>
-              <span class="status-count" id="cancelledCount">0</span>
-            </li>
-          </ul>
+        <div class="stat-card">
+          <div class="stat-icon si-blue"><i data-lucide="file-text"></i></div>
+          <div class="stat-label">Facturas</div>
+          <div class="stat-value" id="sCount">0</div>
+          <div class="stat-sub" id="sCountSub">transacciones</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-cyan"><i data-lucide="users"></i></div>
+          <div class="stat-label">Clientes Únicos</div>
+          <div class="stat-value" id="sClients">0</div>
+          <div class="stat-sub">en la selección</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-yellow"><i data-lucide="trending-up"></i></div>
+          <div class="stat-label">Promedio</div>
+          <div class="stat-value" id="sAvg">$0</div>
+          <div class="stat-sub">por factura</div>
         </div>
       </div>
+
+      <!-- GRÁFICA + ESTADO -->
+      <div class="panels-row">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Ingresos por Mes</span>
+            <span class="panel-badge" id="chartBadge">—</span>
+          </div>
+          <div id="chartList"><div class="empty-state">Cargando...</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Estado de Facturas</span>
+            <span class="panel-badge" id="statusBadge">—</span>
+          </div>
+          <div id="statusList"></div>
+        </div>
+      </div>
+
+      <!-- TABLA -->
+      <div class="table-panel">
+        <div class="table-header">
+          <span class="panel-title">Transacciones</span>
+          <span class="result-count" id="resultCount">— registros</span>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Descripción / Servicio</th>
+                <th>Método</th>
+                <th>Estado</th>
+                <th style="text-align:right">Monto</th>
+              </tr>
+            </thead>
+            <tbody id="txTable"></tbody>
+          </table>
+        </div>
+        <div class="total-row">
+          <span class="total-row-label">Total filtrado</span>
+          <span class="total-row-value" id="tableTotal">$0.00</span>
+        </div>
+      </div>
+
     </div>
   </main>
 
   <script>
     lucide.createIcons();
-    async function loadReports() {
+
+    let allInvoices = [];
+
+    const fmt = n => '$' + parseFloat(n).toLocaleString('en-US', { minimumFractionDigits:2, maximumFractionDigits:2 });
+    const fmtDate = d => { if (!d) return '—'; const [y,m,day] = d.split('-'); return `${day}/${m}/${y}`; };
+    const statusLabel = s => s === 'paid' ? 'Pagado' : s === 'pending' ? 'Pendiente' : 'Cancelado';
+    const statusClass = s => s === 'paid' ? 's-paid' : s === 'pending' ? 's-pending' : 's-cancelled';
+
+    async function init() {
       try {
-        const res = await fetch('/api/reports/dashboard');
-        const data = await res.json();
-        document.getElementById('totalRevenue').textContent = `$${data.revenue.toFixed(2)}`;
-        document.getElementById('totalInvoices').textContent = data.totalInvoices;
-        document.getElementById('totalClients').textContent = data.totalClients;
-        document.getElementById('pendingInvoices').textContent = data.pendingInvoices;
-        document.getElementById('pendingCount').textContent = data.pendingInvoices;
-        document.getElementById('paidCount').textContent = data.paidInvoices || 0;
-        document.getElementById('cancelledCount').textContent = data.cancelledInvoices || 0;
-        const list = document.getElementById('revenueList');
-        if (!data.monthlyRevenue || !data.monthlyRevenue.length) {
-          list.innerHTML = '<li class="empty-state">Sin datos aún</li>'; return;
-        }
-        const max = Math.max(...data.monthlyRevenue.map(i => parseFloat(i.total)));
-        list.innerHTML = data.monthlyRevenue.map(i => {
-          const pct = max > 0 ? (parseFloat(i.total)/max*100).toFixed(1) : 0;
-          return `<li class="revenue-item"><span class="revenue-month">${i.month}</span><div class="revenue-bar-wrap"><div class="revenue-bar" style="width:${pct}%"></div></div><span class="revenue-amount">$${parseFloat(i.total).toFixed(2)}</span></li>`;
-        }).join('');
+        const [invRes, clientRes, userRes] = await Promise.all([
+          fetch('/api/invoices'),
+          fetch('/api/clients'),
+          fetch('/api/auth/me')
+        ]);
+        allInvoices = await invRes.json();
+        const clients = await clientRes.json();
+        const user = await userRes.json();
+        document.getElementById('userEmail').textContent = user.email;
+
+        const sel = document.getElementById('fClient');
+        clients.sort((a,b) => a.name.localeCompare(b.name)).forEach(c => {
+          const o = document.createElement('option');
+          o.value = c.name;
+          o.textContent = c.name;
+          sel.appendChild(o);
+        });
+
+        applyFilters();
       } catch(e) { console.error(e); }
     }
-    async function loadUser() { try{const res=await fetch('/api/auth/me');const u=await res.json();document.getElementById('userEmail').textContent=u.email;}catch(e){} }
-    async function logout() { await fetch('/api/auth/logout',{method:'POST'}); window.location.href='/accounting/login'; }
-    loadReports(); loadUser();
+
+    function getFiltered() {
+      const from    = document.getElementById('fDateFrom').value;
+      const to      = document.getElementById('fDateTo').value;
+      const client  = document.getElementById('fClient').value;
+      const service = document.getElementById('fService').value.toLowerCase().trim();
+      const status  = document.getElementById('fStatus').value;
+
+      return allInvoices.filter(inv => {
+        if (from   && inv.issue_date < from) return false;
+        if (to     && inv.issue_date > to)   return false;
+        if (client && inv.client_name !== client) return false;
+        if (status && inv.status !== status) return false;
+        if (service) {
+          const desc  = (inv.items||[]).map(i => i.description||'').join(' ').toLowerCase();
+          const notes = (inv.notes||'').toLowerCase();
+          if (!desc.includes(service) && !notes.includes(service)) return false;
+        }
+        return true;
+      });
+    }
+
+    function applyFilters() {
+      const data = getFiltered();
+      renderStats(data);
+      renderChart(data);
+      renderStatus(data);
+      renderTable(data);
+    }
+
+    function renderStats(data) {
+      const paid = data.filter(i => i.status === 'paid');
+      const total = paid.reduce((s,i) => s + i.total, 0);
+      const clients = new Set(data.map(i => i.client_name)).size;
+      const avg = data.length ? data.reduce((s,i) => s + i.total, 0) / data.length : 0;
+
+      document.getElementById('sTotal').textContent   = fmt(total);
+      document.getElementById('sCount').textContent   = data.length;
+      document.getElementById('sClients').textContent = clients;
+      document.getElementById('sAvg').textContent     = fmt(avg);
+      document.getElementById('sSub').textContent     = `${paid.length} pagadas`;
+      document.getElementById('sCountSub').textContent = `${clients} cliente${clients !== 1 ? 's' : ''}`;
+    }
+
+    function renderChart(data) {
+      const byMonth = {};
+      data.filter(i => i.status === 'paid').forEach(inv => {
+        if (!inv.issue_date) return;
+        const [y, m] = inv.issue_date.split('-');
+        const key = `${y}-${m}`;
+        byMonth[key] = (byMonth[key] || 0) + inv.total;
+      });
+      const months = Object.keys(byMonth).sort();
+      const names = { '01':'Ene','02':'Feb','03':'Mar','04':'Abr','05':'May','06':'Jun','07':'Jul','08':'Ago','09':'Sep','10':'Oct','11':'Nov','12':'Dic' };
+      const el = document.getElementById('chartList');
+      document.getElementById('chartBadge').textContent = `${months.length} meses`;
+      if (!months.length) { el.innerHTML = '<div class="empty-state">Sin datos</div>'; return; }
+      const max = Math.max(...months.map(k => byMonth[k]));
+      el.innerHTML = months.map(k => {
+        const [y, m] = k.split('-');
+        const pct = max > 0 ? (byMonth[k] / max * 100).toFixed(1) : 0;
+        return `<div class="chart-item">
+          <span class="chart-month">${names[m]} ${y.slice(2)}</span>
+          <div class="chart-bar-wrap"><div class="chart-bar" style="width:${pct}%"></div></div>
+          <span class="chart-amount">${fmt(byMonth[k])}</span>
+        </div>`;
+      }).join('');
+    }
+
+    function renderStatus(data) {
+      const paid      = data.filter(i => i.status === 'paid').length;
+      const pending   = data.filter(i => i.status === 'pending').length;
+      const cancelled = data.filter(i => i.status === 'cancelled').length;
+      const total     = data.length || 1;
+      document.getElementById('statusBadge').textContent = `${data.length} total`;
+      document.getElementById('statusList').innerHTML = `
+        <div class="status-item"><div class="status-left"><div class="status-dot" style="background:#6ee7b7"></div><span>Pagadas</span></div><span><span class="status-count">${paid}</span><span class="status-pct">${(paid/total*100).toFixed(0)}%</span></span></div>
+        <div class="status-item"><div class="status-left"><div class="status-dot" style="background:#fcd34d"></div><span>Pendientes</span></div><span><span class="status-count">${pending}</span><span class="status-pct">${(pending/total*100).toFixed(0)}%</span></span></div>
+        <div class="status-item"><div class="status-left"><div class="status-dot" style="background:#fca5a5"></div><span>Canceladas</span></div><span><span class="status-count">${cancelled}</span><span class="status-pct">${(cancelled/total*100).toFixed(0)}%</span></span></div>
+      `;
+    }
+
+    function renderTable(data) {
+      const sorted = [...data].sort((a,b) => (b.issue_date||'').localeCompare(a.issue_date||''));
+      const tableTotal = sorted.filter(i => i.status === 'paid').reduce((s,i) => s + i.total, 0);
+      document.getElementById('resultCount').textContent = `${sorted.length} registro${sorted.length !== 1 ? 's' : ''}`;
+      document.getElementById('tableTotal').textContent = fmt(tableTotal);
+      const tbody = document.getElementById('txTable');
+      if (!sorted.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Sin resultados para los filtros seleccionados</td></tr>';
+        return;
+      }
+      tbody.innerHTML = sorted.map(inv => {
+        const desc = (inv.items||[]).map(i => i.description||'').filter(Boolean).join(', ') || inv.notes || '—';
+        const method = inv.notes || '—';
+        return `<tr>
+          <td class="td-date">${fmtDate(inv.issue_date)}</td>
+          <td class="td-client">${inv.client_name}</td>
+          <td class="td-desc" title="${desc}">${desc}</td>
+          <td class="td-method"><span class="badge-method">${method}</span></td>
+          <td><span class="badge-status ${statusClass(inv.status)}">${statusLabel(inv.status)}</span></td>
+          <td class="td-amount">${fmt(inv.total)}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    function clearFilters() {
+      document.getElementById('fDateFrom').value = '';
+      document.getElementById('fDateTo').value   = '';
+      document.getElementById('fClient').value   = '';
+      document.getElementById('fService').value  = '';
+      document.getElementById('fStatus').value   = '';
+      applyFilters();
+    }
+
+    async function logout() { await fetch('/api/auth/logout', { method:'POST' }); window.location.href = '/accounting/login'; }
+
+    init();
   </script>
 </body>
 </html>
