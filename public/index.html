@@ -230,6 +230,24 @@
         min-height: auto;
         padding-top: 40px;
         padding-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .hero-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0 !important;
+        padding: 0 !important;
+      }
+      .hero-left { display: none; }
+      .hero-visual {
+        height: 100% !important;
+        max-height: 500px !important;
+        animation: terminal-pulse 3s ease-in-out infinite;
+      }
+      @keyframes terminal-pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.02); opacity: 0.95; }
       }
     }
 
