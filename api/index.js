@@ -17,22 +17,31 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    maxAge: 24 * 60 * 60 * 1000
+    maxAge: 24 * 60 * 60 * 1000,
+    sameSite: 'lax'
   }
 }));
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(express.static(path.join(__dirname, '..', 'views')));
 
-const authRoutes = require('../routes/auth');
-const clientRoutes = require('../routes/clients');
-const invoiceRoutes = require('../routes/invoices');
-const reportRoutes = require('../routes/reports');
+// Rutas de API - Las importamos aquí para que se carguen solo cuando sea necesario
+let authRoutes, clientRoutes, invoiceRoutes, reportRoutes;
 
-app.use('/api/auth', authRoutes);
-app.use('/api/clients', clientRoutes);
-app.use('/api/invoices', invoiceRoutes);
-app.use('/api/reports', reportRoutes);
+try {
+  authRoutes = require('../routes/auth');
+  clientRoutes = require('../routes/clients');
+  invoiceRoutes = require('../routes/invoices');
+  reportRoutes = require('../routes/reports');
+} catch (err) {
+  console.error('Error cargando rutas:', err.message);
+  // Continuamos sin las rutas si hay error
+}
+
+if (authRoutes) app.use('/api/auth', authRoutes);
+if (clientRoutes) app.use('/api/clients', clientRoutes);
+if (invoiceRoutes) app.use('/api/invoices', invoiceRoutes);
+if (reportRoutes) app.use('/api/reports', reportRoutes);
 
 app.get('/accounting/login', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'views', 'login.html'));

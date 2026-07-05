@@ -1,7 +1,14 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const { run, get } = require('../db/database');
 const { isNotAuthenticated, isAuthenticated } = require('../middleware/auth');
+const { isConfigured } = require('../db/config');
+
+let dbModule;
+try {
+  dbModule = require('../db/database');
+} catch (err) {
+  console.error('Error cargando módulo de BD:', err.message);
+}
 
 const router = express.Router();
 
