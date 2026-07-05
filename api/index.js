@@ -39,6 +39,7 @@ let clients = [
   { id: 28, name: 'Jesse AAA California Clean', email: '', phone: '', company: '', address: '', created_at: '2025-04-30' },
   { id: 29, name: 'Alejandra Granillo',         email: '', phone: '', company: '', address: '', created_at: '2025-07-14' },
   { id: 30, name: 'Jorge Manzano Valverde',     email: '', phone: '', company: '', address: '', created_at: '2026-05-18' },
+  { id: 31, name: 'Celso Hernández-Gómez',     email: '', phone: '', company: '', address: '', created_at: '2026-01-27' },
 ];
 
 let invoices = [
@@ -187,10 +188,16 @@ let invoices = [
   { id: 151, client_name: 'Tres Estrellas de Oro Inc',issue_date: '2026-06-08', due_date: '2026-07-08', status: 'paid', total: 400.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:400}] },
   { id: 152, client_name: 'Alejandra Granillo',       issue_date: '2026-06-09', due_date: '2026-07-09', status: 'paid', total: 500.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:500}] },
   { id: 153, client_name: 'Alejandra Granillo',       issue_date: '2026-06-09', due_date: '2026-07-09', status: 'paid', total: 500.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:500}] },
+  { id: 154, client_name: 'Celso Hernández-Gómez',   issue_date: '2026-01-27', due_date: '2026-02-27', status: 'paid', total: 100.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:100}] },
+  { id: 155, client_name: 'Celso Hernández-Gómez',   issue_date: '2026-01-31', due_date: '2026-03-02', status: 'paid', total: 100.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:100}] },
+  { id: 156, client_name: 'Celso Hernández-Gómez',   issue_date: '2026-02-12', due_date: '2026-03-12', status: 'paid', total: 200.00,   notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:200}] },
+  { id: 157, client_name: 'Celso Hernández-Gómez',   issue_date: '2026-03-28', due_date: '2026-04-28', status: 'paid', total: 20.00,    notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:20}] },
+  { id: 158, client_name: 'Celso Hernández-Gómez',   issue_date: '2026-05-28', due_date: '2026-06-28', status: 'paid', total: 50.00,    notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:50}] },
+  { id: 159, client_name: 'Celso Hernández-Gómez',   issue_date: '2026-06-08', due_date: '2026-07-08', status: 'paid', total: 30.00,    notes: 'Zelle',       items: [{description:'Servicios', quantity:1, unit_price:30}] },
 ];
 
-let nextClientId = 31;
-let nextInvoiceId = 154;
+let nextClientId = 32;
+let nextInvoiceId = 160;
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 
