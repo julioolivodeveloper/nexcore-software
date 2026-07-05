@@ -8,11 +8,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --purple:#2563eb; --purple-l:#60a5fa; --cyan:#06b6d4; --green:#10b981;
-      --yellow:#f59e0b; --red:#ef4444;
+      --yellow:#f59e0b; --pink:#ec4899; --violet:#8b5cf6; --red:#ef4444;
       --bg:#07070f; --bg2:#0e0e1c; --bg3:#13132a;
       --border:rgba(255,255,255,0.07); --text-muted:#94a3b8; --radius:16px;
     }
@@ -54,10 +55,12 @@
     .btn { display:flex; align-items:center; gap:7px; padding:8px 16px; border-radius:10px; font-size:.85rem; font-weight:600; cursor:pointer; border:none; transition:opacity .2s,transform .15s; font-family:'Inter',sans-serif; }
     .btn:hover { opacity:.85; }
     .btn:active { transform:scale(.97); }
-    .btn-primary { background:var(--purple); color:#fff; }
     .btn-ghost { background:transparent; border:1px solid var(--border); color:var(--text-muted); }
     .btn-ghost:hover { background:rgba(255,255,255,.04); color:#e2e8f0; }
     .btn svg { width:15px; height:15px; }
+
+    /* SECTION TITLE */
+    .section-title { font-family:'Space Grotesk',sans-serif; font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--text-muted); padding-bottom:2px; }
 
     /* STATS */
     .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
@@ -65,30 +68,50 @@
     .stat-card:hover { border-color:rgba(37,99,235,.3); transform:translateY(-2px); }
     .stat-icon { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
     .stat-icon svg { width:18px; height:18px; }
-    .si-green  { background:rgba(16,185,129,.15); border:1px solid rgba(16,185,129,.2); color:#6ee7b7; }
-    .si-blue   { background:rgba(37,99,235,.15);  border:1px solid rgba(37,99,235,.2);  color:var(--purple-l); }
-    .si-cyan   { background:rgba(6,182,212,.15);  border:1px solid rgba(6,182,212,.2);  color:#67e8f9; }
-    .si-yellow { background:rgba(245,158,11,.15); border:1px solid rgba(245,158,11,.2); color:#fcd34d; }
+    .si-green  { background:rgba(16,185,129,.15); border:1px solid rgba(16,185,129,.2);  color:#6ee7b7; }
+    .si-blue   { background:rgba(37,99,235,.15);  border:1px solid rgba(37,99,235,.2);   color:var(--purple-l); }
+    .si-cyan   { background:rgba(6,182,212,.15);  border:1px solid rgba(6,182,212,.2);   color:#67e8f9; }
+    .si-yellow { background:rgba(245,158,11,.15); border:1px solid rgba(245,158,11,.2);  color:#fcd34d; }
+    .si-pink   { background:rgba(236,72,153,.15); border:1px solid rgba(236,72,153,.2);  color:#f9a8d4; }
+    .si-violet { background:rgba(139,92,246,.15); border:1px solid rgba(139,92,246,.2);  color:#c4b5fd; }
+    .si-red    { background:rgba(239,68,68,.12);  border:1px solid rgba(239,68,68,.2);   color:#fca5a5; }
+    .si-teal   { background:rgba(20,184,166,.15); border:1px solid rgba(20,184,166,.2);  color:#5eead4; }
     .stat-label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); margin-bottom:4px; }
-    .stat-value { font-family:'Space Grotesk',sans-serif; font-size:1.75rem; font-weight:700; color:#fff; }
-    .stat-sub { font-size:.75rem; color:var(--text-muted); margin-top:3px; }
+    .stat-value { font-family:'Space Grotesk',sans-serif; font-size:1.65rem; font-weight:700; color:#fff; line-height:1.1; }
+    .stat-sub { font-size:.73rem; color:var(--text-muted); margin-top:4px; }
+    .stat-trend { font-size:.72rem; margin-top:4px; font-weight:600; }
+    .trend-up   { color:#6ee7b7; }
+    .trend-down { color:#fca5a5; }
 
-    /* PANELS ROW */
-    .panels-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    /* KPI GRID (8 cards) */
+    .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
 
-    /* CHART PANEL */
+    /* CHART PANELS */
     .panel { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:22px; }
     .panel-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
     .panel-title { font-family:'Space Grotesk',sans-serif; font-size:1rem; font-weight:600; }
     .panel-badge { font-size:.7rem; font-weight:700; padding:3px 10px; border-radius:999px; background:rgba(37,99,235,.12); color:var(--purple-l); border:1px solid rgba(37,99,235,.2); }
-    .chart-item { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); font-size:.82rem; }
-    .chart-item:last-child { border-bottom:none; }
-    .chart-month { color:var(--text-muted); min-width:56px; }
-    .chart-bar-wrap { flex:1; height:6px; background:rgba(255,255,255,.06); border-radius:3px; overflow:hidden; }
-    .chart-bar { height:100%; background:linear-gradient(90deg,var(--purple),var(--cyan)); border-radius:3px; transition:width .5s ease; }
-    .chart-amount { font-weight:600; color:#6ee7b7; font-family:'Space Grotesk',sans-serif; min-width:76px; text-align:right; }
+    .charts-2col { display:grid; grid-template-columns:1.6fr 1fr; gap:16px; }
+    .charts-3col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+    .chart-canvas-wrap { position:relative; width:100%; }
+    .chart-canvas-wrap.h-260 { height:260px; }
+    .chart-canvas-wrap.h-220 { height:220px; }
+    .chart-canvas-wrap.h-180 { height:180px; }
 
-    /* STATUS PANEL */
+    /* MINI LIST inside panel */
+    .mini-list { list-style:none; display:flex; flex-direction:column; gap:0; }
+    .mini-item { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); font-size:.82rem; }
+    .mini-item:last-child { border-bottom:none; }
+    .mini-rank { width:20px; font-size:.7rem; font-weight:700; color:var(--text-muted); text-align:center; flex-shrink:0; }
+    .mini-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .mini-name { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .mini-val { font-family:'Space Grotesk',sans-serif; font-weight:700; color:#6ee7b7; white-space:nowrap; }
+    .mini-count { font-size:.72rem; color:var(--text-muted); margin-left:4px; }
+
+    /* TREND LINE */
+    .trend-panel { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:22px; }
+
+    /* STATUS / OLD CHART */
     .status-item { display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border); font-size:.875rem; }
     .status-item:last-child { border-bottom:none; }
     .status-left { display:flex; align-items:center; gap:10px; }
@@ -107,18 +130,16 @@
     tbody tr:hover { background:rgba(255,255,255,.03); }
     tbody td { padding:11px 14px; border-bottom:1px solid rgba(255,255,255,.04); vertical-align:middle; }
     tbody tr:last-child td { border-bottom:none; }
-    .td-date { color:var(--text-muted); font-size:.8rem; white-space:nowrap; }
+    .td-date   { color:var(--text-muted); font-size:.8rem; white-space:nowrap; }
     .td-client { font-weight:500; }
-    .td-desc { color:var(--text-muted); max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .td-method .badge-method { font-size:.7rem; padding:3px 8px; border-radius:6px; background:rgba(255,255,255,.06); color:var(--text-muted); }
+    .td-desc   { color:var(--text-muted); max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .badge-method { font-size:.7rem; padding:3px 8px; border-radius:6px; background:rgba(255,255,255,.06); color:var(--text-muted); }
     .td-amount { font-family:'Space Grotesk',sans-serif; font-weight:700; color:#6ee7b7; text-align:right; white-space:nowrap; }
     .badge-status { font-size:.68rem; font-weight:700; padding:3px 9px; border-radius:999px; }
     .s-paid      { background:rgba(16,185,129,.15); color:#6ee7b7; border:1px solid rgba(16,185,129,.2); }
     .s-pending   { background:rgba(245,158,11,.15); color:#fcd34d; border:1px solid rgba(245,158,11,.2); }
-    .s-cancelled { background:rgba(239,68,68,.12);  color:#fca5a5; border:1px solid rgba(239,68,68,.2);  }
-    .empty-state { text-align:center; padding:48px; color:var(--text-muted); font-size:.875rem; }
-
-    /* TOTAL ROW */
+    .s-cancelled { background:rgba(239,68,68,.12);  color:#fca5a5; border:1px solid rgba(239,68,68,.2); }
+    .empty-state { text-align:center; padding:40px; color:var(--text-muted); font-size:.875rem; }
     .total-row { display:flex; align-items:center; justify-content:space-between; padding:14px 14px 0; border-top:1px solid var(--border); margin-top:8px; }
     .total-row-label { font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--text-muted); }
     .total-row-value { font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:700; color:#6ee7b7; }
@@ -139,7 +160,7 @@
 
   <main class="main">
     <div class="topbar">
-      <h1>Reportes</h1>
+      <h1>Reportes & Análisis</h1>
       <div class="user-badge"><i data-lucide="user"></i><span id="userEmail">—</span></div>
     </div>
 
@@ -179,13 +200,14 @@
         </div>
       </div>
 
-      <!-- STATS -->
+      <!-- KPIs PRINCIPALES -->
+      <div class="section-title">Resumen del período</div>
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-icon si-green"><i data-lucide="dollar-sign"></i></div>
-          <div class="stat-label">Total Ingresos</div>
+          <div class="stat-label">Ingresos Totales</div>
           <div class="stat-value" id="sTotal">$0</div>
-          <div class="stat-sub" id="sSub">del período</div>
+          <div class="stat-sub" id="sSub">— facturas pagadas</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon si-blue"><i data-lucide="file-text"></i></div>
@@ -201,14 +223,84 @@
         </div>
         <div class="stat-card">
           <div class="stat-icon si-yellow"><i data-lucide="trending-up"></i></div>
-          <div class="stat-label">Promedio</div>
+          <div class="stat-label">Promedio / Factura</div>
           <div class="stat-value" id="sAvg">$0</div>
-          <div class="stat-sub">por factura</div>
+          <div class="stat-sub">por transacción</div>
         </div>
       </div>
 
-      <!-- GRÁFICA + ESTADO -->
-      <div class="panels-row">
+      <!-- KPIs SECUNDARIOS -->
+      <div class="kpi-grid">
+        <div class="stat-card">
+          <div class="stat-icon si-violet"><i data-lucide="calendar"></i></div>
+          <div class="stat-label">Promedio Mensual</div>
+          <div class="stat-value" id="kMonthlyAvg">$0</div>
+          <div class="stat-sub" id="kMonthlyAvgSub">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-teal"><i data-lucide="zap"></i></div>
+          <div class="stat-label">Mejor Mes</div>
+          <div class="stat-value" id="kBestMonth">—</div>
+          <div class="stat-sub" id="kBestMonthVal">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-pink"><i data-lucide="star"></i></div>
+          <div class="stat-label">Cliente Top</div>
+          <div class="stat-value" id="kTopClient" style="font-size:1rem">—</div>
+          <div class="stat-sub" id="kTopClientVal">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-red"><i data-lucide="clock"></i></div>
+          <div class="stat-label">Tasa de Cobro</div>
+          <div class="stat-value" id="kPayRate">0%</div>
+          <div class="stat-sub" id="kPayRateSub">facturas pagadas</div>
+        </div>
+      </div>
+
+      <!-- ANÁLISIS: TOP CLIENTES + SERVICIOS -->
+      <div class="section-title">Análisis por cliente y servicio</div>
+      <div class="charts-2col">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Top Clientes por Ingresos</span>
+            <span class="panel-badge" id="topClientsBadge">—</span>
+          </div>
+          <div class="chart-canvas-wrap h-260">
+            <canvas id="chartClients"></canvas>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Distribución por Servicio</span>
+            <span class="panel-badge" id="servicesBadge">—</span>
+          </div>
+          <div class="chart-canvas-wrap h-260">
+            <canvas id="chartServices"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- TENDENCIA MENSUAL -->
+      <div class="section-title">Tendencia de ingresos</div>
+      <div class="trend-panel">
+        <div class="panel-header">
+          <span class="panel-title">Ingresos Mensuales</span>
+          <span class="panel-badge" id="trendBadge">—</span>
+        </div>
+        <div class="chart-canvas-wrap h-220">
+          <canvas id="chartTrend"></canvas>
+        </div>
+      </div>
+
+      <!-- CLIENTES FRECUENTES + ESTADO -->
+      <div class="charts-3col">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Clientes Más Frecuentes</span>
+            <span class="panel-badge">por # transacciones</span>
+          </div>
+          <ul class="mini-list" id="freqList"></ul>
+        </div>
         <div class="panel">
           <div class="panel-header">
             <span class="panel-title">Ingresos por Mes</span>
@@ -222,13 +314,19 @@
             <span class="panel-badge" id="statusBadge">—</span>
           </div>
           <div id="statusList"></div>
+          <div style="margin-top:16px">
+            <div class="chart-canvas-wrap h-180">
+              <canvas id="chartStatus"></canvas>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- TABLA -->
+      <div class="section-title">Transacciones</div>
       <div class="table-panel">
         <div class="table-header">
-          <span class="panel-title">Transacciones</span>
+          <span class="panel-title">Detalle de Transacciones</span>
           <span class="result-count" id="resultCount">— registros</span>
         </div>
         <div class="tbl-wrap">
@@ -247,7 +345,7 @@
           </table>
         </div>
         <div class="total-row">
-          <span class="total-row-label">Total filtrado</span>
+          <span class="total-row-label">Total filtrado (pagadas)</span>
           <span class="total-row-value" id="tableTotal">$0.00</span>
         </div>
       </div>
@@ -258,19 +356,46 @@
   <script>
     lucide.createIcons();
 
-    let allInvoices = [];
+    const COLORS = ['#2563eb','#06b6d4','#10b981','#f59e0b','#ec4899','#8b5cf6','#ef4444','#14b8a6','#f97316','#6366f1'];
+    const MONTH_NAMES = {
+      '01':'Ene','02':'Feb','03':'Mar','04':'Abr','05':'May','06':'Jun',
+      '07':'Jul','08':'Ago','09':'Sep','10':'Oct','11':'Nov','12':'Dic'
+    };
 
-    const fmt = n => '$' + parseFloat(n).toLocaleString('en-US', { minimumFractionDigits:2, maximumFractionDigits:2 });
+    let allInvoices = [];
+    let chartClients, chartServices, chartTrend, chartStatus;
+
+    const fmt = n => '$' + parseFloat(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
     const fmtDate = d => { if (!d) return '—'; const [y,m,day] = d.split('-'); return `${day}/${m}/${y}`; };
     const statusLabel = s => s === 'paid' ? 'Pagado' : s === 'pending' ? 'Pendiente' : 'Cancelado';
     const statusClass = s => s === 'paid' ? 's-paid' : s === 'pending' ? 's-pending' : 's-cancelled';
 
+    const chartDefaults = {
+      color: '#94a3b8',
+      plugins: {
+        legend: { labels: { color:'#94a3b8', font:{family:'Inter',size:12}, boxWidth:12, padding:16 } },
+        tooltip: {
+          backgroundColor:'#0e0e1c', borderColor:'rgba(255,255,255,0.07)', borderWidth:1,
+          titleColor:'#e2e8f0', bodyColor:'#94a3b8', padding:12,
+          callbacks: { label: ctx => ` ${fmt(ctx.parsed.y ?? ctx.parsed ?? 0)}` }
+        }
+      },
+      scales: {
+        x: { ticks:{color:'#94a3b8',font:{size:11}}, grid:{color:'rgba(255,255,255,0.04)'} },
+        y: { ticks:{color:'#94a3b8',font:{size:11}, callback: v => '$'+v.toLocaleString()}, grid:{color:'rgba(255,255,255,0.04)'} }
+      }
+    };
+
+    function makeChart(id, type, data, options) {
+      const canvas = document.getElementById(id);
+      const ctx = canvas.getContext('2d');
+      return new Chart(ctx, { type, data, options });
+    }
+
     async function init() {
       try {
         const [invRes, clientRes, userRes] = await Promise.all([
-          fetch('/api/invoices'),
-          fetch('/api/clients'),
-          fetch('/api/auth/me')
+          fetch('/api/invoices'), fetch('/api/clients'), fetch('/api/auth/me')
         ]);
         allInvoices = await invRes.json();
         const clients = await clientRes.json();
@@ -280,9 +405,7 @@
         const sel = document.getElementById('fClient');
         clients.sort((a,b) => a.name.localeCompare(b.name)).forEach(c => {
           const o = document.createElement('option');
-          o.value = c.name;
-          o.textContent = c.name;
-          sel.appendChild(o);
+          o.value = c.name; o.textContent = c.name; sel.appendChild(o);
         });
 
         applyFilters();
@@ -312,82 +435,266 @@
 
     function applyFilters() {
       const data = getFiltered();
-      renderStats(data);
-      renderChart(data);
+      renderKPIs(data);
+      renderChartClients(data);
+      renderChartServices(data);
+      renderChartTrend(data);
+      renderFreqList(data);
+      renderMonthlyList(data);
       renderStatus(data);
       renderTable(data);
     }
 
-    function renderStats(data) {
-      const paid = data.filter(i => i.status === 'paid');
-      const total = paid.reduce((s,i) => s + i.total, 0);
+    function renderKPIs(data) {
+      const paid    = data.filter(i => i.status === 'paid');
+      const total   = paid.reduce((s,i) => s + i.total, 0);
       const clients = new Set(data.map(i => i.client_name)).size;
-      const avg = data.length ? data.reduce((s,i) => s + i.total, 0) / data.length : 0;
+      const avg     = data.length ? data.reduce((s,i) => s + i.total, 0) / data.length : 0;
+      const payRate = data.length ? (paid.length / data.length * 100).toFixed(0) : 0;
 
       document.getElementById('sTotal').textContent   = fmt(total);
       document.getElementById('sCount').textContent   = data.length;
       document.getElementById('sClients').textContent = clients;
       document.getElementById('sAvg').textContent     = fmt(avg);
-      document.getElementById('sSub').textContent     = `${paid.length} pagadas`;
-      document.getElementById('sCountSub').textContent = `${clients} cliente${clients !== 1 ? 's' : ''}`;
+      document.getElementById('sSub').textContent     = `${paid.length} facturas pagadas`;
+      document.getElementById('sCountSub').textContent = `${clients} cliente${clients!==1?'s':''}`;
+      document.getElementById('kPayRate').textContent  = payRate + '%';
+      document.getElementById('kPayRateSub').textContent = `${paid.length} de ${data.length} facturas`;
+
+      // Promedio mensual
+      const byMonth = {};
+      paid.forEach(inv => {
+        if (!inv.issue_date) return;
+        const key = inv.issue_date.slice(0,7);
+        byMonth[key] = (byMonth[key]||0) + inv.total;
+      });
+      const months = Object.keys(byMonth);
+      const monthlyAvg = months.length ? Object.values(byMonth).reduce((s,v)=>s+v,0)/months.length : 0;
+      document.getElementById('kMonthlyAvg').textContent = fmt(monthlyAvg);
+      document.getElementById('kMonthlyAvgSub').textContent = `${months.length} meses con actividad`;
+
+      // Mejor mes
+      if (months.length) {
+        const bestKey = months.reduce((a,b) => byMonth[a] > byMonth[b] ? a : b);
+        const [y,m] = bestKey.split('-');
+        document.getElementById('kBestMonth').textContent = `${MONTH_NAMES[m]} ${y}`;
+        document.getElementById('kBestMonthVal').textContent = fmt(byMonth[bestKey]);
+      } else {
+        document.getElementById('kBestMonth').textContent = '—';
+        document.getElementById('kBestMonthVal').textContent = '—';
+      }
+
+      // Cliente top
+      const byClient = {};
+      paid.forEach(inv => { byClient[inv.client_name] = (byClient[inv.client_name]||0) + inv.total; });
+      const topName = Object.keys(byClient).sort((a,b)=>byClient[b]-byClient[a])[0];
+      document.getElementById('kTopClient').textContent  = topName || '—';
+      document.getElementById('kTopClientVal').textContent = topName ? fmt(byClient[topName]) : '—';
     }
 
-    function renderChart(data) {
+    function renderChartClients(data) {
+      const byClient = {};
+      data.filter(i=>i.status==='paid').forEach(inv => {
+        byClient[inv.client_name] = (byClient[inv.client_name]||0) + inv.total;
+      });
+      const sorted = Object.entries(byClient).sort((a,b)=>b[1]-a[1]).slice(0,8);
+      document.getElementById('topClientsBadge').textContent = `top ${sorted.length}`;
+
+      const labels = sorted.map(([n])=>n);
+      const values = sorted.map(([,v])=>v);
+
+      if (chartClients) chartClients.destroy();
+      chartClients = makeChart('chartClients', 'bar', {
+        labels,
+        datasets: [{
+          label: 'Ingresos',
+          data: values,
+          backgroundColor: COLORS.slice(0, sorted.length).map(c => c + 'cc'),
+          borderColor: COLORS.slice(0, sorted.length),
+          borderWidth: 1,
+          borderRadius: 6,
+        }]
+      }, {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor:'#0e0e1c', borderColor:'rgba(255,255,255,0.07)', borderWidth:1,
+            titleColor:'#e2e8f0', bodyColor:'#94a3b8', padding:12,
+            callbacks: { label: ctx => ` ${fmt(ctx.parsed.x)}` }
+          }
+        },
+        scales: {
+          x: { ticks:{color:'#94a3b8',font:{size:10},callback:v=>'$'+v.toLocaleString()}, grid:{color:'rgba(255,255,255,0.04)'} },
+          y: { ticks:{color:'#e2e8f0',font:{size:11}}, grid:{display:false} }
+        }
+      });
+    }
+
+    function renderChartServices(data) {
+      const byService = {};
+      data.filter(i=>i.status==='paid').forEach(inv => {
+        const desc = (inv.items||[]).map(i=>i.description||'').filter(Boolean).join(', ') || 'Sin descripción';
+        byService[desc] = (byService[desc]||0) + inv.total;
+      });
+      const sorted = Object.entries(byService).sort((a,b)=>b[1]-a[1]);
+      document.getElementById('servicesBadge').textContent = `${sorted.length} servicio${sorted.length!==1?'s':''}`;
+
+      if (chartServices) chartServices.destroy();
+      chartServices = makeChart('chartServices', 'doughnut', {
+        labels: sorted.map(([n])=> n.length>28 ? n.slice(0,26)+'…' : n),
+        datasets: [{
+          data: sorted.map(([,v])=>v),
+          backgroundColor: COLORS.slice(0, sorted.length).map(c=>c+'cc'),
+          borderColor: '#0e0e1c',
+          borderWidth: 3,
+          hoverOffset: 8
+        }]
+      }, {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '60%',
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color:'#94a3b8', font:{family:'Inter',size:10}, boxWidth:10, padding:10 }
+          },
+          tooltip: {
+            backgroundColor:'#0e0e1c', borderColor:'rgba(255,255,255,0.07)', borderWidth:1,
+            titleColor:'#e2e8f0', bodyColor:'#94a3b8', padding:12,
+            callbacks: { label: ctx => ` ${fmt(ctx.parsed)} (${(ctx.parsed / ctx.dataset.data.reduce((a,b)=>a+b,0)*100).toFixed(1)}%)` }
+          }
+        }
+      });
+    }
+
+    function renderChartTrend(data) {
       const byMonth = {};
-      data.filter(i => i.status === 'paid').forEach(inv => {
+      data.filter(i=>i.status==='paid').forEach(inv => {
         if (!inv.issue_date) return;
-        const [y, m] = inv.issue_date.split('-');
-        const key = `${y}-${m}`;
-        byMonth[key] = (byMonth[key] || 0) + inv.total;
+        const key = inv.issue_date.slice(0,7);
+        byMonth[key] = (byMonth[key]||0) + inv.total;
       });
       const months = Object.keys(byMonth).sort();
-      const names = { '01':'Ene','02':'Feb','03':'Mar','04':'Abr','05':'May','06':'Jun','07':'Jul','08':'Ago','09':'Sep','10':'Oct','11':'Nov','12':'Dic' };
-      const el = document.getElementById('chartList');
-      document.getElementById('chartBadge').textContent = `${months.length} meses`;
-      if (!months.length) { el.innerHTML = '<div class="empty-state">Sin datos</div>'; return; }
-      const max = Math.max(...months.map(k => byMonth[k]));
-      el.innerHTML = months.map(k => {
-        const [y, m] = k.split('-');
-        const pct = max > 0 ? (byMonth[k] / max * 100).toFixed(1) : 0;
-        return `<div class="chart-item">
-          <span class="chart-month">${names[m]} ${y.slice(2)}</span>
-          <div class="chart-bar-wrap"><div class="chart-bar" style="width:${pct}%"></div></div>
-          <span class="chart-amount">${fmt(byMonth[k])}</span>
-        </div>`;
-      }).join('');
+      document.getElementById('trendBadge').textContent = `${months.length} meses`;
+
+      const labels = months.map(k => { const [y,m]=k.split('-'); return `${MONTH_NAMES[m]} ${y.slice(2)}`; });
+      const values = months.map(k => byMonth[k]);
+
+      if (chartTrend) chartTrend.destroy();
+      chartTrend = makeChart('chartTrend', 'line', {
+        labels,
+        datasets: [{
+          label: 'Ingresos',
+          data: values,
+          borderColor: '#2563eb',
+          backgroundColor: 'rgba(37,99,235,0.1)',
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: '#60a5fa',
+          pointRadius: 4,
+          pointHoverRadius: 6,
+        }]
+      }, {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor:'#0e0e1c', borderColor:'rgba(255,255,255,0.07)', borderWidth:1,
+            titleColor:'#e2e8f0', bodyColor:'#94a3b8', padding:12,
+            callbacks: { label: ctx => ` ${fmt(ctx.parsed.y)}` }
+          }
+        },
+        scales: {
+          x: { ticks:{color:'#94a3b8',font:{size:10}}, grid:{color:'rgba(255,255,255,0.04)'} },
+          y: { ticks:{color:'#94a3b8',font:{size:10},callback:v=>'$'+v.toLocaleString()}, grid:{color:'rgba(255,255,255,0.04)'} }
+        }
+      });
+    }
+
+    function renderFreqList(data) {
+      const byClient = {};
+      data.forEach(inv => { byClient[inv.client_name] = (byClient[inv.client_name]||0) + 1; });
+      const sorted = Object.entries(byClient).sort((a,b)=>b[1]-a[1]).slice(0,8);
+      const max = sorted[0]?.[1] || 1;
+      document.getElementById('freqList').innerHTML = sorted.map(([name, count], i) =>
+        `<li class="mini-item">
+          <span class="mini-rank">${i+1}</span>
+          <span class="mini-dot" style="background:${COLORS[i%COLORS.length]}"></span>
+          <span class="mini-name" title="${name}">${name}</span>
+          <span class="mini-val">${count}<span class="mini-count">tx</span></span>
+        </li>`
+      ).join('');
+    }
+
+    function renderMonthlyList(data) {
+      const byMonth = {};
+      data.filter(i=>i.status==='paid').forEach(inv => {
+        if (!inv.issue_date) return;
+        const [y,m] = inv.issue_date.split('-');
+        const key = `${y}-${m}`;
+        byMonth[key] = (byMonth[key]||0) + inv.total;
+      });
+      const months = Object.keys(byMonth).sort().reverse().slice(0,8);
+      document.getElementById('chartBadge').textContent = `últimos ${months.length}`;
+      const maxV = Math.max(...months.map(k=>byMonth[k]), 1);
+      const names = {'01':'Ene','02':'Feb','03':'Mar','04':'Abr','05':'May','06':'Jun','07':'Jul','08':'Ago','09':'Sep','10':'Oct','11':'Nov','12':'Dic'};
+      document.getElementById('chartList').innerHTML = months.length
+        ? months.map(k => {
+            const [y,mo] = k.split('-');
+            const pct = (byMonth[k]/maxV*100).toFixed(1);
+            return `<div class="mini-item" style="gap:8px;font-size:.8rem;">
+              <span style="color:var(--text-muted);min-width:52px;font-size:.78rem">${names[mo]} ${y.slice(2)}</span>
+              <div style="flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,var(--purple),var(--cyan));border-radius:3px"></div></div>
+              <span style="font-family:'Space Grotesk',sans-serif;font-weight:600;color:#6ee7b7;min-width:72px;text-align:right;font-size:.8rem">${fmt(byMonth[k])}</span>
+            </div>`;
+          }).join('')
+        : '<div class="empty-state">Sin datos</div>';
     }
 
     function renderStatus(data) {
-      const paid      = data.filter(i => i.status === 'paid').length;
-      const pending   = data.filter(i => i.status === 'pending').length;
-      const cancelled = data.filter(i => i.status === 'cancelled').length;
+      const paid      = data.filter(i=>i.status==='paid').length;
+      const pending   = data.filter(i=>i.status==='pending').length;
+      const cancelled = data.filter(i=>i.status==='cancelled').length;
       const total     = data.length || 1;
       document.getElementById('statusBadge').textContent = `${data.length} total`;
       document.getElementById('statusList').innerHTML = `
         <div class="status-item"><div class="status-left"><div class="status-dot" style="background:#6ee7b7"></div><span>Pagadas</span></div><span><span class="status-count">${paid}</span><span class="status-pct">${(paid/total*100).toFixed(0)}%</span></span></div>
         <div class="status-item"><div class="status-left"><div class="status-dot" style="background:#fcd34d"></div><span>Pendientes</span></div><span><span class="status-count">${pending}</span><span class="status-pct">${(pending/total*100).toFixed(0)}%</span></span></div>
-        <div class="status-item"><div class="status-left"><div class="status-dot" style="background:#fca5a5"></div><span>Canceladas</span></div><span><span class="status-count">${cancelled}</span><span class="status-pct">${(cancelled/total*100).toFixed(0)}%</span></span></div>
-      `;
+        <div class="status-item"><div class="status-left"><div class="status-dot" style="background:#fca5a5"></div><span>Canceladas</span></div><span><span class="status-count">${cancelled}</span><span class="status-pct">${(cancelled/total*100).toFixed(0)}%</span></span></div>`;
+
+      if (chartStatus) chartStatus.destroy();
+      chartStatus = makeChart('chartStatus', 'doughnut', {
+        labels: ['Pagadas','Pendientes','Canceladas'],
+        datasets: [{ data:[paid,pending,cancelled], backgroundColor:['#10b981cc','#f59e0bcc','#ef4444cc'], borderColor:'#0e0e1c', borderWidth:3, hoverOffset:6 }]
+      }, {
+        responsive:true, maintainAspectRatio:false, cutout:'65%',
+        plugins: {
+          legend:{ position:'bottom', labels:{ color:'#94a3b8', font:{size:10}, boxWidth:10, padding:8 } },
+          tooltip:{ backgroundColor:'#0e0e1c', borderColor:'rgba(255,255,255,0.07)', borderWidth:1, titleColor:'#e2e8f0', bodyColor:'#94a3b8', padding:10 }
+        }
+      });
     }
 
     function renderTable(data) {
-      const sorted = [...data].sort((a,b) => (b.issue_date||'').localeCompare(a.issue_date||''));
-      const tableTotal = sorted.filter(i => i.status === 'paid').reduce((s,i) => s + i.total, 0);
-      document.getElementById('resultCount').textContent = `${sorted.length} registro${sorted.length !== 1 ? 's' : ''}`;
+      const sorted = [...data].sort((a,b)=>(b.issue_date||'').localeCompare(a.issue_date||''));
+      const tableTotal = sorted.filter(i=>i.status==='paid').reduce((s,i)=>s+i.total,0);
+      document.getElementById('resultCount').textContent = `${sorted.length} registro${sorted.length!==1?'s':''}`;
       document.getElementById('tableTotal').textContent = fmt(tableTotal);
       const tbody = document.getElementById('txTable');
       if (!sorted.length) {
-        tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Sin resultados para los filtros seleccionados</td></tr>';
-        return;
+        tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Sin resultados para los filtros seleccionados</td></tr>'; return;
       }
       tbody.innerHTML = sorted.map(inv => {
-        const desc = (inv.items||[]).map(i => i.description||'').filter(Boolean).join(', ') || inv.notes || '—';
-        const method = inv.notes || '—';
+        const desc = (inv.items||[]).map(i=>i.description||'').filter(Boolean).join(', ') || '—';
         return `<tr>
           <td class="td-date">${fmtDate(inv.issue_date)}</td>
           <td class="td-client">${inv.client_name}</td>
           <td class="td-desc" title="${desc}">${desc}</td>
-          <td class="td-method"><span class="badge-method">${method}</span></td>
+          <td><span class="badge-method">${inv.notes||'—'}</span></td>
           <td><span class="badge-status ${statusClass(inv.status)}">${statusLabel(inv.status)}</span></td>
           <td class="td-amount">${fmt(inv.total)}</td>
         </tr>`;
@@ -395,15 +702,12 @@
     }
 
     function clearFilters() {
-      document.getElementById('fDateFrom').value = '';
-      document.getElementById('fDateTo').value   = '';
-      document.getElementById('fClient').value   = '';
-      document.getElementById('fService').value  = '';
-      document.getElementById('fStatus').value   = '';
+      ['fDateFrom','fDateTo','fService'].forEach(id=>document.getElementById(id).value='');
+      ['fClient','fStatus'].forEach(id=>document.getElementById(id).value='');
       applyFilters();
     }
 
-    async function logout() { await fetch('/api/auth/logout', { method:'POST' }); window.location.href = '/accounting/login'; }
+    async function logout() { await fetch('/api/auth/logout',{method:'POST'}); window.location.href='/accounting/login'; }
 
     init();
   </script>
