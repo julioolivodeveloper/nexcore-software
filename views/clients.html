@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clientes - Contabilidad</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-menu {
+      list-style: none;
+    }
+
+    .nav-item {
+      margin-bottom: 10px;
+    }
+
+    .nav-link {
+      display: block;
+      padding: 12px;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: white;
+      padding: 20px 30px;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      font-size: 24px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 30px;
+    }
+
+    .search-bar {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      background: white;
+      border-collapse: collapse;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th {
+      background: #f5f7fa;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      color: #666;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    tr:hover {
+      background: #f9f9f9;
+    }
+
+    .btn-action {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 10px;
+      padding: 5px 10px;
+      border-radius: 3px;
+      transition: background 0.2s;
+    }
+
+    .btn-edit {
+      color: #667eea;
+    }
+
+    .btn-delete {
+      color: #e74c3c;
+    }
+
+    .btn-action:hover {
+      background: #f0f0f0;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      justify-content: flex-end;
+    }
+
+    .btn-secondary {
+      background: #e0e0e0;
+      color: #333;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .logout-btn {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: calc(100% - 40px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">📊 Contabilidad</div>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="/accounting/dashboard" class="nav-link">📈 Dashboard</a></li>
+        <li class="nav-item"><a href="/accounting/invoices" class="nav-link">📄 Facturas</a></li>
+        <li class="nav-item"><a href="/accounting/clients" class="nav-link active">👥 Clientes</a></li>
+        <li class="nav-item"><a href="/accounting/reports" class="nav-link">📋 Reportes</a></li>
+      </ul>
+      <button class="logout-btn" onclick="logout()">🚪 Cerrar Sesión</button>
+    </aside>
+
+    <main class="main">
+      <header class="header">
+        <h1>Gestión de Clientes</h1>
+        <button class="btn-primary" onclick="openModal()">➕ Nuevo Cliente</button>
+      </header>
+
+      <div class="content">
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="Buscar cliente..." onkeyup="filterClients()">
+        </div>
+
+        <table id="clientsTable">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th>RUC/Cédula</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="clientsBody">
+            <tr><td colspan="5" style="text-align: center; color: #999;">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal" id="clientModal">
+    <div class="modal-content">
+      <div class="modal-header" id="modalTitle">Nuevo Cliente</div>
+      <form id="clientForm" onsubmit="saveClient(event)">
+        <input type="hidden" id="clientId">
+
+        <div class="form-group">
+          <label>Nombre *</label>
+          <input type="text" id="name" required>
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email">
+        </div>
+
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="tel" id="phone">
+        </div>
+
+        <div class="form-group">
+          <label>Dirección</label>
+          <textarea id="address"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>RUC/Cédula</label>
+          <input type="text" id="tax_id">
+        </div>
+
+        <div class="form-group">
+          <label>Nombre de Empresa</label>
+          <input type="text" id="business_name">
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
+          <button type="submit" class="btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let clients = [];
+
+    async function loadClients() {
+      try {
+        const response = await fetch('/api/clients');
+        clients = await response.json();
+        displayClients(clients);
+      } catch (err) {
+        console.error('Error:', err);
+      }
+    }
+
+    function displayClients(data) {
+      const tbody = document.getElementById('clientsBody');
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #999;">Sin clientes registrados</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = data.map(client => `
+        <tr>
+          <td>${client.name}</td>
+          <td>${client.email || '-'}</td>
+          <td>${client.phone || '-'}</td>
+          <td>${client.tax_id || '-'}</td>
+          <td>
+            <button class="btn-action btn-edit" onclick="editClient(${client.id})">✏️ Editar</button>
+            <button class="btn-action btn-delete" onclick="deleteClient(${client.id})">🗑️ Eliminar</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function filterClients() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = clients.filter(c => c.name.toLowerCase().includes(search));
+      displayClients(filtered);
+    }
+
+    function openModal() {
+      document.getElementById('clientId').value = '';
+      document.getElementById('clientForm').reset();
+      document.getElementById('modalTitle').textContent = 'Nuevo Cliente';
+      document.getElementById('clientModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('clientModal').classList.remove('active');
+    }
+
+    async function editClient(id) {
+      const client = clients.find(c => c.id === id);
+      if (!client) return;
+
+      document.getElementById('clientId').value = client.id;
+      document.getElementById('name').value = client.name;
+      document.getElementById('email').value = client.email || '';
+      document.getElementById('phone').value = client.phone || '';
+      document.getElementById('address').value = client.address || '';
+      document.getElementById('tax_id').value = client.tax_id || '';
+      document.getElementById('business_name').value = client.business_name || '';
+      document.getElementById('modalTitle').textContent = 'Editar Cliente';
+      document.getElementById('clientModal').classList.add('active');
+    }
+
+    async function saveClient(e) {
+      e.preventDefault();
+
+      const id = document.getElementById('clientId').value;
+      const data = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        address: document.getElementById('address').value,
+        tax_id: document.getElementById('tax_id').value,
+        business_name: document.getElementById('business_name').value
+      };
+
+      try {
+        const method = id ? 'PUT' : 'POST';
+        const url = id ? `/api/clients/${id}` : '/api/clients';
+
+        const response = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          closeModal();
+          loadClients();
+        }
+      } catch (err) {
+        console.error('Error:', err);
+      }
+    }
+
+    async function deleteClient(id) {
+      if (!confirm('¿Está seguro de eliminar este cliente?')) return;
+
+      try {
+        const response = await fetch(`/api/clients/${id}`, { method: 'DELETE' });
+        if (response.ok) {
+          loadClients();
+        }
+      } catch (err) {
+        console.error('Error:', err);
+      }
+    }
+
+    async function logout() {
+      try {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        window.location.href = '/accounting/login';
+      } catch (err) {
+        console.error('Error:', err);
+      }
+    }
+
+    window.addEventListener('load', loadClients);
+    document.getElementById('clientModal').addEventListener('click', (e) => {
+      if (e.target.id === 'clientModal') closeModal();
+    });
+  </script>
+</body>
+</html>
