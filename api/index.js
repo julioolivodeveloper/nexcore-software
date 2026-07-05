@@ -26,7 +26,13 @@ let clients = [
   { id: 15, name: 'Nails Premium Studio',  email: '', phone: '', company: '', address: '', created_at: '2024-01-01' },
   { id: 16, name: 'Abel Huerta',           email: '', phone: '', company: '', address: '', created_at: '2024-01-01' },
   { id: 17, name: 'Alondra Dental Co',     email: '', phone: '', company: '', address: '', created_at: '2024-01-01' },
-  { id: 18, name: 'Oscar Martinez',        email: '', phone: '', company: '', address: '', created_at: '2024-01-01' },
+  { id: 18, name: 'Oscar Martinez',             email: '', phone: '', company: '', address: '', created_at: '2024-01-01' },
+  { id: 19, name: 'CBP Construction, Inc.',     email: '', phone: '', company: '', address: '', created_at: '2024-12-16' },
+  { id: 20, name: 'Albert Briseno',             email: '', phone: '', company: '', address: '', created_at: '2025-01-08' },
+  { id: 21, name: 'Rene Gallegos',              email: '', phone: '', company: '', address: '', created_at: '2025-01-09' },
+  { id: 22, name: 'Hammers Down Construction',  email: '', phone: '', company: '', address: '', created_at: '2025-01-14' },
+  { id: 23, name: 'Mobile Check Deposit',       email: '', phone: '', company: '', address: '', created_at: '2025-01-21' },
+  { id: 24, name: 'Alejandra Ramos',            email: '', phone: '', company: '', address: '', created_at: '2025-03-04' },
 ];
 
 let invoices = [
@@ -62,11 +68,21 @@ let invoices = [
   { id: 38, client_name: 'CBP Endless Ventures',  issue_date: '2024-11-20', due_date: '2024-12-20', status: 'paid', total: 1000.00,  notes: 'Invoice #38 | Payment', items: [{description:'Servicios', quantity:1, unit_price:1000}] },
   { id: 39, client_name: 'Abel Huerta',           issue_date: '2024-11-25', due_date: '2024-12-25', status: 'paid', total: 1200.00,  notes: 'Invoice #39 | Payment', items: [{description:'Servicios', quantity:1, unit_price:1200}] },
   { id: 40, client_name: 'Alondra Dental Co',     issue_date: '2024-12-06', due_date: '2025-01-06', status: 'paid', total: 500.00,   notes: 'Invoice #40 | Payment', items: [{description:'Servicios', quantity:1, unit_price:500}] },
-  { id: 41, client_name: 'Oscar Martinez',        issue_date: '2024-12-07', due_date: '2025-01-07', status: 'paid', total: 175.00,   notes: 'Invoice #41 | Payment', items: [{description:'Servicios', quantity:1, unit_price:175}] },
+  { id: 41, client_name: 'Oscar Martinez',            issue_date: '2024-12-07', due_date: '2025-01-07', status: 'paid', total: 175.00,   notes: 'Invoice #41 | Payment - Zelle',  items: [{description:'Servicios', quantity:1, unit_price:175}] },
+  { id: 42, client_name: 'Oscar Martinez',            issue_date: '2024-12-12', due_date: '2025-01-12', status: 'paid', total: 175.00,   notes: 'Zelle',                         items: [{description:'Servicios', quantity:1, unit_price:175}] },
+  { id: 43, client_name: 'CBP Construction, Inc.',   issue_date: '2024-12-16', due_date: '2025-01-16', status: 'paid', total: 5.00,     notes: 'Zelle',                         items: [{description:'Servicios', quantity:1, unit_price:5}] },
+  { id: 44, client_name: 'CBP Construction, Inc.',   issue_date: '2024-12-16', due_date: '2025-01-16', status: 'paid', total: 1200.00,  notes: 'Zelle',                         items: [{description:'Servicios', quantity:1, unit_price:1200}] },
+  { id: 45, client_name: 'Zoila Camacho',            issue_date: '2024-12-23', due_date: '2025-01-23', status: 'paid', total: 50.00,    notes: 'Zelle',                         items: [{description:'Servicios', quantity:1, unit_price:50}] },
+  { id: 46, client_name: 'Albert Briseno',           issue_date: '2025-01-08', due_date: '2025-02-08', status: 'paid', total: 1200.00,  notes: 'Zelle',                         items: [{description:'Servicios', quantity:1, unit_price:1200}] },
+  { id: 47, client_name: 'Rene Gallegos',            issue_date: '2025-01-09', due_date: '2025-02-09', status: 'paid', total: 1100.00,  notes: 'Zelle',                         items: [{description:'Servicios', quantity:1, unit_price:1100}] },
+  { id: 48, client_name: 'Hammers Down Construction',issue_date: '2025-01-14', due_date: '2025-02-14', status: 'paid', total: 50.00,    notes: 'Zelle',                         items: [{description:'Servicios', quantity:1, unit_price:50}] },
+  { id: 49, client_name: 'Mobile Check Deposit',     issue_date: '2025-01-21', due_date: '2025-02-21', status: 'paid', total: 1200.00,  notes: 'Cheque',                        items: [{description:'Servicios', quantity:1, unit_price:1200}] },
+  { id: 50, client_name: 'Mobile Check Deposit',     issue_date: '2025-02-24', due_date: '2025-03-24', status: 'paid', total: 1200.00,  notes: 'Cheque',                        items: [{description:'Servicios', quantity:1, unit_price:1200}] },
+  { id: 51, client_name: 'Alejandra Ramos',          issue_date: '2025-03-04', due_date: '2025-04-04', status: 'paid', total: 200.00,   notes: 'Zelle',                         items: [{description:'Servicios', quantity:1, unit_price:200}] },
 ];
 
-let nextClientId = 19;
-let nextInvoiceId = 42;
+let nextClientId = 25;
+let nextInvoiceId = 52;
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 
