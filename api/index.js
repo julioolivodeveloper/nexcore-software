@@ -416,6 +416,7 @@ app.get('/accounting/invoices',  (req, res) => res.sendFile(path.join(__dirname,
 app.get('/accounting/reports',   (req, res) => res.sendFile(path.join(__dirname, '..', 'views', 'reports.html')));
 app.get('/accounting/expenses',   (req, res) => res.sendFile(path.join(__dirname, '..', 'views', 'expenses.html')));
 app.get('/accounting/financials', (req, res) => res.sendFile(path.join(__dirname, '..', 'views', 'financials.html')));
+app.get('/accounting/chat',      (req, res) => res.sendFile(path.join(__dirname, '..', 'views', 'chat.html')));
 
 // ── AUTH ──────────────────────────────────────────────────────────────────────
 app.post('/api/auth/login', (req, res) => {
