@@ -112,8 +112,11 @@
     .empty-state { text-align: center; padding: 40px; color: var(--text-muted); font-size: .875rem; }
     .empty-state svg { width: 36px; height: 36px; margin: 0 auto 12px; opacity: .4; }
   </style>
+  <link rel="stylesheet" href="/accounting-mobile.css">
 </head>
 <body>
+  <div class="mob-overlay" id="mobOverlay" onclick="closeSidebar()"></div>
+  <script src="/accounting-mobile.js"></script>
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="logo-hex">⬡</div>
@@ -136,6 +139,7 @@
 
   <main class="main">
     <div class="topbar">
+      <button class="menu-btn" onclick="toggleSidebar()" aria-label="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
       <h1>Dashboard</h1>
       <div class="user-badge"><i data-lucide="user"></i><span id="userEmail">—</span></div>
     </div>
