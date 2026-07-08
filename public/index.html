@@ -154,8 +154,19 @@
     }
     .nav-links a:hover { color: #fff; }
     .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .nav-login {
+      display: flex; align-items: center; gap: 7px;
+      padding: 9px 18px; border-radius: 999px;
+      border: 1px solid rgba(6,182,212,.4);
+      background: rgba(6,182,212,.06);
+      font-size: .875rem; font-weight: 600; color: #67e8f9;
+      transition: background .2s, border-color .2s, transform .2s;
+      flex-shrink: 0; text-decoration: none;
+    }
+    .nav-login:hover { background: rgba(6,182,212,.14); border-color: rgba(6,182,212,.7); transform: translateY(-1px); }
+    .nav-login svg { width: 15px; height: 15px; }
     .nav-cta {
-      margin-left: auto;
       display: flex; align-items: center; gap: 8px;
       padding: 10px 22px; border-radius: 999px;
       background: linear-gradient(135deg, var(--purple), #1d4ed8);
@@ -215,8 +226,9 @@
       .nav-mobile-wa svg { width: 18px; height: 18px; }
       .nav-burger { display: flex; margin-left: auto; z-index: 1003; position: relative; }
       .nav-cta { display: none; }
+      .nav-login { display: none; }
     }
-    @media (min-width: 769px) { .nav-mobile-wa { display: none !important; } }
+    @media (min-width: 769px) { .nav-mobile-wa { display: none !important; } .nav-mobile-login { display: none !important; } }
 
     /* ── HERO ───────────────────────────────────────── */
     .hero {
@@ -1332,11 +1344,23 @@
             WhatsApp
           </a>
         </li>
+        <li style="border:none;padding:0;">
+          <a href="/accounting/login" class="nav-mobile-login" style="display:flex;align-items:center;justify-content:center;gap:10px;margin:10px 24px 24px;padding:13px 36px;border-radius:999px;border:1px solid rgba(6,182,212,.45);background:rgba(6,182,212,.08);color:#67e8f9;font-weight:700;font-size:1rem;text-decoration:none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Iniciar Sesión
+          </a>
+        </li>
       </ul>
-      <a onclick="fbq('track','Contact')" class="nav-cta" href="https://wa.me/12094609828?text=Hola%2C%20quiero%20cotizar%20un%20software" target="_blank" rel="noopener">
-        <i data-lucide="message-circle"></i>
-        WhatsApp
-      </a>
+      <div class="nav-actions">
+        <a href="/accounting/login" class="nav-login">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Iniciar Sesión
+        </a>
+        <a onclick="fbq('track','Contact')" class="nav-cta" href="https://wa.me/12094609828?text=Hola%2C%20quiero%20cotizar%20un%20software" target="_blank" rel="noopener">
+          <i data-lucide="message-circle"></i>
+          WhatsApp
+        </a>
+      </div>
       <button class="nav-burger" id="navBurger" aria-label="Menú">
         <i data-lucide="menu" id="burgerIcon"></i>
       </button>
