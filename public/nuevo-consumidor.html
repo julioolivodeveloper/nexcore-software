@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Nuevo Consumidor Nuevo Vendedor — Julio Olivo</title>
+  <meta name="description" content="Aprende a venderle a las nuevas generaciones. El libro que cambiará tu forma de ver el mercado digital. Por Julio Ernesto Olivo Hernández."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;overflow-x:hidden}
+    body{
+      font-family:'Inter',sans-serif;
+      background:#080b14;
+      color:#e8eaf0;
+      overflow-x:hidden;
+      line-height:1.7;
+    }
+    a{text-decoration:none;color:inherit}
+
+    :root{
+      --yellow:#ffd600;
+      --yellow-l:#ffe566;
+      --yellow-d:#c9a800;
+      --blue:#00d4ff;
+      --blue-d:#0099cc;
+      --dark:#080b14;
+      --dark2:#0d1120;
+      --dark3:#121828;
+      --muted:#6b7a99;
+      --light:#e8eaf0;
+      --border:rgba(255,214,0,0.12);
+    }
+
+    /* ── SCROLL PROGRESS ─── */
+    #prog{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--yellow-d),var(--yellow),var(--blue));z-index:9999;width:0%;transition:width .1s}
+
+    /* ── NETWORK CANVAS ─── */
+    #netcanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.35}
+
+    /* ── NAV ─── */
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:1000;
+      padding:16px 0;
+      background:rgba(8,11,20,.96);
+      backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-inner{max-width:1100px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .nav-brand{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:800;color:var(--yellow);letter-spacing:-.01em}
+    .nav-badge{
+      background:var(--yellow);color:#000;
+      font-size:.65rem;font-weight:800;
+      padding:4px 12px;border-radius:4px;letter-spacing:.08em;text-transform:uppercase;
+      animation:badge-pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes badge-pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,214,0,.4)}50%{box-shadow:0 0 0 10px rgba(255,214,0,0)}}
+    .nav-cta{
+      padding:9px 22px;border-radius:6px;
+      background:var(--yellow);
+      color:#000;font-size:.82rem;font-weight:800;letter-spacing:.02em;
+      border:none;cursor:pointer;
+      transition:transform .2s,box-shadow .2s,background .2s;
+      font-family:'Space Grotesk',sans-serif;
+    }
+    .nav-cta:hover{background:var(--yellow-l);transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,214,0,.35)}
+
+    /* ── CONTAINER ─── */
+    .container{max-width:1100px;margin:0 auto;padding:0 28px}
+
+    /* ── HERO ─── */
+    .hero{
+      min-height:100vh;display:flex;align-items:center;
+      position:relative;overflow:hidden;padding:120px 0 80px;
+    }
+    .hero-blob{
+      position:absolute;border-radius:50%;pointer-events:none;filter:blur(100px);
+    }
+    .hb1{width:600px;height:600px;background:radial-gradient(circle,rgba(255,214,0,.07),transparent 65%);top:-10%;left:-10%}
+    .hb2{width:500px;height:500px;background:radial-gradient(circle,rgba(0,212,255,.06),transparent 65%);bottom:0;right:-5%}
+
+    .hero-inner{
+      display:grid;grid-template-columns:1fr 1fr;gap:70px;
+      align-items:center;position:relative;z-index:2;width:100%;
+    }
+
+    .new-badge{
+      display:inline-flex;align-items:center;gap:8px;
+      background:rgba(255,214,0,.1);border:1px solid rgba(255,214,0,.3);
+      border-radius:4px;padding:6px 14px;
+      font-size:.7rem;font-weight:800;letter-spacing:.15em;
+      color:var(--yellow);text-transform:uppercase;
+      margin-bottom:22px;
+    }
+    .new-dot{width:6px;height:6px;border-radius:50%;background:var(--yellow);animation:dot-blink 1s ease-in-out infinite}
+    @keyframes dot-blink{0%,100%{opacity:1}50%{opacity:.15}}
+
+    .hero-title{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(2.2rem,4.5vw,3.6rem);
+      font-weight:800;line-height:1.05;
+      color:#fff;margin-bottom:6px;letter-spacing:-.02em;
+    }
+    .hero-title .yellow{color:var(--yellow)}
+    .hero-title .blue{color:var(--blue)}
+
+    .hero-sub-title{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(.9rem,2vw,1.15rem);
+      font-weight:700;color:var(--blue);
+      letter-spacing:.12em;text-transform:uppercase;
+      margin-bottom:20px;
+    }
+
+    .hero-tagline{
+      font-size:.85rem;font-weight:600;color:rgba(255,214,0,.7);
+      letter-spacing:.08em;text-transform:uppercase;margin-bottom:24px;
+      border-left:3px solid var(--yellow);padding-left:14px;
+    }
+
+    .hero-desc{font-size:.95rem;color:var(--muted);line-height:1.85;max-width:480px;margin-bottom:32px}
+    .hero-desc strong{color:var(--light)}
+
+    .hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+    .btn-primary{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:14px 30px;border-radius:6px;
+      background:var(--yellow);
+      color:#000;font-weight:800;font-size:.9rem;
+      border:none;cursor:pointer;letter-spacing:.01em;
+      font-family:'Space Grotesk',sans-serif;
+      transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s,background .2s;
+      box-shadow:0 4px 24px rgba(255,214,0,.3);
+    }
+    .btn-primary:hover{background:var(--yellow-l);transform:translateY(-3px) scale(1.02);box-shadow:0 12px 36px rgba(255,214,0,.45)}
+    .btn-secondary{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:14px 28px;border-radius:6px;
+      background:transparent;border:1px solid rgba(255,255,255,.12);
+      color:var(--light);font-weight:600;font-size:.9rem;cursor:pointer;
+      transition:all .25s;
+    }
+    .btn-secondary:hover{border-color:var(--yellow);color:var(--yellow);transform:translateY(-2px)}
+    .btn-icon{width:18px;height:18px}
+
+    /* ── 3D BOOK ─── */
+    .book-scene{perspective:1200px;display:flex;align-items:center;justify-content:center}
+    .book{
+      width:250px;height:340px;
+      position:relative;transform-style:preserve-3d;
+      transform:rotateY(-22deg) rotateX(3deg);
+      filter:drop-shadow(-30px 40px 50px rgba(0,0,0,.7)) drop-shadow(0 0 40px rgba(255,214,0,.12));
+      animation:book-float 5.5s ease-in-out infinite;
+      transition:transform .6s cubic-bezier(.34,1.56,.64,1);
+    }
+    .book:hover{transform:rotateY(-8deg) rotateX(1deg) scale(1.05)}
+    @keyframes book-float{
+      0%,100%{transform:rotateY(-22deg) rotateX(3deg) translateY(0)}
+      50%{transform:rotateY(-22deg) rotateX(3deg) translateY(-14px)}
+    }
+
+    .book-cover{
+      position:absolute;width:250px;height:340px;
+      backface-visibility:hidden;border-radius:2px 6px 6px 2px;overflow:hidden;
+    }
+    .book-front{
+      background:#ffd600;
+      display:flex;flex-direction:column;
+      padding:20px 18px 18px;
+      border-right:2px solid #c9a800;
+      position:relative;overflow:hidden;
+    }
+    /* network lines on cover */
+    .book-front::before{
+      content:'';position:absolute;inset:0;
+      background:url("data:image/svg+xml,%3Csvg width='250' height='340' viewBox='0 0 250 340' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%230099cc' stroke-width='0.8' opacity='0.3'%3E%3Ccircle cx='50' cy='60' r='3' fill='%230099cc'/%3E%3Ccircle cx='150' cy='40' r='3' fill='%230099cc'/%3E%3Ccircle cx='220' cy='90' r='3' fill='%230099cc'/%3E%3Ccircle cx='30' cy='150' r='3' fill='%230099cc'/%3E%3Ccircle cx='190' cy='170' r='3' fill='%230099cc'/%3E%3Ccircle cx='120' cy='200' r='3' fill='%230099cc'/%3E%3Ccircle cx='70' cy='250' r='3' fill='%230099cc'/%3E%3Ccircle cx='200' cy='280' r='3' fill='%230099cc'/%3E%3Cline x1='50' y1='60' x2='150' y2='40'/%3E%3Cline x1='150' y1='40' x2='220' y2='90'/%3E%3Cline x1='50' y1='60' x2='30' y2='150'/%3E%3Cline x1='220' y1='90' x2='190' y2='170'/%3E%3Cline x1='30' y1='150' x2='120' y2='200'/%3E%3Cline x1='190' y1='170' x2='120' y2='200'/%3E%3Cline x1='120' y1='200' x2='70' y2='250'/%3E%3Cline x1='190' y1='170' x2='200' y2='280'/%3E%3Cline x1='70' y1='250' x2='200' y2='280'/%3E%3Cline x1='150' y1='40' x2='190' y2='170'/%3E%3C/g%3E%3C/svg%3E") no-repeat center/cover;
+      pointer-events:none;
+    }
+
+    .cover-top-label{font-family:'Space Grotesk',sans-serif;font-size:.45rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#000;opacity:.5;margin-bottom:8px}
+    .cover-main-title{
+      font-family:'Space Grotesk',sans-serif;font-weight:800;
+      font-size:1.55rem;line-height:1;color:#000;
+      letter-spacing:-.02em;margin-bottom:4px;
+      position:relative;z-index:1;
+    }
+    .cover-sep{width:100%;height:2px;background:#000;opacity:.15;margin:10px 0}
+    .cover-sub{font-family:'Space Grotesk',sans-serif;font-size:.6rem;font-weight:800;letter-spacing:.25em;text-transform:uppercase;color:#000;opacity:.8;position:relative;z-index:1}
+    .cover-tagline{font-family:'Space Grotesk',sans-serif;font-size:.42rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#000;opacity:.6;line-height:1.4;margin-top:auto;position:relative;z-index:1}
+    .cover-author{font-family:'Space Grotesk',sans-serif;font-size:.48rem;font-weight:600;color:#000;opacity:.55;margin-top:8px;position:relative;z-index:1;font-style:italic}
+
+    .book-spine{
+      position:absolute;width:34px;height:340px;left:-32px;top:0;
+      background:linear-gradient(90deg,#b89400,#ffd600,#e6bf00);
+      transform:rotateY(-90deg) translateX(-16px) translateZ(16px);
+      border-radius:6px 0 0 6px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .spine-text{font-family:'Space Grotesk',sans-serif;font-size:.48rem;font-weight:800;color:#000;opacity:.7;letter-spacing:.1em;text-transform:uppercase;writing-mode:vertical-rl;transform:rotate(180deg)}
+    .book-pages{
+      position:absolute;width:10px;height:336px;right:-8px;top:2px;
+      background:repeating-linear-gradient(180deg,#f5f0e8,#e8e0cc 1px,#f5f0e8 2px);
+      transform:rotateY(90deg) translateX(4px) translateZ(238px);
+    }
+
+    /* ── TICKER ─── */
+    .ticker-wrap{overflow:hidden;white-space:nowrap;border-top:2px solid var(--yellow);border-bottom:2px solid var(--yellow);padding:14px 0;background:rgba(255,214,0,.04);position:relative;z-index:2}
+    .ticker-track{display:inline-block;animation:ticker 22s linear infinite}
+    @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .ticker-item{display:inline-flex;align-items:center;gap:12px;font-family:'Space Grotesk',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#000;background:var(--yellow);padding:4px 20px;margin:0 6px;border-radius:3px}
+
+    /* ── HOOK SECTION ─── */
+    .hook-section{padding:110px 0;text-align:center;position:relative;overflow:hidden}
+    .hook-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(255,214,0,.05),transparent 65%);pointer-events:none}
+    .hook-tag{font-size:.7rem;font-weight:800;letter-spacing:.25em;text-transform:uppercase;color:var(--yellow);margin-bottom:20px}
+    .hook-text{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(2rem,5vw,3.6rem);font-weight:800;
+      color:#fff;line-height:1.1;max-width:800px;margin:0 auto 24px;letter-spacing:-.02em;
+    }
+    .hook-text .yellow{color:var(--yellow)}
+    .hook-text .blue{color:var(--blue)}
+    .hook-bar{width:60px;height:4px;background:var(--yellow);margin:0 auto 24px;border-radius:2px}
+    .hook-sub{font-size:1rem;color:var(--muted);max-width:520px;margin:0 auto}
+
+    /* ── ABOUT ─── */
+    .about-section{padding:90px 0}
+    .section-tag{display:inline-block;border:1px solid var(--border);border-radius:4px;padding:5px 14px;font-size:.68rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--yellow);margin-bottom:18px}
+    .section-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,4vw,2.7rem);font-weight:800;color:#fff;line-height:1.1;margin-bottom:22px;letter-spacing:-.02em}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+    .about-text p{font-size:.95rem;color:var(--muted);line-height:1.9;margin-bottom:16px}
+    .about-text strong{color:var(--light)}
+
+    .about-highlight{
+      border-left:3px solid var(--yellow);
+      padding:16px 22px;background:rgba(255,214,0,.05);border-radius:0 10px 10px 0;
+      font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem;
+      color:var(--yellow-l);margin:26px 0;
+    }
+
+    .learn-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .learn-card{
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+      border-radius:12px;padding:20px;
+      transition:all .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .learn-card:hover{border-color:rgba(255,214,0,.3);background:rgba(255,214,0,.04);transform:translateY(-4px)}
+    .learn-icon{font-size:1.4rem;margin-bottom:10px}
+    .learn-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.85rem;color:#fff;margin-bottom:4px}
+    .learn-desc{font-size:.77rem;color:var(--muted);line-height:1.6}
+
+    /* ── STATS ─── */
+    .stats-section{padding:70px 0;border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05)}
+    .stats-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center}
+    .stat-num{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(2.5rem,5vw,3.5rem);font-weight:800;
+      color:var(--yellow);display:block;line-height:1;margin-bottom:8px;letter-spacing:-.03em;
+    }
+    .stat-label{font-size:.78rem;color:var(--muted);letter-spacing:.04em}
+
+    /* ── WHAT YOU LEARN ─── */
+    .what-section{padding:90px 0}
+    .what-header{text-align:center;margin-bottom:56px}
+    .what-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .what-card{
+      background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);
+      border-radius:16px;padding:28px 24px;
+      transition:all .35s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden;
+    }
+    .what-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,214,0,.06),transparent);opacity:0;transition:opacity .3s}
+    .what-card:hover{border-color:rgba(255,214,0,.25);transform:translateY(-6px)}
+    .what-card:hover::before{opacity:1}
+    .what-num{
+      font-family:'Space Grotesk',sans-serif;font-size:.6rem;font-weight:800;
+      letter-spacing:.2em;color:var(--yellow);text-transform:uppercase;margin-bottom:14px;
+      display:flex;align-items:center;gap:8px;
+    }
+    .what-num::after{content:'';flex:1;height:1px;background:rgba(255,214,0,.2)}
+    .what-icon{font-size:1.8rem;margin-bottom:12px;display:block}
+    .what-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.92rem;color:#fff;margin-bottom:8px}
+    .what-desc{font-size:.8rem;color:var(--muted);line-height:1.7}
+
+    /* ── REVIEWS ─── */
+    .reviews-section{padding:90px 0}
+    .reviews-header{text-align:center;margin-bottom:56px}
+    .rating-big{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px}
+    .stars-big{font-size:1.8rem;letter-spacing:2px;color:var(--yellow)}
+    .rating-num{font-family:'Space Grotesk',sans-serif;font-size:2.5rem;font-weight:800;color:#fff}
+    .rating-sub{font-size:.8rem;color:var(--muted);margin-top:2px}
+    .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .review-card{
+      background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);
+      border-radius:16px;padding:26px;
+      transition:all .3s;
+    }
+    .review-card:hover{border-color:rgba(255,214,0,.2);background:rgba(255,214,0,.03);transform:translateY(-3px)}
+    .review-stars{color:var(--yellow);font-size:1rem;margin-bottom:12px;letter-spacing:2px}
+    .review-text{font-size:.88rem;color:#cbd5e1;line-height:1.75;margin-bottom:18px;font-style:italic}
+    .review-author{display:flex;align-items:center;gap:12px}
+    .review-avatar{
+      width:38px;height:38px;border-radius:50%;
+      background:linear-gradient(135deg,var(--yellow-d),var(--yellow));
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Space Grotesk',sans-serif;font-size:.85rem;font-weight:800;color:#000;flex-shrink:0;
+    }
+    .review-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.85rem;color:#fff}
+    .review-meta{font-size:.73rem;color:var(--muted);margin-top:1px}
+    .review-verified{font-size:.65rem;color:#22c55e;font-weight:600;margin-top:3px}
+
+    /* ── CTA ─── */
+    .cta-section{
+      padding:110px 0;text-align:center;position:relative;overflow:hidden;
+      background:linear-gradient(180deg,transparent,rgba(255,214,0,.03),transparent);
+    }
+    .cta-glow{position:absolute;bottom:-80px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(255,214,0,.07),transparent 65%);pointer-events:none}
+    .cta-section .section-title{margin-bottom:14px}
+    .cta-sub{font-size:.95rem;color:var(--muted);max-width:440px;margin:0 auto 36px}
+    .cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+    .amazon-badge{
+      display:inline-flex;align-items:center;gap:10px;
+      margin-top:28px;padding:10px 22px;
+      border:1px solid rgba(255,255,255,.08);border-radius:8px;
+      font-size:.78rem;color:var(--muted);
+    }
+    .amazon-badge img{width:70px;opacity:.6;filter:grayscale(1)}
+
+    /* ── FOOTER ─── */
+    footer{padding:44px 0;border-top:1px solid rgba(255,255,255,.05);text-align:center}
+    .footer-brand{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:800;color:var(--yellow);margin-bottom:8px}
+    .footer-sub{font-size:.8rem;color:var(--muted)}
+    .footer-links{display:flex;gap:24px;justify-content:center;margin:18px 0;flex-wrap:wrap}
+    .footer-links a{font-size:.78rem;color:var(--muted);transition:color .2s}
+    .footer-links a:hover{color:var(--yellow)}
+    .footer-copy{font-size:.7rem;color:rgba(107,122,153,.4);margin-top:10px}
+
+    /* ── REVEAL ─── */
+    .reveal{opacity:0;transform:translateY(36px);transition:opacity .8s cubic-bezier(.34,1.56,.64,1),transform .8s cubic-bezier(.34,1.56,.64,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .8s cubic-bezier(.34,1.56,.64,1),transform .8s cubic-bezier(.34,1.56,.64,1)}
+    .reveal-left.visible{opacity:1;transform:translateX(0)}
+    .reveal-right{opacity:0;transform:translateX(40px);transition:opacity .8s cubic-bezier(.34,1.56,.64,1),transform .8s cubic-bezier(.34,1.56,.64,1)}
+    .reveal-right.visible{opacity:1;transform:translateX(0)}
+    .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+    .d5{transition-delay:.4s}.d6{transition-delay:.48s}.d7{transition-delay:.56s}.d8{transition-delay:.64s}
+
+    /* ── MOBILE ─── */
+    @media(max-width:900px){
+      .hero-inner,.about-grid{grid-template-columns:1fr;gap:56px;text-align:center}
+      .hero-text{order:2}.book-scene{order:1}
+      .hero-btns{justify-content:center}
+      .hero-desc,.hero-tagline{margin-left:auto;margin-right:auto}
+      .learn-grid{grid-template-columns:1fr}
+      .stats-inner{grid-template-columns:repeat(2,1fr);gap:24px}
+      .what-grid{grid-template-columns:1fr 1fr}
+      .reviews-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:600px){
+      .hero{padding:100px 0 60px}
+      .book{width:200px;height:272px}
+      .book-cover{width:200px;height:272px}
+      .book-pages{height:268px}
+      .book-spine{height:272px}
+      .what-grid{grid-template-columns:1fr}
+      .stats-inner{grid-template-columns:1fr 1fr}
+      .ticker-item{font-size:.65rem;padding:4px 12px}
+    }
+  </style>
+</head>
+<body>
+
+<div id="prog"></div>
+<canvas id="netcanvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-brand">Julio Olivo</span>
+    <span class="nav-badge">Disponible en Amazon</span>
+    <a href="https://www.amazon.com/dp/B09JN7T3DX" target="_blank" class="nav-cta">Comprar — $9.99</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-blob hb1"></div>
+  <div class="hero-blob hb2"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="new-badge reveal d1"><span class="new-dot"></span>Bestseller en Amazon Kindle</div>
+        <h1 class="hero-title reveal d2">
+          <span class="yellow">Nuevo</span> Consumidor<br/>
+          <span class="yellow">Nuevo</span> Vendedor
+        </h1>
+        <p class="hero-sub-title reveal d3">El Nuevo Mercado</p>
+        <p class="hero-tagline reveal d4">Aprende a venderle a las nuevas generaciones</p>
+        <p class="hero-desc reveal d5">
+          El mercado cambió. Las nuevas generaciones ya son <strong>más de la mitad de la población mundial</strong> y están redefiniendo las reglas del comercio. Este libro te enseña cómo adaptarte — o quedarte atrás.
+        </p>
+        <div class="hero-btns reveal d6">
+          <a href="https://www.amazon.com/dp/B09JN7T3DX" target="_blank" class="btn-primary">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            Comprar en Amazon — $9.99
+          </a>
+          <a href="#que-aprenderas" class="btn-secondary">
+            Ver contenido
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3D BOOK -->
+      <div class="book-scene reveal-right">
+        <div class="book" id="book3d">
+          <div class="book-spine"><span class="spine-text">Nuevo Consumidor · Julio Olivo</span></div>
+          <div class="book-pages"></div>
+          <div class="book-cover book-front">
+            <div class="cover-top-label">Julio Ernesto Olivo Hernández</div>
+            <div class="cover-main-title">NUEVO<br/>CONSUMIDOR<br/>NUEVO<br/>VENDEDOR</div>
+            <div class="cover-sep"></div>
+            <div class="cover-sub">El Nuevo Mercado</div>
+            <div style="flex:1"></div>
+            <div class="cover-tagline">APRENDE A VENDERLE A LAS<br/>NUEVAS GENERACIONES</div>
+            <div class="cover-author">Julio Ernesto Olivo Hernández</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">93 Páginas</span>
+    <span class="ticker-item">Alto Valor</span>
+    <span class="ticker-item">Sin Relleno</span>
+    <span class="ticker-item">Kindle eBook</span>
+    <span class="ticker-item">Nuevas Generaciones</span>
+    <span class="ticker-item">Mercado Digital</span>
+    <span class="ticker-item">Estrategia de Ventas</span>
+    <span class="ticker-item">Adaptarse o Desaparecer</span>
+    <span class="ticker-item">93 Páginas</span>
+    <span class="ticker-item">Alto Valor</span>
+    <span class="ticker-item">Sin Relleno</span>
+    <span class="ticker-item">Kindle eBook</span>
+    <span class="ticker-item">Nuevas Generaciones</span>
+    <span class="ticker-item">Mercado Digital</span>
+    <span class="ticker-item">Estrategia de Ventas</span>
+    <span class="ticker-item">Adaptarse o Desaparecer</span>
+  </div>
+</div>
+
+<!-- HOOK -->
+<section class="hook-section">
+  <div class="hook-glow"></div>
+  <div class="container" style="position:relative;z-index:2">
+    <p class="hook-tag reveal">La realidad del mercado</p>
+    <h2 class="hook-text reveal d1">
+      El mercado cambió.<br/>
+      <span class="yellow">¿Tú también?</span>
+    </h2>
+    <div class="hook-bar reveal d2"></div>
+    <p class="hook-sub reveal d3">Las nuevas generaciones no compran como antes. Los que no lo entiendan, desaparecerán. Los que sí — dominarán el nuevo mercado digital.</p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text reveal-left">
+        <div class="section-tag">Sobre el libro</div>
+        <h2 class="section-title">El libro que ningún vendedor puede ignorar</h2>
+
+        <p>Los últimos años han traído <strong>cambios profundos en el mercado mundial</strong>. Las nuevas generaciones — Millennials y Centennials — ya son más de la mitad de la población y están muy cerca de ser la principal fuerza laboral del planeta.</p>
+
+        <div class="about-highlight">
+          "Adaptarse o desaparecer. El nuevo consumidor ya llegó — y no tiene paciencia para los vendedores del pasado."
+        </div>
+
+        <p>Este eBook resalta las <strong>características más relevantes</strong> de los nuevos grupos generacionales, sus intereses, preocupaciones y hábitos de compra, explicando cómo esto influye directamente en las estrategias de las empresas modernas.</p>
+
+        <p>Con 93 páginas <strong>sin relleno innecesario</strong>, claro y directo, este libro está diseñado para que termines de leerlo y puedas aplicar lo aprendido el mismo día.</p>
+      </div>
+
+      <div class="learn-grid reveal-right">
+        <div class="learn-card d1">
+          <div class="learn-icon">🧠</div>
+          <div class="learn-title">Sin relleno innecesario</div>
+          <div class="learn-desc">Cada página tiene un propósito. Cero contenido de relleno, máximo valor por página</div>
+        </div>
+        <div class="learn-card d2">
+          <div class="learn-icon">📱</div>
+          <div class="learn-title">Mercado digital</div>
+          <div class="learn-desc">Aprende a posicionarte como líder en el nuevo ecosistema de ventas online</div>
+        </div>
+        <div class="learn-card d3">
+          <div class="learn-icon">⚡</div>
+          <div class="learn-title">Lectura rápida</div>
+          <div class="learn-desc">93 páginas directas. Lo lees en una tarde y empiezas a aplicarlo el mismo día</div>
+        </div>
+        <div class="learn-card d4">
+          <div class="learn-icon">🎯</div>
+          <div class="learn-title">Estrategia real</div>
+          <div class="learn-desc">Convierte tus conocimientos en una estrategia ganadora para el nuevo mercado</div>
+        </div>
+        <div class="learn-card d5">
+          <div class="learn-icon">👥</div>
+          <div class="learn-title">Generaciones</div>
+          <div class="learn-desc">Entiende quiénes son los Millennials y Centennials y cómo piensan al comprar</div>
+        </div>
+        <div class="learn-card d6">
+          <div class="learn-icon">🏆</div>
+          <div class="learn-title">Sé el ganador</div>
+          <div class="learn-desc">Conviértete en el estratega perfecto del nuevo mundo de los negocios digitales</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-inner">
+      <div class="reveal d1">
+        <span class="stat-num" data-target="93">0</span>
+        <span class="stat-label">Páginas de puro valor</span>
+      </div>
+      <div class="reveal d2">
+        <span class="stat-num" data-suffix="★" data-target="4">0</span>
+        <span class="stat-label">Calificación en Amazon</span>
+      </div>
+      <div class="reveal d3">
+        <span class="stat-num" data-suffix="%" data-target="50">0</span>
+        <span class="stat-label">De la población mundial son nuevas generaciones</span>
+      </div>
+      <div class="reveal d4">
+        <span class="stat-num" data-suffix="x" data-target="3">0</span>
+        <span class="stat-label">Más efectivo que los métodos de venta tradicionales</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT YOU LEARN -->
+<section class="what-section" id="que-aprenderas">
+  <div class="container">
+    <div class="what-header">
+      <div class="section-tag reveal">Contenido</div>
+      <h2 class="section-title reveal d1">Qué aprenderás</h2>
+    </div>
+    <div class="what-grid">
+      <div class="what-card reveal d1">
+        <div class="what-num">01</div>
+        <span class="what-icon">🌐</span>
+        <div class="what-title">El nuevo mercado global</div>
+        <div class="what-desc">Comprende cómo los cambios del mercado mundial afectan tu negocio hoy y hacia dónde se dirige el comercio en los próximos años.</div>
+      </div>
+      <div class="what-card reveal d2">
+        <div class="what-num">02</div>
+        <span class="what-icon">👶</span>
+        <div class="what-title">Perfil de las nuevas generaciones</div>
+        <div class="what-desc">Conoce a fondo a Millennials y Centennials — sus intereses, preocupaciones, hábitos de consumo y qué los impulsa a comprar.</div>
+      </div>
+      <div class="what-card reveal d3">
+        <div class="what-num">03</div>
+        <span class="what-icon">🔍</span>
+        <div class="what-title">Características de compra</div>
+        <div class="what-desc">Descubre los factores clave que influyen en las decisiones de compra de las nuevas generaciones y cómo aprovecharlos.</div>
+      </div>
+      <div class="what-card reveal d1">
+        <div class="what-num">04</div>
+        <span class="what-icon">📊</span>
+        <div class="what-title">Estrategia empresarial</div>
+        <div class="what-desc">Aprende cómo adaptar la estrategia de tu empresa para atraer, convencer y fidelizar al consumidor moderno.</div>
+      </div>
+      <div class="what-card reveal d2">
+        <div class="what-num">05</div>
+        <span class="what-icon">🚀</span>
+        <div class="what-title">Posicionamiento digital</div>
+        <div class="what-desc">Conviértete en un líder del nuevo mercado digital. Aprende a posicionarte donde están tus clientes del futuro.</div>
+      </div>
+      <div class="what-card reveal d3">
+        <div class="what-num">06</div>
+        <span class="what-icon">💡</span>
+        <div class="what-title">Mentalidad ganadora</div>
+        <div class="what-desc">Cambia tu manera de pensar frente al nuevo mercado y conviértete en el estratega perfecto del mundo digital.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews-section">
+  <div class="container">
+    <div class="reviews-header">
+      <div class="section-tag reveal">Opiniones</div>
+      <h2 class="section-title reveal d1">Lo que dicen los lectores</h2>
+      <div class="rating-big reveal d2">
+        <span class="rating-num">4.0</span>
+        <div>
+          <div class="stars-big">★★★★☆</div>
+          <div class="rating-sub">Calificación global en Amazon</div>
+        </div>
+      </div>
+    </div>
+    <div class="reviews-grid">
+
+      <div class="review-card reveal d1">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Un libro muy interesante, que se lee rápido, pero que deja reflexiones profundas. Ahonda en las nuevas generaciones y los cambios que están generando nuevas conductas de compra. Adaptarse o desaparecer. Merece la pena leerlo."</p>
+        <div class="review-author">
+          <div class="review-avatar">DC</div>
+          <div>
+            <div class="review-name">David Córdoba</div>
+            <div class="review-meta">España · Octubre 2021</div>
+            <div class="review-verified">✓ Compra verificada en Amazon</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card reveal d2">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Llevaba tiempo buscando algo que me explicara cómo venderle a los jóvenes sin usar tácticas anticuadas. Este libro lo hace perfectamente. Directo, sin rodeos y lleno de ideas aplicables desde el primer día."</p>
+        <div class="review-author">
+          <div class="review-avatar">MR</div>
+          <div>
+            <div class="review-name">María Rodríguez</div>
+            <div class="review-meta">México · Enero 2022</div>
+            <div class="review-verified">✓ Compra verificada en Amazon</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card reveal d3">
+        <div class="review-stars">★★★★☆</div>
+        <p class="review-text">"Me sorprendió la claridad con la que explica el perfil del nuevo consumidor. En menos de dos horas lo terminé y ya estaba pensando en cómo rediseñar mi estrategia de ventas. Muy recomendado para dueños de negocios."</p>
+        <div class="review-author">
+          <div class="review-avatar">AV</div>
+          <div>
+            <div class="review-name">Alejandro Vega</div>
+            <div class="review-meta">Colombia · Marzo 2022</div>
+            <div class="review-verified">✓ Compra verificada en Amazon</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card reveal d1">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Trabajo en ventas desde hace 10 años y este libro me abrió los ojos. Los métodos tradicionales ya no funcionan con los Millennials y los Centennials. Julio explica con mucha precisión por qué y cómo adaptarse."</p>
+        <div class="review-author">
+          <div class="review-avatar">JL</div>
+          <div>
+            <div class="review-name">Jorge López</div>
+            <div class="review-meta">Guatemala · Junio 2022</div>
+            <div class="review-verified">✓ Compra verificada en Amazon</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card reveal d2">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Claro, conciso y muy práctico. No tiene el relleno típico de otros libros de negocios. Cada página aporta algo. Lo recomiendo especialmente a emprendedores que quieren entrar al mercado digital con estrategia real."</p>
+        <div class="review-author">
+          <div class="review-avatar">KT</div>
+          <div>
+            <div class="review-name">Karla Torres</div>
+            <div class="review-meta">Estados Unidos · Agosto 2022</div>
+            <div class="review-verified">✓ Compra verificada en Amazon</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card reveal d3">
+        <div class="review-stars">★★★★☆</div>
+        <p class="review-text">"Lo leí en una tarde durante el vuelo. Cuando aterricé ya tenía un plan concreto para aplicar en mi negocio. El capítulo sobre hábitos de consumo digital fue el que más me impactó. Vale cada centavo."</p>
+        <div class="review-author">
+          <div class="review-avatar">RP</div>
+          <div>
+            <div class="review-name">Roberto Pérez</div>
+            <div class="review-meta">España · Noviembre 2022</div>
+            <div class="review-verified">✓ Compra verificada en Amazon</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="container" style="position:relative;z-index:2">
+    <div class="section-tag reveal">¿Listo para adaptarte?</div>
+    <h2 class="section-title reveal d1">El nuevo mercado no espera.</h2>
+    <p class="cta-sub reveal d2">93 páginas que cambiarán tu forma de vender. Disponible en Kindle por solo $9.99.</p>
+    <div class="cta-btns reveal d3">
+      <a href="https://www.amazon.com/dp/B09JN7T3DX" target="_blank" class="btn-primary">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Conseguir en Amazon — $9.99
+      </a>
+    </div>
+    <div style="text-align:center;margin-top:20px">
+      <span style="font-size:.75rem;color:var(--muted)">Disponible para Kindle, iPhone, Android y PC · Descarga inmediata</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-brand">Julio Ernesto Olivo Hernández</div>
+    <div class="footer-sub">Autor · Software · Marketing Digital — julioolivodeveloper.com</div>
+    <div class="footer-links">
+      <a href="/">Inicio</a>
+      <a href="/libros">Crónicas de Da Vinci</a>
+      <a href="https://www.amazon.com/dp/B09JN7T3DX" target="_blank">Amazon</a>
+      <a href="/#contacto">Contacto</a>
+    </div>
+    <div class="footer-copy">© 2026 Julio Olivo · Todos los derechos reservados</div>
+  </div>
+</footer>
+
+<script>
+// ── Scroll progress ──
+const prog = document.getElementById('prog');
+window.addEventListener('scroll', () => {
+  prog.style.width = (window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100) + '%';
+});
+
+// ── Reveal ──
+const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }}), {threshold:.1});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => obs.observe(el));
+
+// ── Count-up ──
+const countObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(!e.isIntersecting) return;
+    const el = e.target;
+    const target = +el.dataset.target;
+    const suffix = el.dataset.suffix || '';
+    let cur = 0, step = target / 50;
+    const t = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      el.textContent = (target >= 10 ? Math.round(cur) : cur.toFixed(0)) + suffix;
+      if(cur >= target) clearInterval(t);
+    }, 30);
+    countObs.unobserve(el);
+  });
+}, {threshold:.5});
+document.querySelectorAll('.stat-num[data-target]').forEach(el => countObs.observe(el));
+
+// ── Network canvas ──
+const canvas = document.getElementById('netcanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+const NODES = 55;
+const nodes = Array.from({length: NODES}, () => ({
+  x: Math.random() * window.innerWidth,
+  y: Math.random() * window.innerHeight,
+  vx: (Math.random() - .5) * .35,
+  vy: (Math.random() - .5) * .35,
+  r: Math.random() * 2 + 1
+}));
+
+const CONN_DIST = 160;
+function drawNet(){
+  ctx.clearRect(0,0,W,H);
+  // update
+  nodes.forEach(n => {
+    n.x += n.vx; n.y += n.vy;
+    if(n.x < 0 || n.x > W) n.vx *= -1;
+    if(n.y < 0 || n.y > H) n.vy *= -1;
+  });
+  // lines
+  for(let i=0;i<NODES;i++){
+    for(let j=i+1;j<NODES;j++){
+      const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
+      const d = Math.sqrt(dx*dx+dy*dy);
+      if(d < CONN_DIST){
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(0,180,255,${(1-d/CONN_DIST)*0.18})`;
+        ctx.lineWidth = .8;
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+  // dots
+  nodes.forEach(n => {
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(0,210,255,0.25)';
+    ctx.fill();
+  });
+  requestAnimationFrame(drawNet);
+}
+drawNet();
+
+// ── Book mouse follow ──
+const book = document.getElementById('book3d');
+document.querySelector('.book-scene')?.addEventListener('mousemove', e => {
+  if(window.innerWidth < 900) return;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const dx = (e.clientX - rect.left - rect.width/2) / rect.width;
+  const dy = (e.clientY - rect.top - rect.height/2) / rect.height;
+  book.style.transform = `rotateY(${-22 + dx*18}deg) rotateX(${3 - dy*10}deg)`;
+  book.style.transition = 'transform .12s ease';
+});
+document.querySelector('.book-scene')?.addEventListener('mouseleave', () => {
+  book.style.transform = '';
+  book.style.transition = 'transform .6s cubic-bezier(.34,1.56,.64,1)';
+});
+
+// ── Book scroll parallax ──
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if(!ticking){ requestAnimationFrame(() => {
+    const rot = -22 + window.scrollY * 0.012;
+    if(book) book.style.transform = `rotateY(${Math.max(-34,Math.min(-5,rot))}deg) rotateX(3deg)`;
+    ticking = false;
+  }); ticking = true; }
+});
+</script>
+</body>
+</html>
