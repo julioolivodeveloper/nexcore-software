@@ -520,6 +520,7 @@ app.get('/api/reports/dashboard', (req, res) => res.json(computeDashboard()));
 app.get('/libro',             (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'libro.html')));
 app.get('/libros',            (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'libro.html')));
 app.get('/nuevo-consumidor',  (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'nuevo-consumidor.html')));
+app.get('/nuestra-lucha',    (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'nuestra-lucha.html')));
 
 // ── DEFAULT ───────────────────────────────────────────────────────────────────
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'index.html')));
