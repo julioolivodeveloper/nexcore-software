@@ -521,6 +521,7 @@ app.get('/libro',             (req, res) => res.sendFile(path.join(__dirname, '.
 app.get('/libros',            (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'libro.html')));
 app.get('/nuevo-consumidor',  (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'nuevo-consumidor.html')));
 app.get('/nuestra-lucha',    (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'nuestra-lucha.html')));
+app.get('/thovir',           (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'thovir.html')));
 
 // ── DEFAULT ───────────────────────────────────────────────────────────────────
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'index.html')));

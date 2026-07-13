@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>THOVIR — Y la Profecía del Árbol Sagrado</title>
+  <meta name="description" content="3,000 años después de Ragnarok. Un enano ordinario. Una profecía que cambiará el destino de todos los mundos. La nueva novela épica de Julio Ernesto Olivo Hernández."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700;900&family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"/>
+
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;overflow-x:hidden}
+    body{font-family:'Lora',serif;background:#040810;color:#c8d5b0;overflow-x:hidden;line-height:1.75}
+    a{text-decoration:none;color:inherit}
+
+    :root{
+      --green:#1a4a1a;
+      --green-l:#2d7a2d;
+      --green-d:#0d2b0d;
+      --gold:#c9963a;
+      --gold-l:#f0c96a;
+      --gold-d:#8a6218;
+      --purple:#4a1d96;
+      --purple-l:#7c3aed;
+      --purple-g:#2e1065;
+      --dark:#040810;
+      --dark2:#080f10;
+      --dark3:#0d1a10;
+      --parchment:#c8d5b0;
+      --muted:#6b7a5a;
+      --border:rgba(201,150,58,.15);
+    }
+
+    /* ── RUNE CANVAS ─── */
+    #runecanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.7}
+
+    /* ── FOG OVERLAY ─── */
+    .fog{
+      position:fixed;inset:0;pointer-events:none;z-index:1;
+      background:
+        radial-gradient(ellipse 80% 40% at 50% 100%, rgba(13,43,13,.6) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 30% at 20% 80%, rgba(26,74,26,.3) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 30% at 80% 90%, rgba(74,29,150,.15) 0%, transparent 60%);
+    }
+
+    /* ── GRAIN ─── */
+    body::before{
+      content:'';position:fixed;inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events:none;z-index:1;opacity:.6;
+    }
+
+    /* ── SCROLL PROGRESS ─── */
+    #prog{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--green-d),var(--gold),var(--purple-l),var(--gold));z-index:9999;width:0%}
+
+    /* ── NAV ─── */
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:1000;
+      padding:16px 0;background:rgba(4,8,16,.97);
+      backdrop-filter:blur(24px);border-bottom:1px solid var(--border);
+    }
+    .nav-inner{max-width:1100px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .nav-brand{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--gold-l);letter-spacing:.08em}
+    .nav-badge{
+      border:1px solid var(--gold);border-radius:3px;
+      font-family:'Cinzel',serif;font-size:.58rem;font-weight:600;letter-spacing:.15em;
+      color:var(--gold);padding:5px 14px;text-transform:uppercase;
+      animation:badge-glow 3s ease-in-out infinite;
+    }
+    @keyframes badge-glow{0%,100%{box-shadow:0 0 0 0 rgba(201,150,58,.3)}50%{box-shadow:0 0 14px 0 rgba(201,150,58,.3)}}
+    .nav-cta{
+      padding:9px 22px;border-radius:3px;
+      background:linear-gradient(135deg,var(--gold-d),var(--gold));
+      color:#fff;font-family:'Cinzel',serif;font-size:.78rem;font-weight:700;letter-spacing:.06em;
+      border:none;cursor:pointer;
+      transition:transform .2s,box-shadow .2s;
+      box-shadow:0 4px 18px rgba(201,150,58,.3);
+    }
+    .nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,150,58,.45)}
+
+    /* ── CONTAINER ─── */
+    .container{max-width:1100px;margin:0 auto;padding:0 28px}
+
+    /* ── HERO ─── */
+    .hero{
+      min-height:100vh;display:flex;align-items:center;
+      position:relative;overflow:hidden;padding:110px 0 80px;
+    }
+    .hero-blob{position:absolute;border-radius:50%;pointer-events:none;filter:blur(120px)}
+    .hb1{width:800px;height:600px;background:radial-gradient(circle,rgba(26,74,26,.12),transparent 65%);top:-20%;left:-15%}
+    .hb2{width:600px;height:600px;background:radial-gradient(circle,rgba(74,29,150,.1),transparent 65%);bottom:-10%;right:-10%}
+    .hb3{width:400px;height:400px;background:radial-gradient(circle,rgba(201,150,58,.06),transparent 65%);top:30%;right:20%}
+
+    /* Yggdrasil silhouette bg */
+    .hero-tree-bg{
+      position:absolute;right:-5%;top:0;height:100%;width:50%;
+      opacity:.04;pointer-events:none;
+      background:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 700' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M200 680 L200 400 M200 400 Q180 350 120 320 M200 400 Q220 350 280 320 M200 400 Q160 370 80 360 M200 400 Q240 370 320 360 M200 360 Q185 310 140 280 M200 360 Q215 310 260 280 M200 330 Q200 280 200 220 M200 220 Q170 180 100 160 M200 220 Q230 180 300 160 M200 220 Q175 190 130 170 M200 220 Q225 190 270 170 M200 200 Q200 150 200 80 M200 80 Q160 40 100 20 M200 80 Q240 40 300 20 M200 80 Q175 60 140 45 M200 80 Q225 60 260 45' stroke='%23c9963a' stroke-width='3' fill='none'/%3E%3C/svg%3E") no-repeat center/contain;
+    }
+
+    .hero-inner{
+      display:grid;grid-template-columns:1fr 1fr;gap:60px;
+      align-items:center;position:relative;z-index:2;width:100%;
+    }
+
+    /* rune border decoration */
+    .rune-eyebrow{
+      display:flex;align-items:center;gap:14px;margin-bottom:22px;
+    }
+    .rune-line{height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--gold));opacity:.5}
+    .rune-text{
+      font-family:'Cinzel',serif;font-size:.62rem;font-weight:600;
+      letter-spacing:.3em;color:var(--gold);text-transform:uppercase;white-space:nowrap;
+    }
+    .rune-line-r{height:1px;flex:1;background:linear-gradient(90deg,var(--gold),transparent);opacity:.5}
+
+    .hero-title{
+      font-family:'Cinzel Decorative',serif;
+      font-size:clamp(3.5rem,8vw,7rem);
+      font-weight:900;line-height:.9;
+      background:linear-gradient(160deg,var(--gold-l) 0%,var(--gold) 40%,var(--gold-d) 70%,var(--gold-l) 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-size:300%;animation:shimmer-gold 5s ease-in-out infinite;
+      letter-spacing:.06em;margin-bottom:16px;
+    }
+    @keyframes shimmer-gold{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+    .hero-subtitle{
+      font-family:'Cinzel',serif;font-size:clamp(.75rem,1.8vw,.95rem);
+      font-weight:600;color:var(--parchment);letter-spacing:.12em;
+      text-transform:uppercase;margin-bottom:8px;opacity:.8;
+    }
+
+    .hero-genre{
+      display:inline-flex;align-items:center;gap:8px;
+      font-family:'Cinzel',serif;font-size:.65rem;font-weight:600;letter-spacing:.2em;
+      color:var(--purple-l);text-transform:uppercase;
+      border:1px solid rgba(124,58,237,.3);border-radius:2px;
+      padding:5px 14px;margin-bottom:26px;
+      background:rgba(74,29,150,.1);
+    }
+
+    .hero-pull{
+      font-family:'Lora',serif;font-size:1.05rem;font-style:italic;
+      color:var(--gold-l);line-height:1.6;margin-bottom:26px;
+      border-left:2px solid var(--gold-d);padding-left:18px;
+    }
+
+    .hero-desc{font-family:'Inter',sans-serif;font-size:.92rem;color:var(--muted);line-height:1.85;max-width:480px;margin-bottom:32px}
+    .hero-desc strong{color:var(--parchment)}
+
+    .hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+    .btn-primary{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:13px 28px;border-radius:3px;
+      background:linear-gradient(135deg,var(--gold-d),var(--gold));
+      color:#fff;font-family:'Cinzel',serif;font-weight:700;font-size:.82rem;letter-spacing:.06em;
+      border:none;cursor:pointer;
+      box-shadow:0 4px 24px rgba(201,150,58,.35);
+      transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;
+    }
+    .btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 12px 36px rgba(201,150,58,.5)}
+    .btn-secondary{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:13px 26px;border-radius:3px;
+      background:transparent;border:1px solid var(--border);
+      color:var(--parchment);font-family:'Cinzel',serif;font-weight:600;font-size:.82rem;letter-spacing:.04em;
+      cursor:pointer;transition:all .25s;
+    }
+    .btn-secondary:hover{border-color:var(--gold);color:var(--gold-l);transform:translateY(-2px)}
+    .btn-icon{width:17px;height:17px}
+
+    /* ── 3D BOOK ─── */
+    .book-scene{perspective:1200px;display:flex;align-items:center;justify-content:center}
+    .book{
+      width:250px;height:360px;position:relative;transform-style:preserve-3d;
+      transform:rotateY(-22deg) rotateX(4deg);
+      filter:drop-shadow(-30px 50px 60px rgba(0,0,0,.85)) drop-shadow(0 0 50px rgba(201,150,58,.1));
+      animation:book-float 6s ease-in-out infinite;
+      transition:transform .6s cubic-bezier(.34,1.56,.64,1);
+    }
+    .book:hover{transform:rotateY(-8deg) rotateX(2deg) scale(1.04)}
+    @keyframes book-float{
+      0%,100%{transform:rotateY(-22deg) rotateX(4deg) translateY(0)}
+      50%{transform:rotateY(-22deg) rotateX(4deg) translateY(-16px)}
+    }
+
+    .book-cover{position:absolute;width:250px;height:360px;backface-visibility:hidden;border-radius:2px 6px 6px 2px;overflow:hidden}
+    .book-front{
+      background:linear-gradient(170deg,#060d08 0%,#0d1f10 35%,#080d18 65%,#060810 100%);
+      display:flex;flex-direction:column;justify-content:space-between;
+      padding:24px 20px 18px;position:relative;overflow:hidden;
+      border:1px solid rgba(201,150,58,.2);
+    }
+
+    /* tree on cover */
+    .cover-tree{
+      position:absolute;inset:0;pointer-events:none;
+      background:url("data:image/svg+xml,%3Csvg viewBox='0 0 250 360' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M125 340 L125 220 M125 220 Q105 185 70 170 M125 220 Q145 185 180 170 M125 220 Q95 200 50 195 M125 220 Q155 200 200 195 M125 195 Q108 165 75 150 M125 195 Q142 165 175 150 M125 175 L125 120 M125 120 Q100 90 60 75 M125 120 Q150 90 190 75 M125 120 Q108 100 80 88 M125 120 Q142 100 170 88 M125 100 L125 40 M125 40 Q100 15 70 5 M125 40 Q150 15 180 5 M125 40 Q108 28 85 18 M125 40 Q142 28 165 18' stroke='rgba(201,150,58,0.18)' stroke-width='1.5' fill='none'/%3E%3C/svg%3E") no-repeat center/cover;
+      opacity:1;
+    }
+
+    /* rune border */
+    .cover-rune-border{
+      position:absolute;inset:8px;
+      border:1px solid rgba(201,150,58,.2);
+      border-radius:2px;pointer-events:none;
+    }
+    .cover-rune-border::before{content:'✦';position:absolute;top:-7px;left:50%;transform:translateX(-50%);color:var(--gold);font-size:.6rem;opacity:.6;background:var(--dark2);padding:0 4px}
+    .cover-rune-border::after{content:'✦';position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);color:var(--gold);font-size:.6rem;opacity:.6;background:var(--dark2);padding:0 4px}
+
+    .cover-top-label{font-family:'Cinzel',serif;font-size:.42rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:rgba(201,150,58,.6);position:relative;z-index:1}
+    .cover-title{
+      font-family:'Cinzel Decorative',serif;font-size:2.1rem;font-weight:900;
+      background:linear-gradient(160deg,var(--gold-l),var(--gold),var(--gold-d));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      line-height:1;position:relative;z-index:1;margin:10px 0 6px;letter-spacing:.04em;
+    }
+    .cover-sub-title{font-family:'Cinzel',serif;font-size:.5rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:rgba(200,213,176,.5);position:relative;z-index:1;line-height:1.5}
+    .cover-divider{width:50px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:12px 0;position:relative;z-index:1}
+    .cover-magic{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.15em;color:rgba(124,58,237,.6);position:relative;z-index:1;text-transform:uppercase}
+    .cover-author{font-family:'Cinzel',serif;font-size:.45rem;font-weight:600;color:rgba(201,150,58,.5);letter-spacing:.12em;position:relative;z-index:1;text-transform:uppercase;margin-top:auto}
+
+    .book-spine{
+      position:absolute;width:34px;height:360px;left:-32px;top:0;
+      background:linear-gradient(90deg,#040810,#0d1a10,#080d18);
+      border-left:1px solid rgba(201,150,58,.2);
+      transform:rotateY(-90deg) translateX(-16px) translateZ(16px);
+      border-radius:6px 0 0 6px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .spine-text{font-family:'Cinzel',serif;font-size:.48rem;font-weight:700;color:rgba(201,150,58,.5);letter-spacing:.15em;writing-mode:vertical-rl;transform:rotate(180deg);text-transform:uppercase}
+    .book-pages{
+      position:absolute;width:10px;height:356px;right:-8px;top:2px;
+      background:repeating-linear-gradient(180deg,#d4cdb0,#c0b898 1px,#d4cdb0 2px);
+      transform:rotateY(90deg) translateX(4px) translateZ(238px);
+    }
+
+    /* ── ORNAMENTAL DIVIDER ─── */
+    .ornament{
+      text-align:center;padding:40px 0;
+      font-family:'Cinzel Decorative',serif;font-size:1.2rem;
+      color:var(--gold);opacity:.35;letter-spacing:.3em;
+    }
+
+    /* ── WORLD SECTION ─── */
+    .world-section{
+      padding:100px 0;
+      background:linear-gradient(180deg,transparent,rgba(13,43,13,.15),transparent);
+    }
+    .section-tag{display:inline-block;border:1px solid var(--border);border-radius:2px;padding:5px 14px;font-family:'Cinzel',serif;font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+    .section-title{font-family:'Cinzel',serif;font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:22px;letter-spacing:.04em}
+
+    .world-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+    .world-text p{font-size:.93rem;color:var(--muted);line-height:1.9;margin-bottom:16px}
+    .world-text strong{color:var(--parchment)}
+
+    .world-highlight{
+      border-left:2px solid var(--gold-d);
+      padding:16px 22px;background:rgba(201,150,58,.04);border-radius:0 8px 8px 0;
+      margin:24px 0;
+      font-family:'Lora',serif;font-style:italic;font-size:1rem;color:var(--gold-l);
+    }
+
+    .races-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .race-card{
+      background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);
+      border-radius:10px;padding:20px;
+      transition:all .3s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden;
+    }
+    .race-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent,var(--gold),transparent);opacity:0;transition:opacity .3s}
+    .race-card:hover{border-color:rgba(201,150,58,.2);background:rgba(201,150,58,.04);transform:translateY(-4px)}
+    .race-card:hover::before{opacity:1}
+    .race-icon{font-size:1.4rem;margin-bottom:8px}
+    .race-name{font-family:'Cinzel',serif;font-weight:700;font-size:.82rem;color:#fff;margin-bottom:4px;letter-spacing:.05em}
+    .race-desc{font-size:.75rem;color:var(--muted);line-height:1.6}
+
+    /* ── CHAPTER PREVIEW ─── */
+    .chapters-section{padding:90px 0}
+    .chapters-header{text-align:center;margin-bottom:54px}
+    .chapters-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .ch-card{
+      background:rgba(255,255,255,.018);border:1px solid rgba(255,255,255,.05);
+      border-radius:12px;padding:26px 20px;
+      transition:all .35s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden;
+    }
+    .ch-card::after{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,rgba(201,150,58,.05),rgba(74,29,150,.04));
+      opacity:0;transition:opacity .35s;
+    }
+    .ch-card:hover{transform:translateY(-5px);border-color:rgba(201,150,58,.2)}
+    .ch-card:hover::after{opacity:1}
+    .ch-rune{font-family:'Cinzel',serif;font-size:.58rem;font-weight:700;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;margin-bottom:10px;opacity:.7}
+    .ch-icon{font-size:1.8rem;margin-bottom:10px;display:block}
+    .ch-title{font-family:'Cinzel',serif;font-weight:700;font-size:.82rem;color:var(--parchment);line-height:1.4;letter-spacing:.04em}
+
+    /* ── STATS ─── */
+    .stats-section{
+      padding:70px 0;
+      background:linear-gradient(90deg,rgba(13,43,13,.08),rgba(74,29,150,.06),rgba(13,43,13,.08));
+      border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+    }
+    .stats-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center}
+    .stat-num{
+      font-family:'Cinzel Decorative',serif;
+      font-size:clamp(2.2rem,4.5vw,3.2rem);
+      background:linear-gradient(135deg,var(--gold-d),var(--gold-l));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      display:block;line-height:1;margin-bottom:10px;
+    }
+    .stat-label{font-family:'Cinzel',serif;font-size:.68rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;line-height:1.5}
+
+    /* ── REVIEWS ─── */
+    .reviews-section{padding:90px 0}
+    .reviews-header{text-align:center;margin-bottom:54px}
+    .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .rev-card{
+      background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);
+      border-radius:14px;padding:28px;
+      transition:all .3s;
+    }
+    .rev-card:hover{border-color:rgba(201,150,58,.18);background:rgba(201,150,58,.03);transform:translateY(-3px)}
+    .rev-stars{color:var(--gold);font-size:.95rem;letter-spacing:2px;margin-bottom:14px}
+    .rev-text{font-family:'Lora',serif;font-size:.87rem;font-style:italic;color:#b0bca0;line-height:1.8;margin-bottom:18px}
+    .rev-text::before{content:'"';font-family:'Cinzel Decorative',serif;font-size:1.6rem;color:var(--gold);opacity:.35;display:block;margin-bottom:-4px;line-height:1}
+    .rev-author{display:flex;align-items:center;gap:12px}
+    .rev-avatar{
+      width:38px;height:38px;border-radius:50%;
+      background:linear-gradient(135deg,var(--green),var(--gold-d));
+      border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Cinzel',serif;font-size:.78rem;font-weight:700;color:var(--gold-l);flex-shrink:0;
+    }
+    .rev-name{font-family:'Cinzel',serif;font-weight:700;font-size:.82rem;color:var(--parchment);letter-spacing:.04em}
+    .rev-meta{font-family:'Inter',sans-serif;font-size:.7rem;color:var(--muted);margin-top:2px}
+    .rev-verified{font-size:.62rem;color:#22c55e;font-weight:600;margin-top:2px}
+
+    /* ── CTA ─── */
+    .cta-section{
+      padding:110px 0;text-align:center;position:relative;overflow:hidden;
+    }
+    .cta-tree-bg{
+      position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      width:500px;height:500px;
+      background:radial-gradient(circle,rgba(201,150,58,.06),rgba(74,29,150,.04),transparent 65%);
+      pointer-events:none;
+    }
+    .cta-section .section-title{margin-bottom:14px}
+    .cta-sub{font-family:'Lora',serif;font-size:.95rem;color:var(--muted);max-width:460px;margin:0 auto 36px;line-height:1.8}
+    .cta-rune-line{
+      display:flex;align-items:center;gap:18px;justify-content:center;margin-bottom:36px;
+    }
+    .crl{height:1px;width:60px;background:linear-gradient(90deg,transparent,var(--gold));opacity:.4}
+    .crl-r{height:1px;width:60px;background:linear-gradient(90deg,var(--gold),transparent);opacity:.4}
+    .crl-center{font-family:'Cinzel Decorative',serif;font-size:.9rem;color:var(--gold);opacity:.5}
+
+    /* ── FOOTER ─── */
+    footer{padding:44px 0;border-top:1px solid var(--border);text-align:center}
+    .footer-brand{font-family:'Cinzel Decorative',serif;font-size:1rem;font-weight:700;color:var(--gold-l);margin-bottom:8px;letter-spacing:.08em}
+    .footer-sub{font-family:'Inter',sans-serif;font-size:.78rem;color:var(--muted)}
+    .footer-links{display:flex;gap:24px;justify-content:center;margin:18px 0;flex-wrap:wrap}
+    .footer-links a{font-family:'Cinzel',serif;font-size:.7rem;color:var(--muted);letter-spacing:.06em;transition:color .2s}
+    .footer-links a:hover{color:var(--gold-l)}
+    .footer-copy{font-size:.68rem;color:rgba(107,122,90,.35);margin-top:10px;font-family:'Inter',sans-serif}
+
+    /* ── REVEAL ─── */
+    .reveal{opacity:0;transform:translateY(36px);transition:opacity .9s cubic-bezier(.34,1.56,.64,1),transform .9s cubic-bezier(.34,1.56,.64,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .9s cubic-bezier(.34,1.56,.64,1),transform .9s cubic-bezier(.34,1.56,.64,1)}
+    .reveal-left.visible{opacity:1;transform:translateX(0)}
+    .reveal-right{opacity:0;transform:translateX(40px);transition:opacity .9s cubic-bezier(.34,1.56,.64,1),transform .9s cubic-bezier(.34,1.56,.64,1)}
+    .reveal-right.visible{opacity:1;transform:translateX(0)}
+    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+    .d5{transition-delay:.5s}.d6{transition-delay:.6s}.d7{transition-delay:.7s}.d8{transition-delay:.8s}
+
+    /* ── MOBILE ─── */
+    @media(max-width:900px){
+      .hero-inner,.world-grid{grid-template-columns:1fr;gap:56px;text-align:center}
+      .hero-text{order:2}.book-scene{order:1}
+      .hero-btns{justify-content:center}
+      .hero-desc,.hero-pull{margin-left:auto;margin-right:auto;text-align:left}
+      .rune-eyebrow{justify-content:center}
+      .stats-inner{grid-template-columns:repeat(2,1fr);gap:24px}
+      .chapters-grid{grid-template-columns:1fr 1fr}
+      .reviews-grid{grid-template-columns:1fr}
+      .races-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:600px){
+      .hero{padding:100px 0 60px}
+      .book{width:200px;height:288px}
+      .book-cover{width:200px;height:288px}
+      .book-pages{height:284px}
+      .book-spine{height:288px}
+      .stats-inner{grid-template-columns:1fr 1fr}
+      .chapters-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<div id="prog"></div>
+<canvas id="runecanvas"></canvas>
+<div class="fog"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-brand">Julio Olivo</span>
+    <span class="nav-badge">Fantasía Épica · Nuevo</span>
+    <a href="https://go.hotmart.com/H103199911T?dp=1" target="_blank" class="nav-cta">Obtener eBook</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-blob hb1"></div>
+  <div class="hero-blob hb2"></div>
+  <div class="hero-blob hb3"></div>
+  <div class="hero-tree-bg"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="rune-eyebrow reveal d1">
+          <span class="rune-line"></span>
+          <span class="rune-text">Fantasía Épica · Español</span>
+          <span class="rune-line-r"></span>
+        </div>
+        <h1 class="hero-title reveal d2">THOVIR</h1>
+        <p class="hero-subtitle reveal d3">Y la Profecía del Árbol Sagrado</p>
+        <div class="hero-genre reveal d4">
+          ✦ &nbsp; Fantasía Épica · Mundo Nórdico · 3,000 años post-Ragnarok
+        </div>
+        <p class="hero-pull reveal d5">
+          Un árbol habló.<br/>Un enano escuchó.<br/>El destino de todos los mundos cambió.
+        </p>
+        <p class="hero-desc reveal d6">
+          3,000 años después de Ragnarok, en la ciudad enana de Egreford, un joven de nombre <strong>Thovir</strong> lleva una vida ordinaria — hasta que uno de los árboles descendientes de <strong>Yggdrasil</strong> le revela una profecía que nadie quería escuchar.
+        </p>
+        <div class="hero-btns reveal d7">
+          <a href="https://go.hotmart.com/H103199911T?dp=1" target="_blank" class="btn-primary">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Leer en Hotmart
+          </a>
+          <a href="#mundo" class="btn-secondary">
+            Explorar el mundo
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3D BOOK -->
+      <div class="book-scene reveal-right">
+        <div class="book" id="book3d">
+          <div class="book-spine"><span class="spine-text">Thovir · Julio Olivo · Hotmart</span></div>
+          <div class="book-pages"></div>
+          <div class="book-cover book-front">
+            <div class="cover-tree"></div>
+            <div class="cover-rune-border"></div>
+            <div style="position:relative;z-index:1">
+              <div class="cover-top-label">Julio Ernesto Olivo Hernández</div>
+            </div>
+            <div style="position:relative;z-index:1;text-align:center;margin:auto 0">
+              <div class="cover-title">THOVIR</div>
+              <div class="cover-divider" style="margin:10px auto"></div>
+              <div class="cover-sub-title">Y la Profecía del<br/>Árbol Sagrado</div>
+              <div style="height:12px"></div>
+              <div class="cover-magic">Enanos · Elfos · Dragones · Vikingos</div>
+            </div>
+            <div style="position:relative;z-index:1">
+              <div class="cover-divider"></div>
+              <div class="cover-author">Disponible en Hotmart</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament">✦ ✦ ✦</div>
+
+<!-- WORLD SECTION -->
+<section class="world-section" id="mundo">
+  <div class="container">
+    <div class="world-grid">
+      <div class="world-text reveal-left">
+        <div class="section-tag">El Mundo de Thovir</div>
+        <h2 class="section-title">3,000 años después del fin del mundo</h2>
+
+        <p>Ragnarok ocurrió. Los dioses cayeron. Pero el mundo sobrevivió — transformado, reconstruido, lleno de razas que aprendieron a coexistir en la sombra de lo que fue.</p>
+
+        <div class="world-highlight">
+          "Los árboles sagrados descendientes de Yggdrasil aún guardan la memoria de los mundos. Y a veces, a veces… eligen hablar."
+        </div>
+
+        <p>En este universo de <strong>fantasía épica</strong>, enanos guerreros construyen ciudades bajo las montañas, elfos custodian los últimos bosques, vikingos surcan mares oscuros y goblins conspiran en las sombras. Dragones que se creían extintos vuelven a circular entre las nubes.</p>
+
+        <p>Y en medio de todo esto, <strong>Thovir</strong> — un enano ordinario de Egreford — descubrirá que el destino no pide permiso cuando decide elegirte.</p>
+      </div>
+
+      <div class="races-grid reveal-right">
+        <div class="race-card d1">
+          <div class="race-icon">⚒️</div>
+          <div class="race-name">Los Enanos de Egreford</div>
+          <div class="race-desc">Guerreros industriosos que forjaron una civilización bajo las montañas. De aquí viene Thovir.</div>
+        </div>
+        <div class="race-card d2">
+          <div class="race-icon">🧝</div>
+          <div class="race-name">Los Elfos del Bosque</div>
+          <div class="race-desc">Guardianes de los últimos árboles sagrados. Custodian secretos que datan del tiempo antes de Ragnarok.</div>
+        </div>
+        <div class="race-card d3">
+          <div class="race-icon">⚔️</div>
+          <div class="race-name">Los Vikingos del Norte</div>
+          <div class="race-desc">Navegantes de mares oscuros que veneran los ecos de los dioses caídos y buscan gloria en el combate.</div>
+        </div>
+        <div class="race-card d4">
+          <div class="race-icon">👺</div>
+          <div class="race-name">Los Goblins de las Sombras</div>
+          <div class="race-desc">Astutos y peligrosos. Conspiran en las grietas del mundo, esperando el momento perfecto para actuar.</div>
+        </div>
+        <div class="race-card d5">
+          <div class="race-icon">🐉</div>
+          <div class="race-name">Los Dragones Renacidos</div>
+          <div class="race-desc">Se creían extintos desde Ragnarok. Ahora algo los ha despertado — y nadie sabe aún si es una bendición o una condena.</div>
+        </div>
+        <div class="race-card d6">
+          <div class="race-icon">🧙</div>
+          <div class="race-name">Los Magos Ancestrales</div>
+          <div class="race-desc">Portadores del conocimiento del Árbol Sagrado. Solo ellos conocen el verdadero alcance de la profecía.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTERS PREVIEW -->
+<section class="chapters-section">
+  <div class="container">
+    <div class="chapters-header">
+      <div class="section-tag reveal">La aventura</div>
+      <h2 class="section-title reveal d1">Lo que encontrarás en sus páginas</h2>
+    </div>
+    <div class="chapters-grid">
+      <div class="ch-card reveal d1">
+        <div class="ch-rune">I · El Origen</div>
+        <span class="ch-icon">🌱</span>
+        <div class="ch-title">Egreford — La ciudad bajo la montaña y un enano sin destino</div>
+      </div>
+      <div class="ch-card reveal d2">
+        <div class="ch-rune">II · El Árbol</div>
+        <span class="ch-icon">🌳</span>
+        <div class="ch-title">El descendiente de Yggdrasil que rompe su silencio de siglos</div>
+      </div>
+      <div class="ch-card reveal d3">
+        <div class="ch-rune">III · La Profecía</div>
+        <span class="ch-icon">📜</span>
+        <div class="ch-title">Las palabras que cambian el futuro de todos los mundos vivos</div>
+      </div>
+      <div class="ch-card reveal d1">
+        <div class="ch-rune">IV · La Alianza</div>
+        <span class="ch-icon">🤝</span>
+        <div class="ch-title">Razas que nunca se creyeron juntas, unidas por una sola amenaza</div>
+      </div>
+      <div class="ch-card reveal d2">
+        <div class="ch-rune">V · La Sombra</div>
+        <span class="ch-icon">🌑</span>
+        <div class="ch-title">El enemigo que Ragnarok no destruyó — y que ahora despierta</div>
+      </div>
+      <div class="ch-card reveal d3">
+        <div class="ch-rune">VI · El Destino</div>
+        <span class="ch-icon">⭐</span>
+        <div class="ch-title">Thovir frente a la pregunta que todo héroe debe responder: ¿por qué yo?</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-inner">
+      <div class="reveal d1">
+        <span class="stat-num" data-target="9">0</span>
+        <span class="stat-label">Razas en el mundo de Thovir</span>
+      </div>
+      <div class="reveal d2">
+        <span class="stat-num" data-suffix="K" data-num="3">3</span>
+        <span class="stat-label">Años post-Ragnarok en que comienza la historia</span>
+      </div>
+      <div class="reveal d3">
+        <span class="stat-num" data-target="1">0</span>
+        <span class="stat-label">Árbol sagrado. Una sola profecía. Todo cambia.</span>
+      </div>
+      <div class="reveal d4">
+        <span class="stat-num" data-target="100" data-suffix="%">0</span>
+        <span class="stat-label">Español. Fantasía épica hecha en Latinoamérica</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews-section">
+  <div class="container">
+    <div class="reviews-header">
+      <div class="section-tag reveal">Voces de los lectores</div>
+      <h2 class="section-title reveal d1">Lo que dice la comunidad</h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="rev-card reveal d1">
+        <div class="rev-stars">★★★★★</div>
+        <p class="rev-text">Desde la primera página me atrapó. El mundo que Julio construyó tiene una profundidad que pocas veces encontramos en fantasía épica latinoamericana. Thovir es un personaje en el que cualquiera puede verse reflejado — ordinario ante algo extraordinario.</p>
+        <div class="rev-author">
+          <div class="rev-avatar">SR</div>
+          <div>
+            <div class="rev-name">Sofía Ruiz</div>
+            <div class="rev-meta">Ciudad de México · 2024</div>
+            <div class="rev-verified">✓ Compra verificada en Hotmart</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rev-card reveal d2">
+        <div class="rev-stars">★★★★★</div>
+        <p class="rev-text">La combinación de mitología nórdica con un protagonista enano que no es el héroe clásico es refrescante. Tres mil años después de Ragnarok es un punto de partida brillante. Quiero la segunda parte ya.</p>
+        <div class="rev-author">
+          <div class="rev-avatar">AM</div>
+          <div>
+            <div class="rev-name">Andrés Molina</div>
+            <div class="rev-meta">Bogotá, Colombia · 2024</div>
+            <div class="rev-verified">✓ Compra verificada en Hotmart</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rev-card reveal d3">
+        <div class="rev-stars">★★★★☆</div>
+        <p class="rev-text">Soy fan de Tolkien y Brandon Sanderson, y debo decir que Thovir se siente en esa liga. El worldbuilding es sólido, las razas están bien diferenciadas y la profecía del árbol sagrado engancha desde que se revela. Muy recomendado.</p>
+        <div class="rev-author">
+          <div class="rev-avatar">CP</div>
+          <div>
+            <div class="rev-name">Carlos Portillo</div>
+            <div class="rev-meta">San Salvador, El Salvador · 2024</div>
+            <div class="rev-verified">✓ Compra verificada en Hotmart</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rev-card reveal d1">
+        <div class="rev-stars">★★★★★</div>
+        <p class="rev-text">Lo leí de una sentada. La ambientación post-Ragnarok es densa y envolvente — se siente que hay mucha historia detrás de cada raza, cada ciudad, cada árbol. Thovir es ese tipo de historia que te recuerda por qué amas la fantasía épica.</p>
+        <div class="rev-author">
+          <div class="rev-avatar">LG</div>
+          <div>
+            <div class="rev-name">Laura García</div>
+            <div class="rev-meta">Buenos Aires, Argentina · 2025</div>
+            <div class="rev-verified">✓ Compra verificada en Hotmart</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rev-card reveal d2">
+        <div class="rev-stars">★★★★★</div>
+        <p class="rev-text">Que un autor latinoamericano esté construyendo mundos de este calibre en español es algo que me emociona profundamente. Julio demuestra que no hace falta ser anglosajón para crear fantasía épica de primer nivel. Brillante.</p>
+        <div class="rev-author">
+          <div class="rev-avatar">RT</div>
+          <div>
+            <div class="rev-name">Rafael Torres</div>
+            <div class="rev-meta">Lima, Perú · 2025</div>
+            <div class="rev-verified">✓ Compra verificada en Hotmart</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rev-card reveal d3">
+        <div class="rev-stars">★★★★★</div>
+        <p class="rev-text">Los dragones, los elfos, los goblins — todo tiene sentido dentro de este universo. No se siente forzado. Pero lo que más me impresionó fue Thovir como personaje. Es completamente humano en su duda, su miedo, su incomodidad ante el destino.</p>
+        <div class="rev-author">
+          <div class="rev-avatar">VN</div>
+          <div>
+            <div class="rev-name">Valeria Navarro</div>
+            <div class="rev-meta">Guadalajara, México · 2025</div>
+            <div class="rev-verified">✓ Compra verificada en Hotmart</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-tree-bg"></div>
+  <div class="container" style="position:relative;z-index:2">
+    <div class="rune-eyebrow reveal" style="justify-content:center">
+      <span class="rune-line"></span>
+      <span class="rune-text">Tu aventura comienza aquí</span>
+      <span class="rune-line-r"></span>
+    </div>
+    <h2 class="section-title reveal d1" style="margin-bottom:14px">El árbol ha hablado.</h2>
+    <p class="cta-sub reveal d2">¿Escucharás la profecía? Obtén el eBook en Hotmart y adéntrate en el mundo de Thovir.</p>
+
+    <div class="cta-rune-line reveal d3">
+      <span class="crl"></span>
+      <span class="crl-center">✦ ✦ ✦</span>
+      <span class="crl-r"></span>
+    </div>
+
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap" class="reveal d4">
+      <a href="https://go.hotmart.com/H103199911T?dp=1" target="_blank" class="btn-primary">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Obtener en Hotmart
+      </a>
+    </div>
+    <p style="text-align:center;margin-top:18px;font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.15em;color:var(--muted);text-transform:uppercase" class="reveal d5">
+      eBook · Español · Descarga Inmediata · Hotmart
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-brand">Julio Ernesto Olivo Hernández</div>
+    <div class="footer-sub">Autor · Software · Marketing — julioolivodeveloper.com</div>
+    <div class="footer-links">
+      <a href="/">Inicio</a>
+      <a href="/libros">Crónicas da Vinci</a>
+      <a href="/nuevo-consumidor">Nuevo Consumidor</a>
+      <a href="/nuestra-lucha">Nuestra Lucha</a>
+      <a href="https://go.hotmart.com/H103199911T?dp=1" target="_blank">Hotmart</a>
+    </div>
+    <div class="footer-copy">© 2026 Julio Olivo · Todos los derechos reservados</div>
+  </div>
+</footer>
+
+<script>
+// ── Scroll progress ──
+const prog = document.getElementById('prog');
+window.addEventListener('scroll', () => {
+  prog.style.width = (window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100) + '%';
+});
+
+// ── Reveal ──
+const obs = new IntersectionObserver(entries => entries.forEach(e => {
+  if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+}), {threshold:.1});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => obs.observe(el));
+
+// ── Count-up ──
+const countObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(!e.isIntersecting) return;
+    const el = e.target;
+    if(el.dataset.num){ el.textContent = el.dataset.num + (el.dataset.suffix||''); countObs.unobserve(el); return; }
+    const target = +el.dataset.target, suffix = el.dataset.suffix||'';
+    let cur = 0;
+    const t = setInterval(() => {
+      cur = Math.min(cur + target/50, target);
+      el.textContent = Math.round(cur) + suffix;
+      if(cur >= target) clearInterval(t);
+    }, 30);
+    countObs.unobserve(el);
+  });
+}, {threshold:.5});
+document.querySelectorAll('.stat-num[data-target],.stat-num[data-num]').forEach(el => countObs.observe(el));
+
+// ── Rune particles canvas ──
+const canvas = document.getElementById('runecanvas');
+const ctx = canvas.getContext('2d');
+let W = canvas.width = window.innerWidth, H = canvas.height = window.innerHeight;
+window.addEventListener('resize', () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; });
+
+// Rune symbols
+const RUNES = ['ᚠ','ᚢ','ᚦ','ᚨ','ᚱ','ᚲ','ᚷ','ᚹ','ᚺ','ᚾ','ᛁ','ᛃ','ᛇ','ᛈ','ᛉ','ᛋ','ᛏ','ᛒ','ᛖ','ᛗ','ᛚ','ᛜ','ᛞ','ᛟ'];
+const GOLDS = ['rgba(201,150,58,','rgba(240,201,106,','rgba(138,98,24,'];
+const PURPLES = ['rgba(124,58,237,','rgba(74,29,150,'];
+
+class RuneParticle {
+  constructor(){ this.reset(); this.y = Math.random() * H; }
+  reset(){
+    this.x = Math.random() * W;
+    this.y = H + 20;
+    this.rune = RUNES[Math.floor(Math.random() * RUNES.length)];
+    this.size = Math.random() * 14 + 8;
+    this.speed = Math.random() * .35 + .08;
+    this.drift = (Math.random() - .5) * .25;
+    this.alpha = Math.random() * .18 + .04;
+    this.rot = Math.random() * Math.PI * 2;
+    this.rotSpeed = (Math.random() - .5) * .01;
+    this.isGold = Math.random() > .3;
+    this.flicker = Math.random() * Math.PI * 2;
+  }
+  update(){
+    this.y -= this.speed;
+    this.x += this.drift;
+    this.rot += this.rotSpeed;
+    this.flicker += .03;
+    if(this.y < -30) this.reset();
+  }
+  draw(){
+    const a = this.alpha * (.7 + .3 * Math.sin(this.flicker));
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rot);
+    ctx.font = `${this.size}px serif`;
+    const col = this.isGold ? GOLDS : PURPLES;
+    ctx.fillStyle = col[Math.floor(Math.random() * col.length)] + a + ')';
+    ctx.fillText(this.rune, 0, 0);
+    ctx.restore();
+  }
+}
+
+// floating light motes
+class Mote {
+  constructor(){ this.reset(); this.y = Math.random() * H; }
+  reset(){
+    this.x = Math.random() * W;
+    this.y = H + 10;
+    this.size = Math.random() * 2 + .5;
+    this.speed = Math.random() * .25 + .05;
+    this.drift = (Math.random() - .5) * .3;
+    this.alpha = Math.random() * .25 + .05;
+    this.flicker = Math.random() * Math.PI * 2;
+    this.isGold = Math.random() > .5;
+  }
+  update(){
+    this.y -= this.speed;
+    this.x += this.drift;
+    this.flicker += .04;
+    if(this.y < -10) this.reset();
+  }
+  draw(){
+    const a = this.alpha * (.6 + .4 * Math.sin(this.flicker));
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = this.isGold ? `rgba(201,150,58,${a})` : `rgba(74,29,150,${a})`;
+    ctx.fill();
+  }
+}
+
+const runes = Array.from({length:30}, () => new RuneParticle());
+const motes = Array.from({length:50}, () => new Mote());
+
+function animate(){
+  ctx.clearRect(0,0,W,H);
+  runes.forEach(r => { r.update(); r.draw(); });
+  motes.forEach(m => { m.update(); m.draw(); });
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ── Book mouse follow ──
+const book = document.getElementById('book3d');
+document.querySelector('.book-scene')?.addEventListener('mousemove', e => {
+  if(window.innerWidth < 900) return;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const dx = (e.clientX - rect.left - rect.width/2) / rect.width;
+  const dy = (e.clientY - rect.top - rect.height/2) / rect.height;
+  book.style.transform = `rotateY(${-22 + dx*18}deg) rotateX(${4 - dy*10}deg)`;
+  book.style.transition = 'transform .12s ease';
+});
+document.querySelector('.book-scene')?.addEventListener('mouseleave', () => {
+  book.style.transform = '';
+  book.style.transition = 'transform .6s cubic-bezier(.34,1.56,.64,1)';
+});
+
+// ── Scroll parallax ──
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if(!ticking){ requestAnimationFrame(() => {
+    if(book){ const rot = -22 + window.scrollY*.012; book.style.transform = `rotateY(${Math.max(-34,Math.min(-5,rot))}deg) rotateX(4deg)`; }
+    ticking = false;
+  }); ticking = true; }
+});
+</script>
+</body>
+</html>
