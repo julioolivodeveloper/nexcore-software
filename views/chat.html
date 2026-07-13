@@ -445,6 +445,7 @@ Algunos ejemplos de lo que puedes decirme:
     }
 
     function showInvoiceCard(d) {
+      let selectedStatus = 'paid';
       const card = document.createElement('div');
       card.className = 'card-msg';
       card.innerHTML = `
@@ -456,7 +457,13 @@ Algunos ejemplos de lo que puedes decirme:
         <div class="card-row"><span class="card-row-label">Descripción</span><span class="card-row-val">${d.desc}</span></div>
         <div class="card-row"><span class="card-row-label">Fecha emisión</span><span class="card-row-val">${today()}</span></div>
         <div class="card-row"><span class="card-row-label">Vencimiento</span><span class="card-row-val">${dueDate()}</span></div>
-        <div class="card-row"><span class="card-row-label">Estado</span><span class="card-row-val" style="color:#6ee7b7">Pagada</span></div>
+        <div class="card-row" style="align-items:flex-start;flex-direction:column;gap:8px">
+          <span class="card-row-label">¿La factura está pagada?</span>
+          <div style="display:flex;gap:8px;width:100%">
+            <button id="stPaid" onclick="selectStatus('paid')" style="flex:1;padding:7px;border-radius:8px;border:1px solid rgba(16,185,129,.5);background:rgba(16,185,129,.15);color:#6ee7b7;font-size:.8rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif">✓ Pagada</button>
+            <button id="stPend" onclick="selectStatus('pending')" style="flex:1;padding:7px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text-muted);font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">⏳ Pendiente</button>
+          </div>
+        </div>
         <div class="card-amount">${fmt(d.amount)}</div>
         <div class="card-actions">
           <button class="btn-confirm" id="confirmInv">✓ Crear factura</button>
@@ -464,12 +471,26 @@ Algunos ejemplos de lo que puedes decirme:
         </div>`;
       addBotRaw(card);
       lucide.createIcons();
+
+      window.selectStatus = function(s) {
+        selectedStatus = s;
+        const paid = document.getElementById('stPaid');
+        const pend = document.getElementById('stPend');
+        if (s === 'paid') {
+          paid.style.cssText = 'flex:1;padding:7px;border-radius:8px;border:1px solid rgba(16,185,129,.5);background:rgba(16,185,129,.15);color:#6ee7b7;font-size:.8rem;font-weight:700;cursor:pointer;font-family:Inter,sans-serif';
+          pend.style.cssText = 'flex:1;padding:7px;border-radius:8px;border:1px solid rgba(255,255,255,.07);background:transparent;color:#94a3b8;font-size:.8rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif';
+        } else {
+          pend.style.cssText = 'flex:1;padding:7px;border-radius:8px;border:1px solid rgba(245,158,11,.5);background:rgba(245,158,11,.1);color:#fcd34d;font-size:.8rem;font-weight:700;cursor:pointer;font-family:Inter,sans-serif';
+          paid.style.cssText = 'flex:1;padding:7px;border-radius:8px;border:1px solid rgba(255,255,255,.07);background:transparent;color:#94a3b8;font-size:.8rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif';
+        }
+      };
+
       pendingAction = { type: 'confirm_invoice', data: d };
-      document.getElementById('confirmInv').onclick = () => confirmInvoice(d);
+      document.getElementById('confirmInv').onclick = () => confirmInvoice(d, selectedStatus);
       document.getElementById('cancelInv').onclick  = () => cancelAction();
     }
 
-    async function confirmInvoice(d) {
+    async function confirmInvoice(d, status) {
       pendingAction = null;
       disableButtons();
       showTyping();
@@ -481,7 +502,7 @@ Algunos ejemplos de lo que puedes decirme:
             client_name: d.client_name,
             issue_date:  today(),
             due_date:    dueDate(),
-            status:      'paid',
+            status:      status || 'paid',
             total:       d.amount,
             notes:       '',
             items:       [{ description: d.desc, quantity: 1, unit_price: d.amount }]
