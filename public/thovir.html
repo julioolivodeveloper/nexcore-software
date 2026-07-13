@@ -271,7 +271,9 @@
     .race-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent,var(--gold),transparent);opacity:0;transition:opacity .3s}
     .race-card:hover{border-color:rgba(201,150,58,.2);background:rgba(201,150,58,.04);transform:translateY(-4px)}
     .race-card:hover::before{opacity:1}
-    .race-icon{font-size:1.4rem;margin-bottom:8px}
+    .race-icon{width:44px;height:44px;border-radius:12px;background:rgba(201,150,58,.1);border:1px solid rgba(201,150,58,.2);display:flex;align-items:center;justify-content:center;margin-bottom:10px;transition:box-shadow .3s}
+    .race-card:hover .race-icon{box-shadow:0 4px 16px rgba(201,150,58,.18)}
+    .race-icon i{font-size:20px;color:var(--gold)}
     .race-name{font-family:'Cinzel',serif;font-weight:700;font-size:.82rem;color:#fff;margin-bottom:4px;letter-spacing:.05em}
     .race-desc{font-size:.75rem;color:var(--muted);line-height:1.6}
 
@@ -292,7 +294,9 @@
     .ch-card:hover{transform:translateY(-5px);border-color:rgba(201,150,58,.2)}
     .ch-card:hover::after{opacity:1}
     .ch-rune{font-family:'Cinzel',serif;font-size:.58rem;font-weight:700;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;margin-bottom:10px;opacity:.7}
-    .ch-icon{font-size:1.8rem;margin-bottom:10px;display:block}
+    .ch-icon{width:42px;height:42px;border-radius:10px;background:rgba(74,29,150,.15);border:1px solid rgba(201,150,58,.15);display:flex;align-items:center;justify-content:center;margin-bottom:10px;transition:box-shadow .3s}
+    .ch-card:hover .ch-icon{box-shadow:0 4px 14px rgba(201,150,58,.12)}
+    .ch-icon i{font-size:18px;color:var(--gold)}
     .ch-title{font-family:'Cinzel',serif;font-weight:700;font-size:.82rem;color:var(--parchment);line-height:1.4;letter-spacing:.04em}
 
     /* ── STATS ─── */
@@ -396,6 +400,7 @@
       .chapters-grid{grid-template-columns:1fr}
     }
   </style>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css"/>
 </head>
 <body>
 
@@ -484,32 +489,32 @@
 
       <div class="races-grid reveal-right">
         <div class="race-card d1">
-          <div class="race-icon">⚒️</div>
+          <div class="race-icon"><i class="ph-bold ph-hammer"></i></div>
           <div class="race-name">Los Enanos de Egreford</div>
           <div class="race-desc">Guerreros industriosos que forjaron una civilización bajo las montañas. De aquí viene Thovir.</div>
         </div>
         <div class="race-card d2">
-          <div class="race-icon">🧝</div>
+          <div class="race-icon"><i class="ph-bold ph-leaf"></i></div>
           <div class="race-name">Los Elfos del Bosque</div>
           <div class="race-desc">Guardianes de los últimos árboles sagrados. Custodian secretos que datan del tiempo antes de Ragnarok.</div>
         </div>
         <div class="race-card d3">
-          <div class="race-icon">⚔️</div>
+          <div class="race-icon"><i class="ph-bold ph-sword"></i></div>
           <div class="race-name">Los Vikingos del Norte</div>
           <div class="race-desc">Navegantes de mares oscuros que veneran los ecos de los dioses caídos y buscan gloria en el combate.</div>
         </div>
         <div class="race-card d4">
-          <div class="race-icon">👺</div>
+          <div class="race-icon"><i class="ph-bold ph-eye-slash"></i></div>
           <div class="race-name">Los Goblins de las Sombras</div>
           <div class="race-desc">Astutos y peligrosos. Conspiran en las grietas del mundo, esperando el momento perfecto para actuar.</div>
         </div>
         <div class="race-card d5">
-          <div class="race-icon">🐉</div>
+          <div class="race-icon"><i class="ph-bold ph-fire"></i></div>
           <div class="race-name">Los Dragones Renacidos</div>
           <div class="race-desc">Se creían extintos desde Ragnarok. Ahora algo los ha despertado — y nadie sabe aún si es una bendición o una condena.</div>
         </div>
         <div class="race-card d6">
-          <div class="race-icon">🧙</div>
+          <div class="race-icon"><i class="ph-bold ph-magic-wand"></i></div>
           <div class="race-name">Los Magos Ancestrales</div>
           <div class="race-desc">Portadores del conocimiento del Árbol Sagrado. Solo ellos conocen el verdadero alcance de la profecía.</div>
         </div>
@@ -528,32 +533,32 @@
     <div class="chapters-grid">
       <div class="ch-card reveal d1">
         <div class="ch-rune">I · El Origen</div>
-        <span class="ch-icon">🌱</span>
+        <div class="ch-icon"><i class="ph-bold ph-plant"></i></div>
         <div class="ch-title">Egreford — La ciudad bajo la montaña y un enano sin destino</div>
       </div>
       <div class="ch-card reveal d2">
         <div class="ch-rune">II · El Árbol</div>
-        <span class="ch-icon">🌳</span>
+        <div class="ch-icon"><i class="ph-bold ph-tree"></i></div>
         <div class="ch-title">El descendiente de Yggdrasil que rompe su silencio de siglos</div>
       </div>
       <div class="ch-card reveal d3">
         <div class="ch-rune">III · La Profecía</div>
-        <span class="ch-icon">📜</span>
+        <div class="ch-icon"><i class="ph-bold ph-scroll"></i></div>
         <div class="ch-title">Las palabras que cambian el futuro de todos los mundos vivos</div>
       </div>
       <div class="ch-card reveal d1">
         <div class="ch-rune">IV · La Alianza</div>
-        <span class="ch-icon">🤝</span>
+        <div class="ch-icon"><i class="ph-bold ph-handshake"></i></div>
         <div class="ch-title">Razas que nunca se creyeron juntas, unidas por una sola amenaza</div>
       </div>
       <div class="ch-card reveal d2">
         <div class="ch-rune">V · La Sombra</div>
-        <span class="ch-icon">🌑</span>
+        <div class="ch-icon"><i class="ph-bold ph-moon"></i></div>
         <div class="ch-title">El enemigo que Ragnarok no destruyó — y que ahora despierta</div>
       </div>
       <div class="ch-card reveal d3">
         <div class="ch-rune">VI · El Destino</div>
-        <span class="ch-icon">⭐</span>
+        <div class="ch-icon"><i class="ph-bold ph-star-four"></i></div>
         <div class="ch-title">Thovir frente a la pregunta que todo héroe debe responder: ¿por qué yo?</div>
       </div>
     </div>

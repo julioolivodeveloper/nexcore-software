@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -239,7 +240,14 @@
       transition:all .3s cubic-bezier(.34,1.56,.64,1);
     }
     .learn-card:hover{border-color:rgba(255,214,0,.3);background:rgba(255,214,0,.04);transform:translateY(-4px)}
-    .learn-icon{font-size:1.4rem;margin-bottom:10px}
+    .learn-icon{
+      width:48px;height:48px;border-radius:12px;
+      background:rgba(255,214,0,.1);border:1px solid rgba(255,214,0,.18);
+      display:flex;align-items:center;justify-content:center;margin-bottom:12px;
+      transition:background .3s,box-shadow .3s;
+    }
+    .learn-card:hover .learn-icon{background:rgba(255,214,0,.16);box-shadow:0 4px 18px rgba(255,214,0,.15)}
+    .learn-icon i{font-size:22px;color:var(--yellow)}
     .learn-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.85rem;color:#fff;margin-bottom:4px}
     .learn-desc{font-size:.77rem;color:var(--muted);line-height:1.6}
 
@@ -271,7 +279,14 @@
       display:flex;align-items:center;gap:8px;
     }
     .what-num::after{content:'';flex:1;height:1px;background:rgba(255,214,0,.2)}
-    .what-icon{font-size:1.8rem;margin-bottom:12px;display:block}
+    .what-icon-wrap{
+      width:52px;height:52px;border-radius:14px;
+      background:rgba(255,214,0,.08);border:1px solid rgba(255,214,0,.15);
+      display:flex;align-items:center;justify-content:center;margin-bottom:14px;
+      transition:all .3s;
+    }
+    .what-card:hover .what-icon-wrap{background:rgba(255,214,0,.14);box-shadow:0 4px 18px rgba(255,214,0,.12)}
+    .what-icon-wrap i{font-size:24px;color:var(--yellow)}
     .what-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.92rem;color:#fff;margin-bottom:8px}
     .what-desc{font-size:.8rem;color:var(--muted);line-height:1.7}
 
@@ -473,32 +488,32 @@
 
       <div class="learn-grid reveal-right">
         <div class="learn-card d1">
-          <div class="learn-icon">🧠</div>
+          <div class="learn-icon"><i class="ph-bold ph-check-fat"></i></div>
           <div class="learn-title">Sin relleno innecesario</div>
           <div class="learn-desc">Cada página tiene un propósito. Cero contenido de relleno, máximo valor por página</div>
         </div>
         <div class="learn-card d2">
-          <div class="learn-icon">📱</div>
+          <div class="learn-icon"><i class="ph-bold ph-device-mobile"></i></div>
           <div class="learn-title">Mercado digital</div>
           <div class="learn-desc">Aprende a posicionarte como líder en el nuevo ecosistema de ventas online</div>
         </div>
         <div class="learn-card d3">
-          <div class="learn-icon">⚡</div>
+          <div class="learn-icon"><i class="ph-bold ph-lightning"></i></div>
           <div class="learn-title">Lectura rápida</div>
           <div class="learn-desc">93 páginas directas. Lo lees en una tarde y empiezas a aplicarlo el mismo día</div>
         </div>
         <div class="learn-card d4">
-          <div class="learn-icon">🎯</div>
+          <div class="learn-icon"><i class="ph-bold ph-crosshair"></i></div>
           <div class="learn-title">Estrategia real</div>
           <div class="learn-desc">Convierte tus conocimientos en una estrategia ganadora para el nuevo mercado</div>
         </div>
         <div class="learn-card d5">
-          <div class="learn-icon">👥</div>
+          <div class="learn-icon"><i class="ph-bold ph-users-three"></i></div>
           <div class="learn-title">Generaciones</div>
           <div class="learn-desc">Entiende quiénes son los Millennials y Centennials y cómo piensan al comprar</div>
         </div>
         <div class="learn-card d6">
-          <div class="learn-icon">🏆</div>
+          <div class="learn-icon"><i class="ph-bold ph-trophy"></i></div>
           <div class="learn-title">Sé el ganador</div>
           <div class="learn-desc">Conviértete en el estratega perfecto del nuevo mundo de los negocios digitales</div>
         </div>
@@ -541,37 +556,37 @@
     <div class="what-grid">
       <div class="what-card reveal d1">
         <div class="what-num">01</div>
-        <span class="what-icon">🌐</span>
+        <div class="what-icon-wrap"><i class="ph-bold ph-globe"></i></div>
         <div class="what-title">El nuevo mercado global</div>
         <div class="what-desc">Comprende cómo los cambios del mercado mundial afectan tu negocio hoy y hacia dónde se dirige el comercio en los próximos años.</div>
       </div>
       <div class="what-card reveal d2">
         <div class="what-num">02</div>
-        <span class="what-icon">👶</span>
+        <div class="what-icon-wrap"><i class="ph-bold ph-identification-badge"></i></div>
         <div class="what-title">Perfil de las nuevas generaciones</div>
         <div class="what-desc">Conoce a fondo a Millennials y Centennials — sus intereses, preocupaciones, hábitos de consumo y qué los impulsa a comprar.</div>
       </div>
       <div class="what-card reveal d3">
         <div class="what-num">03</div>
-        <span class="what-icon">🔍</span>
+        <div class="what-icon-wrap"><i class="ph-bold ph-magnifying-glass"></i></div>
         <div class="what-title">Características de compra</div>
         <div class="what-desc">Descubre los factores clave que influyen en las decisiones de compra de las nuevas generaciones y cómo aprovecharlos.</div>
       </div>
       <div class="what-card reveal d1">
         <div class="what-num">04</div>
-        <span class="what-icon">📊</span>
+        <div class="what-icon-wrap"><i class="ph-bold ph-chart-bar"></i></div>
         <div class="what-title">Estrategia empresarial</div>
         <div class="what-desc">Aprende cómo adaptar la estrategia de tu empresa para atraer, convencer y fidelizar al consumidor moderno.</div>
       </div>
       <div class="what-card reveal d2">
         <div class="what-num">05</div>
-        <span class="what-icon">🚀</span>
+        <div class="what-icon-wrap"><i class="ph-bold ph-rocket-launch"></i></div>
         <div class="what-title">Posicionamiento digital</div>
         <div class="what-desc">Conviértete en un líder del nuevo mercado digital. Aprende a posicionarte donde están tus clientes del futuro.</div>
       </div>
       <div class="what-card reveal d3">
         <div class="what-num">06</div>
-        <span class="what-icon">💡</span>
+        <div class="what-icon-wrap"><i class="ph-bold ph-brain"></i></div>
         <div class="what-title">Mentalidad ganadora</div>
         <div class="what-desc">Cambia tu manera de pensar frente al nuevo mercado y conviértete en el estratega perfecto del mundo digital.</div>
       </div>

@@ -273,7 +273,9 @@
     .theme-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red);opacity:0;transition:opacity .3s}
     .theme-card:hover{border-color:rgba(193,18,31,.25);background:rgba(193,18,31,.04);transform:translateY(-4px)}
     .theme-card:hover::before{opacity:1}
-    .theme-icon{font-size:1.5rem;margin-bottom:10px}
+    .theme-icon{width:46px;height:46px;border-radius:12px;background:rgba(193,18,31,.12);border:1px solid rgba(193,18,31,.22);display:flex;align-items:center;justify-content:center;margin-bottom:12px;transition:box-shadow .3s}
+    .theme-card:hover .theme-icon{box-shadow:0 4px 18px rgba(193,18,31,.2)}
+    .theme-icon i{font-size:22px;color:var(--red-l)}
     .theme-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.85rem;color:var(--white);margin-bottom:4px}
     .theme-desc{font-size:.77rem;color:var(--muted);line-height:1.6}
 
@@ -307,7 +309,9 @@
     }
     .fw-card:hover{transform:translateY(-6px);border-color:rgba(193,18,31,.2)}
     .fw-card:hover::after{opacity:1}
-    .fw-icon{font-size:2.4rem;margin-bottom:16px;display:block}
+    .fw-icon{width:56px;height:56px;border-radius:14px;background:rgba(193,18,31,.1);border:1px solid rgba(193,18,31,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;transition:box-shadow .3s}
+    .fw-card:hover .fw-icon{box-shadow:0 6px 24px rgba(193,18,31,.18)}
+    .fw-icon i{font-size:26px;color:var(--red-l)}
     .fw-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.92rem;color:var(--white);margin-bottom:8px}
     .fw-desc{font-size:.8rem;color:var(--muted);line-height:1.7}
 
@@ -386,6 +390,7 @@
       .forwho-grid{grid-template-columns:1fr}
     }
   </style>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css"/>
 </head>
 <body>
 
@@ -494,32 +499,32 @@
 
       <div class="themes-grid reveal-right">
         <div class="theme-card d1">
-          <div class="theme-icon">🔒</div>
+          <div class="theme-icon"><i class="ph-bold ph-lock"></i></div>
           <div class="theme-title">Violencia y extorsión</div>
           <div class="theme-desc">La realidad vivida por familias ordinarias bajo el control de las pandillas — sin exageraciones, sin filtros</div>
         </div>
         <div class="theme-card d2">
-          <div class="theme-icon">✊</div>
+          <div class="theme-icon"><i class="ph-bold ph-hand-fist"></i></div>
           <div class="theme-title">Poder ciudadano</div>
           <div class="theme-desc">Cómo la organización comunitaria y la participación activa pueden enfrentar lo que el Estado no pudo resolver</div>
         </div>
         <div class="theme-card d3">
-          <div class="theme-icon">🗳️</div>
+          <div class="theme-icon"><i class="ph-bold ph-check-square"></i></div>
           <div class="theme-title">Democracia real</div>
           <div class="theme-desc">Elegir bien a los representantes no es un derecho optativo — es la diferencia entre un país libre y uno cautivo</div>
         </div>
         <div class="theme-card d4">
-          <div class="theme-icon">🌱</div>
+          <div class="theme-icon"><i class="ph-bold ph-sun-horizon"></i></div>
           <div class="theme-title">Esperanza colectiva</div>
           <div class="theme-desc">El cambio que El Salvador necesita no viene de arriba — viene de cada ciudadano que decide involucrarse</div>
         </div>
         <div class="theme-card d5">
-          <div class="theme-icon">👶</div>
+          <div class="theme-icon"><i class="ph-bold ph-star"></i></div>
           <div class="theme-title">Juventud y futuro</div>
           <div class="theme-desc">Las nuevas generaciones salvadoreñas como motor del cambio social y agentes de transformación</div>
         </div>
         <div class="theme-card d6">
-          <div class="theme-icon">📣</div>
+          <div class="theme-icon"><i class="ph-bold ph-megaphone-simple"></i></div>
           <div class="theme-title">La voz del pueblo</div>
           <div class="theme-desc">Historias reales, testimonios y reflexiones sobre lo que significa luchar por un país mejor desde adentro</div>
         </div>
@@ -561,17 +566,17 @@
     </div>
     <div class="forwho-grid">
       <div class="fw-card reveal d1">
-        <span class="fw-icon">🇸🇻</span>
+        <div class="fw-icon"><i class="ph-bold ph-flag-banner"></i></div>
         <div class="fw-title">Eres salvadoreño</div>
         <div class="fw-desc">Dentro o fuera del país — si El Salvador corre por tus venas, esta historia es tuya también.</div>
       </div>
       <div class="fw-card reveal d2">
-        <span class="fw-icon">😤</span>
+        <div class="fw-icon"><i class="ph-bold ph-shield-slash"></i></div>
         <div class="fw-title">Estás cansado del miedo</div>
         <div class="fw-desc">Si viviste o conoces de cerca la extorsión, la violencia o el silencio obligado, este libro te habla directamente.</div>
       </div>
       <div class="fw-card reveal d3">
-        <span class="fw-icon">🕊️</span>
+        <div class="fw-icon"><i class="ph-bold ph-hand-heart"></i></div>
         <div class="fw-title">Crees en el cambio</div>
         <div class="fw-desc">Si piensas que las cosas pueden mejorar y que la ciudadanía activa es el camino, aquí encontrarás argumentos poderosos.</div>
       </div>
