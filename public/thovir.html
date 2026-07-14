@@ -7,7 +7,7 @@
   <meta name="description" content="3,000 años después de Ragnarok. Un enano ordinario. Una profecía que cambiará el destino de todos los mundos. La nueva novela épica de Julio Ernesto Olivo Hernández."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700;900&family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700;900&family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -399,6 +399,31 @@
       .stats-inner{grid-template-columns:1fr 1fr}
       .chapters-grid{grid-template-columns:1fr}
     }
+    /* ── SITE NAV ─────────────────────────────────── */
+    .site-nav{position:fixed;top:0;left:0;right:0;z-index:2000;padding:14px 0;background:rgba(7,7,15,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:border-bottom .3s,padding .3s;border-bottom:1px solid transparent}
+    .site-nav.scrolled{border-bottom:1px solid rgba(255,255,255,.08);padding:10px 0}
+    .site-nav-inner{display:flex;align-items:center;gap:28px;max-width:1160px;margin:0 auto;padding:0 24px}
+    .site-nav-logo{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;display:flex;align-items:center;gap:10px;flex-shrink:0;text-decoration:none;color:#e2e8f0}
+    .site-nav-hex{width:32px;height:32px;background:linear-gradient(135deg,#2563eb,#06b6d4);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;flex-shrink:0}
+    .site-nav-links{display:flex;align-items:center;gap:26px;flex:1;list-style:none;margin:0;padding:0}
+    .site-nav-links a{font-size:.88rem;font-weight:500;color:#94a3b8;transition:color .2s;position:relative;text-decoration:none}
+    .site-nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;background:#60a5fa;transform:scaleX(0);transform-origin:left;transition:transform .25s}
+    .site-nav-links a:hover{color:#fff}
+    .site-nav-links a:hover::after{transform:scaleX(1)}
+    .site-nav-actions{margin-left:auto;display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .site-nav-btn{display:flex;align-items:center;gap:8px;padding:9px 20px;border-radius:999px;background:linear-gradient(135deg,#2563eb,#1d4ed8);font-size:.875rem;font-weight:600;color:#fff;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(37,99,235,.35);text-decoration:none;flex-shrink:0}
+    .site-nav-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(37,99,235,.5)}
+    .site-nav-burger{display:none;background:none;border:none;color:#fff;cursor:pointer;padding:6px;line-height:0}
+    @media(max-width:768px){
+      .site-nav-logo-text{display:none}
+      .site-nav-links{position:fixed;top:0;left:0;right:0;bottom:0;z-index:1002;flex-direction:column;justify-content:flex-start;align-items:center;gap:0;background:#07070f;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);pointer-events:none;padding-top:72px}
+      .site-nav-links::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#2563eb,#06b6d4,#ec4899)}
+      .site-nav-links.open{transform:translateX(0);pointer-events:all}
+      .site-nav-links li{width:100%;border-bottom:1px solid rgba(255,255,255,.06)}
+      .site-nav-links a{display:block;width:100%;text-align:center;padding:18px 0;font-size:1.1rem;font-weight:600}
+      .site-nav-burger{display:flex;margin-left:auto;z-index:1003;position:relative}
+      .site-nav-btn{display:none}
+    }
   </style>
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css"/>
 </head>
@@ -409,10 +434,24 @@
 <div class="fog"></div>
 
 <!-- NAV -->
-<nav>
-  <div class="nav-inner">
-    <span class="nav-badge">Fantasía Épica · Nuevo</span>
-    <a href="https://go.hotmart.com/H103199911T?dp=1" target="_blank" class="nav-cta">Obtener eBook</a>
+<nav class="site-nav" id="siteNav">
+  <div class="site-nav-inner">
+    <a href="/" class="site-nav-logo">
+      <div class="site-nav-hex">⬡</div>
+      <span class="site-nav-logo-text">Julio Olivo</span>
+    </a>
+    <ul class="site-nav-links" id="siteNavLinks">
+      <li><a href="/">Inicio</a></li>
+      <li><a href="/#servicios">Servicios</a></li>
+      <li><a href="/academy">Academy</a></li>
+      <li><a href="/#contacto">Contacto</a></li>
+    </ul>
+    <div class="site-nav-actions">
+      <a href="https://go.hotmart.com/H103199911T?dp=1" target="_blank" class="site-nav-btn">Obtener eBook</a>
+    </div>
+    <button class="site-nav-burger" id="siteNavBurger" aria-label="Menú">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
   </div>
 </nav>
 
@@ -862,6 +901,8 @@ window.addEventListener('scroll', () => {
     ticking = false;
   }); ticking = true; }
 });
+// site nav
+(function(){var n=document.getElementById('siteNav'),b=document.getElementById('siteNavBurger'),l=document.getElementById('siteNavLinks'),o=false;window.addEventListener('scroll',function(){n.classList.toggle('scrolled',window.scrollY>40)},{passive:true});b.addEventListener('click',function(){o=!o;l.classList.toggle('open',o)});l.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){o=false;l.classList.remove('open')})})})();
 </script>
 </body>
 </html>
