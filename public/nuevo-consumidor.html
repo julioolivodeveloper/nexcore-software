@@ -241,13 +241,18 @@
     }
     .learn-card:hover{border-color:rgba(255,214,0,.3);background:rgba(255,214,0,.04);transform:translateY(-4px)}
     .learn-icon{
-      width:48px;height:48px;border-radius:12px;
-      background:rgba(255,214,0,.1);border:1px solid rgba(255,214,0,.18);
-      display:flex;align-items:center;justify-content:center;margin-bottom:12px;
+      width:54px;height:54px;border-radius:15px;
+      background:linear-gradient(135deg,rgba(255,214,0,.16),rgba(255,214,0,.04));
+      border:1px solid rgba(255,214,0,.24);
+      display:flex;align-items:center;justify-content:center;margin-bottom:14px;
+      box-shadow:0 4px 20px rgba(255,214,0,.1),inset 0 1px 0 rgba(255,255,255,.07);
       transition:background .3s,box-shadow .3s;
     }
-    .learn-card:hover .learn-icon{background:rgba(255,214,0,.16);box-shadow:0 4px 18px rgba(255,214,0,.15)}
-    .learn-icon i{font-size:22px;color:var(--yellow)}
+    .learn-card:hover .learn-icon{
+      background:linear-gradient(135deg,rgba(255,214,0,.26),rgba(255,214,0,.08));
+      box-shadow:0 8px 28px rgba(255,214,0,.2),inset 0 1px 0 rgba(255,255,255,.1);
+    }
+    .learn-icon i{font-size:25px;color:var(--yellow)}
     .learn-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.85rem;color:#fff;margin-bottom:4px}
     .learn-desc{font-size:.77rem;color:var(--muted);line-height:1.6}
 
@@ -280,13 +285,18 @@
     }
     .what-num::after{content:'';flex:1;height:1px;background:rgba(255,214,0,.2)}
     .what-icon-wrap{
-      width:52px;height:52px;border-radius:14px;
-      background:rgba(255,214,0,.08);border:1px solid rgba(255,214,0,.15);
+      width:54px;height:54px;border-radius:15px;
+      background:linear-gradient(135deg,rgba(255,214,0,.14),rgba(255,214,0,.04));
+      border:1px solid rgba(255,214,0,.22);
       display:flex;align-items:center;justify-content:center;margin-bottom:14px;
+      box-shadow:0 4px 18px rgba(255,214,0,.08),inset 0 1px 0 rgba(255,255,255,.06);
       transition:all .3s;
     }
-    .what-card:hover .what-icon-wrap{background:rgba(255,214,0,.14);box-shadow:0 4px 18px rgba(255,214,0,.12)}
-    .what-icon-wrap i{font-size:24px;color:var(--yellow)}
+    .what-card:hover .what-icon-wrap{
+      background:linear-gradient(135deg,rgba(255,214,0,.24),rgba(255,214,0,.08));
+      box-shadow:0 8px 26px rgba(255,214,0,.18),inset 0 1px 0 rgba(255,255,255,.1);
+    }
+    .what-icon-wrap i{font-size:25px;color:var(--yellow)}
     .what-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.92rem;color:#fff;margin-bottom:8px}
     .what-desc{font-size:.8rem;color:var(--muted);line-height:1.7}
 
