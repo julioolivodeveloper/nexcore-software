@@ -171,7 +171,7 @@
       display:flex;align-items:center;justify-content:center;
     }
     .book{
-      width:260px;height:360px;
+      width:300px;height:420px;
       position:relative;
       transform-style:preserve-3d;
       transform:rotateY(-22deg) rotateX(4deg);
@@ -187,13 +187,13 @@
 
     .book-cover{
       position:absolute;
-      width:260px;height:360px;
+      width:300px;height:420px;
       backface-visibility:hidden;
       border-radius:2px 8px 8px 2px;
       overflow:hidden;
     }
     .book-cover-front{
-      background:url('/portadas/davinci.jpg') no-repeat center top / cover;
+      background:url('/portadas/davinci.jpg') no-repeat center center / 100% 100%;
       border:1px solid rgba(201,150,58,.2);
     }
 
@@ -243,7 +243,7 @@
     /* Spine */
     .book-spine{
       position:absolute;
-      width:36px;height:360px;
+      width:36px;height:420px;
       left:-34px;top:0;
       background:linear-gradient(90deg,#090611,#1a1228,#0d0a18);
       transform:rotateY(-90deg) translateX(-17px) translateZ(17px);
@@ -261,10 +261,10 @@
     /* Pages side */
     .book-pages{
       position:absolute;
-      width:12px;height:356px;
+      width:12px;height:416px;
       right:-10px;top:2px;
       background:repeating-linear-gradient(180deg,#d4c9a8,#bfb494 1px,#d4c9a8 2px);
-      transform:rotateY(90deg) translateX(5px) translateZ(248px);
+      transform:rotateY(90deg) translateX(5px) translateZ(288px);
     }
 
     /* ── MARQUEE ─── */
@@ -505,10 +505,10 @@
     }
     @media(max-width:600px){
       .hero{padding:100px 0 60px}
-      .book{width:200px;height:276px}
-      .book-cover{width:200px;height:276px}
-      .book-pages{height:272px}
-      .book-spine{height:276px}
+      .book{width:220px;height:308px}
+      .book-cover{width:220px;height:308px}
+      .book-pages{height:304px}
+      .book-spine{height:308px}
       .chapters-grid{grid-template-columns:1fr 1fr}
       .stats-grid{grid-template-columns:1fr 1fr}
       .dl-cards{flex-direction:column;align-items:center}
