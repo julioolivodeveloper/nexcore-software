@@ -154,11 +154,12 @@
     footer a:hover{color:#94a3b8}
     .footer-links{display:flex;justify-content:center;gap:24px;margin-bottom:16px;flex-wrap:wrap}
 
-    @media(max-width:600px){
-      .books-grid{grid-template-columns:1fr 1fr}
-    }
-    @media(max-width:380px){
+    @media(max-width:768px){
       .books-grid{grid-template-columns:1fr}
+      .book-card{flex-direction:row;align-items:stretch}
+      .book-cover{width:130px;min-width:130px;aspect-ratio:auto;height:auto;object-position:center top}
+      .book-body{padding:18px 16px;gap:10px}
+      .book-title{font-size:1rem}
     }
   </style>
 </head>
@@ -205,7 +206,7 @@
         <div class="book-body">
           <span class="book-genre genre-history">Historia · Biografía</span>
           <h2 class="book-title">Crónicas de Leonardo da Vinci</h2>
-          <p class="book-desc">No nació genio. Se convirtió en uno. La historia humana de Leonardo da Vinci contada como nunca antes — 16 capítulos que te meten dentro del taller de Verrocchio.</p>
+          <p class="book-desc">No nació genio. Se convirtió en uno. 16 capítulos que te meten dentro del taller de Verrocchio.</p>
           <a href="/libro" class="book-cta">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             Ver libro
@@ -219,7 +220,7 @@
         <div class="book-body">
           <span class="book-genre genre-business">Negocios · Marketing</span>
           <h2 class="book-title">Nuevo Consumidor Nuevo Vendedor</h2>
-          <p class="book-desc">El mercado cambió. ¿Cambiaste tú? Guía práctica para entender al consumidor digital y dominar las ventas en la era de las redes sociales.</p>
+          <p class="book-desc">El mercado cambió. ¿Cambiaste tú? Aprende a venderle a las nuevas generaciones.</p>
           <a href="/nuevo-consumidor" class="book-cta">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             Ver libro
@@ -233,7 +234,7 @@
         <div class="book-body">
           <span class="book-genre genre-politics">Política · Drama</span>
           <h2 class="book-title">Nuestra Lucha</h2>
-          <p class="book-desc">Un joven político. La esperanza de un pueblo. Los malos que parecen buenos y los buenos que parecen malos. Drama político ambientado en El Salvador.</p>
+          <p class="book-desc">Los malos que parecen buenos y los buenos que parecen malos. Drama político en El Salvador.</p>
           <a href="/nuestra-lucha" class="book-cta">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             Ver libro
@@ -247,7 +248,7 @@
         <div class="book-body">
           <span class="book-genre genre-fantasy">Fantasía Épica</span>
           <h2 class="book-title">Thovir y la Profecía del Árbol Sagrado</h2>
-          <p class="book-desc">En un mundo donde razas antiguas conviven con magia y traición, un joven enano descubre que el destino del árbol sagrado recae sobre sus hombros.</p>
+          <p class="book-desc">Un joven enano descubre que el destino del árbol sagrado recae sobre sus hombros.</p>
           <a href="/thovir" class="book-cta">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             Ver libro
