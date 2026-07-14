@@ -402,7 +402,9 @@
       font-size:.65rem;font-weight:700;letter-spacing:.2em;
       color:var(--gold);text-transform:uppercase;margin-bottom:10px;
     }
-    .ch-icon{font-size:1.6rem;margin-bottom:10px;display:block}
+    .ch-icon{width:44px;height:44px;border-radius:11px;background:linear-gradient(135deg,rgba(201,150,58,.14),rgba(201,150,58,.04));border:1px solid rgba(201,150,58,.2);display:flex;align-items:center;justify-content:center;margin-bottom:14px;transition:box-shadow .3s}
+    .ch-card:hover .ch-icon{box-shadow:0 4px 18px rgba(201,150,58,.18)}
+    .ch-icon i{font-size:20px;color:var(--gold)}
     .ch-title{font-weight:700;font-size:.82rem;color:var(--parchment);line-height:1.4}
 
     /* ── STATS ─── */
@@ -741,22 +743,22 @@
       <h2 class="section-title reveal d1">16 capítulos que cambian tu perspectiva</h2>
     </div>
     <div class="chapters-grid">
-      <div class="ch-card reveal d1"><div class="ch-num">Capítulo I</div><span class="ch-icon">🌱</span><div class="ch-title">El niño de Vinci — Sin apellido, sin camino</div></div>
-      <div class="ch-card reveal d2"><div class="ch-num">Capítulo II</div><span class="ch-icon">🪶</span><div class="ch-title">Las hormigas y el primer gran por qué</div></div>
-      <div class="ch-card reveal d3"><div class="ch-num">Capítulo III</div><span class="ch-icon">🏺</span><div class="ch-title">El taller de Verrocchio — Meses moliendo pigmentos</div></div>
-      <div class="ch-card reveal d4"><div class="ch-num">Capítulo IV</div><span class="ch-icon">👁</span><div class="ch-title">Aprender a ver lo que nadie veía</div></div>
-      <div class="ch-card reveal d1"><div class="ch-num">Capítulo V</div><span class="ch-icon">🎨</span><div class="ch-title">El primer pincel — La mano tiembla, pero pinta</div></div>
-      <div class="ch-card reveal d2"><div class="ch-num">Capítulo VI</div><span class="ch-icon">📐</span><div class="ch-title">Arte y geometría — El secreto de la proporción</div></div>
-      <div class="ch-card reveal d3"><div class="ch-num">Capítulo VII</div><span class="ch-icon">🏛️</span><div class="ch-title">Florencia en llamas — Mecenas y rivalidades</div></div>
-      <div class="ch-card reveal d4"><div class="ch-num">Capítulo VIII</div><span class="ch-icon">🌊</span><div class="ch-title">El río que no obedeció — Fracasar a gran escala</div></div>
-      <div class="ch-card reveal d1"><div class="ch-num">Capítulo IX</div><span class="ch-icon">✈️</span><div class="ch-title">Máquinas que vuelan — El ingeniero imposible</div></div>
-      <div class="ch-card reveal d2"><div class="ch-num">Capítulo X</div><span class="ch-icon">🫀</span><div class="ch-title">El cuerpo humano — Anatomía como arte</div></div>
-      <div class="ch-card reveal d3"><div class="ch-num">Capítulo XI</div><span class="ch-icon">🍽️</span><div class="ch-title">La Última Cena — Dieciséis años de un retrato</div></div>
-      <div class="ch-card reveal d4"><div class="ch-num">Capítulo XII</div><span class="ch-icon">😢</span><div class="ch-title">El mural que se derrumbó — La paciencia tiene límites</div></div>
-      <div class="ch-card reveal d1"><div class="ch-num">Capítulo XIII</div><span class="ch-icon">👩</span><div class="ch-title">La Mona Lisa — El misterio que nunca soltó</div></div>
-      <div class="ch-card reveal d2"><div class="ch-num">Capítulo XIV</div><span class="ch-icon">📜</span><div class="ch-title">El tratado perdido — Cuando el tiempo gana</div></div>
-      <div class="ch-card reveal d3"><div class="ch-num">Capítulo XV</div><span class="ch-icon">🕯️</span><div class="ch-title">Los últimos cuadernos — Lo que dejó inconcluso</div></div>
-      <div class="ch-card reveal d4"><div class="ch-num">Capítulo XVI</div><span class="ch-icon">⭐</span><div class="ch-title">La pregunta final — ¿Qué es en realidad ser un genio?</div></div>
+      <div class="ch-card reveal d1"><div class="ch-num">Capítulo I</div><div class="ch-icon"><i class="ph-bold ph-seedling"></i></div><div class="ch-title">El niño de Vinci — Sin apellido, sin camino</div></div>
+      <div class="ch-card reveal d2"><div class="ch-num">Capítulo II</div><div class="ch-icon"><i class="ph-bold ph-feather"></i></div><div class="ch-title">Las hormigas y el primer gran por qué</div></div>
+      <div class="ch-card reveal d3"><div class="ch-num">Capítulo III</div><div class="ch-icon"><i class="ph-bold ph-flask"></i></div><div class="ch-title">El taller de Verrocchio — Meses moliendo pigmentos</div></div>
+      <div class="ch-card reveal d4"><div class="ch-num">Capítulo IV</div><div class="ch-icon"><i class="ph-bold ph-eye"></i></div><div class="ch-title">Aprender a ver lo que nadie veía</div></div>
+      <div class="ch-card reveal d1"><div class="ch-num">Capítulo V</div><div class="ch-icon"><i class="ph-bold ph-paint-brush"></i></div><div class="ch-title">El primer pincel — La mano tiembla, pero pinta</div></div>
+      <div class="ch-card reveal d2"><div class="ch-num">Capítulo VI</div><div class="ch-icon"><i class="ph-bold ph-ruler"></i></div><div class="ch-title">Arte y geometría — El secreto de la proporción</div></div>
+      <div class="ch-card reveal d3"><div class="ch-num">Capítulo VII</div><div class="ch-icon"><i class="ph-bold ph-buildings"></i></div><div class="ch-title">Florencia en llamas — Mecenas y rivalidades</div></div>
+      <div class="ch-card reveal d4"><div class="ch-num">Capítulo VIII</div><div class="ch-icon"><i class="ph-bold ph-waves"></i></div><div class="ch-title">El río que no obedeció — Fracasar a gran escala</div></div>
+      <div class="ch-card reveal d1"><div class="ch-num">Capítulo IX</div><div class="ch-icon"><i class="ph-bold ph-airplane"></i></div><div class="ch-title">Máquinas que vuelan — El ingeniero imposible</div></div>
+      <div class="ch-card reveal d2"><div class="ch-num">Capítulo X</div><div class="ch-icon"><i class="ph-bold ph-heart"></i></div><div class="ch-title">El cuerpo humano — Anatomía como arte</div></div>
+      <div class="ch-card reveal d3"><div class="ch-num">Capítulo XI</div><div class="ch-icon"><i class="ph-bold ph-fork-knife"></i></div><div class="ch-title">La Última Cena — Dieciséis años de un retrato</div></div>
+      <div class="ch-card reveal d4"><div class="ch-num">Capítulo XII</div><div class="ch-icon"><i class="ph-bold ph-cloud-rain"></i></div><div class="ch-title">El mural que se derrumbó — La paciencia tiene límites</div></div>
+      <div class="ch-card reveal d1"><div class="ch-num">Capítulo XIII</div><div class="ch-icon"><i class="ph-bold ph-frame-corners"></i></div><div class="ch-title">La Mona Lisa — El misterio que nunca soltó</div></div>
+      <div class="ch-card reveal d2"><div class="ch-num">Capítulo XIV</div><div class="ch-icon"><i class="ph-bold ph-scroll"></i></div><div class="ch-title">El tratado perdido — Cuando el tiempo gana</div></div>
+      <div class="ch-card reveal d3"><div class="ch-num">Capítulo XV</div><div class="ch-icon"><i class="ph-bold ph-candle"></i></div><div class="ch-title">Los últimos cuadernos — Lo que dejó inconcluso</div></div>
+      <div class="ch-card reveal d4"><div class="ch-num">Capítulo XVI</div><div class="ch-icon"><i class="ph-bold ph-sparkle"></i></div><div class="ch-title">La pregunta final — ¿Qué es en realidad ser un genio?</div></div>
     </div>
   </div>
 </section>
