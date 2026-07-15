@@ -176,6 +176,61 @@
     @keyframes scroll-line{0%,100%{transform:scaleY(1);opacity:1}50%{transform:scaleY(.5);opacity:.4}}
     @keyframes fade-in{from{opacity:0}to{opacity:1}}
 
+    /* ── HERO VIDEO BG ────────────────────────────── */
+    .hero-vid{
+      position:absolute;inset:0;
+      width:100%;height:100%;
+      object-fit:cover;
+      opacity:0;
+      transition:opacity 1s ease;
+      z-index:0;
+      pointer-events:none;
+    }
+    .hero-vid.active{opacity:.5}
+    .hero-overlay{
+      position:absolute;inset:0;z-index:1;
+      background:linear-gradient(
+        to bottom,
+        rgba(6,6,14,.65) 0%,
+        rgba(6,6,14,.35) 45%,
+        rgba(6,6,14,.8) 100%
+      );
+    }
+
+    /* ── MARQUEE ──────────────────────────────────── */
+    .marquee-section{
+      background:#000;
+      overflow:hidden;
+      padding:18px 0;
+      border-top:1px solid #1a1a1a;
+      border-bottom:1px solid #1a1a1a;
+      position:relative;
+    }
+    .marquee-track{
+      display:flex;
+      align-items:center;
+      white-space:nowrap;
+      animation:marquee-scroll 40s linear infinite;
+    }
+    .marquee-track:hover{animation-play-state:paused}
+    .marquee-item{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(.8rem,1.4vw,1rem);
+      font-weight:700;
+      color:#fff;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      padding:0 32px;
+      flex-shrink:0;
+    }
+    .marquee-sep{
+      color:#333;font-size:1rem;flex-shrink:0;
+    }
+    @keyframes marquee-scroll{
+      from{transform:translateX(0)}
+      to{transform:translateX(-50%)}
+    }
+
     /* ── STATEMENT ────────────────────────────────── */
     .statement{
       padding:100px 24px;
@@ -600,6 +655,11 @@
 
 <!-- ═══════════════════════════════════════════════ HERO -->
 <section class="hero">
+  <!-- Video backgrounds (two elements for crossfade) -->
+  <video id="heroVidA" class="hero-vid active" autoplay muted playsinline></video>
+  <video id="heroVidB" class="hero-vid" autoplay muted playsinline></video>
+  <div class="hero-overlay"></div>
+
   <div class="hero-orb hero-orb-1"></div>
   <div class="hero-orb hero-orb-2"></div>
   <div class="hero-orb hero-orb-3"></div>
@@ -637,6 +697,38 @@
     <div class="scroll-line"></div>
   </div>
 </section>
+
+<!-- ═══════════════════════════════════════════════ MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <!-- Set 1 -->
+    <span class="marquee-item">Marketing Digital</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Meta Ads</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Leads Cualificados</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Sitio Web</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Pixel de Meta</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">WhatsApp</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Anuncios en Facebook</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Instagram Ads</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Conversiones Reales</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Negocios en EEUU</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Construcción</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Restaurantes</span><span class="marquee-sep">◆</span>
+    <!-- Set 2 (duplicado para loop sin corte) -->
+    <span class="marquee-item">Marketing Digital</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Meta Ads</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Leads Cualificados</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Sitio Web</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Pixel de Meta</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">WhatsApp</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Anuncios en Facebook</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Instagram Ads</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Conversiones Reales</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Negocios en EEUU</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Construcción</span><span class="marquee-sep">◆</span>
+    <span class="marquee-item">Restaurantes</span><span class="marquee-sep">◆</span>
+  </div>
+</div>
 
 <!-- ═══════════════════════════════════════════════ STATEMENT -->
 <section class="statement">
@@ -987,6 +1079,36 @@
     entries.forEach(function(e){if(e.isIntersecting){animateCounter(e.target);cio.unobserve(e.target)}});
   },{threshold:.5});
   document.querySelectorAll('[data-count]').forEach(function(el){cio.observe(el)});
+
+  /* ── Hero video rotator ── */
+  (function(){
+    var clips=[
+      'videorestaurante.mp4','construcccon.mp4','videopizza.mp4',
+      'videoconstruccion.mp4','videocafe.mp4','pintorvideo.mp4',
+      'videobebida.mp4','jardinervideo.mp4','videoroofing.mp4'
+    ];
+    var A=document.getElementById('heroVidA');
+    var B=document.getElementById('heroVidB');
+    if(!A||!B)return;
+    var idx=0,onA=true;
+
+    function loadAndPlay(el,src){
+      el.src='/videos/'+src;
+      el.load();
+      el.play().catch(function(){});
+    }
+
+    loadAndPlay(A,clips[0]);
+
+    setInterval(function(){
+      idx=(idx+1)%clips.length;
+      var next=onA?B:A;
+      var curr=onA?A:B;
+      loadAndPlay(next,clips[idx]);
+      next.classList.add('active');
+      setTimeout(function(){curr.classList.remove('active');onA=!onA;},900);
+    },5000);
+  })();
 })();
 </script>
 </body>
