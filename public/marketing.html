@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sistema de Leads — Marketing Digital · Nexcore</title>
-  <meta name="description" content="Sistema completo de generación de leads cualificados para negocios en EEUU. Meta Ads + sitio web + Pixel de Meta. $1,200/mes, presupuesto incluido."/>
+  <meta name="description" content="Sistema completo de generación de leads cualificados para negocios en EEUU. Meta Ads + sitio web + Pixel de Meta. $1,400/mes, presupuesto incluido."/>
   <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -453,6 +453,45 @@
       font-size:.95rem;color:#94a3b8;text-align:left;
     }
     .pricing-list i{font-size:1.1rem;color:#22d3ee;flex-shrink:0}
+    /* ── PRICING BREAKDOWN ───────────────────────── */
+    .pricing-breakdown{margin:28px 0 0}
+    .breakdown-label{font-size:.72rem;font-weight:700;color:#475569;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;text-align:left}
+    .breakdown-grid{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:16px}
+    .breakdown-plus{font-family:'Space Grotesk',sans-serif;font-size:1.6rem;font-weight:800;color:#334155;text-align:center}
+    .breakdown-item{
+      padding:20px 16px;border-radius:14px;text-align:center;
+      position:relative;overflow:hidden;
+    }
+    .breakdown-ads{
+      background:linear-gradient(135deg,rgba(37,99,235,.12),rgba(6,182,212,.05));
+      border:1px solid rgba(37,99,235,.2);
+    }
+    .breakdown-svc{
+      background:linear-gradient(135deg,rgba(124,58,237,.1),rgba(37,99,235,.05));
+      border:1px solid rgba(124,58,237,.2);
+    }
+    .breakdown-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+    .breakdown-ads .breakdown-icon{background:rgba(37,99,235,.15)}
+    .breakdown-ads .breakdown-icon i{color:#60a5fa;font-size:1.1rem}
+    .breakdown-svc .breakdown-icon{background:rgba(124,58,237,.15)}
+    .breakdown-svc .breakdown-icon i{color:#a78bfa;font-size:1.1rem}
+    .breakdown-amount{font-family:'Space Grotesk',sans-serif;font-size:1.8rem;font-weight:800;line-height:1;margin-bottom:6px}
+    .breakdown-ads .breakdown-amount{color:#60a5fa}
+    .breakdown-svc .breakdown-amount{color:#a78bfa}
+    .breakdown-name{font-size:.8rem;font-weight:700;color:#cbd5e1;margin-bottom:6px}
+    .breakdown-desc{font-size:.72rem;color:#475569;line-height:1.5}
+    .breakdown-why{
+      display:flex;align-items:flex-start;gap:10px;
+      padding:14px 16px;border-radius:12px;
+      background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);
+      font-size:.8rem;color:#64748b;line-height:1.6;text-align:left;
+    }
+    .breakdown-why i{font-size:1rem;color:#475569;flex-shrink:0;margin-top:2px}
+    @media(max-width:520px){
+      .breakdown-grid{grid-template-columns:1fr;grid-template-rows:auto auto auto}
+      .breakdown-plus{font-size:1.2rem;padding:0}
+    }
+
     .btn-wa-big{
       display:flex;align-items:center;justify-content:center;gap:12px;
       width:100%;padding:20px 32px;border-radius:18px;
@@ -580,7 +619,7 @@
     <p class="hero-sub">
       Diseñamos y administramos el <strong>sistema completo</strong> que convierte desconocidos
       en clientes de pago — directo a tu WhatsApp. Un solo precio,
-      presupuesto incluido. <strong>Sin sorpresas.</strong>
+      presupuesto publicitario incluido. <strong>$1,400/mes. Sin sorpresas.</strong>
     </p>
 
     <div class="hero-ctas">
@@ -618,7 +657,7 @@
   <div class="container">
     <div class="stats-grid">
       <div class="stat-item reveal">
-        <div class="stat-num" data-count="1200">0</div>
+        <div class="stat-num" data-count="1400">0</div>
         <div class="stat-label">dólares al mes,<br/>todo incluido</div>
       </div>
       <div class="stat-item reveal reveal-delay-1">
@@ -796,7 +835,7 @@
       <div class="value-card reveal">
         <div class="value-icon"><i class="ph-bold ph-currency-dollar-simple"></i></div>
         <div class="value-title">Presupuesto incluido</div>
-        <div class="value-desc">Tu inversión en anuncios está incluida en los $1,200. No hay sorpresas ni facturas adicionales al final del mes.</div>
+        <div class="value-desc">Tu inversión en anuncios está incluida en los $1,400. No hay sorpresas ni facturas adicionales al final del mes.</div>
       </div>
       <div class="value-card reveal reveal-delay-1">
         <div class="value-icon"><i class="ph-bold ph-chart-line-up"></i></div>
@@ -837,12 +876,36 @@
     </div>
 
     <div class="pricing-card reveal">
-      <div class="pricing-badge"><i class="ph-bold ph-star"></i>&nbsp; Todo Incluido</div>
+      <div class="pricing-badge"><i class="ph-bold ph-star"></i>&nbsp; Todo Incluido · 100% Transparente</div>
       <div class="pricing-label">Sistema Completo de Generación de Leads</div>
       <div class="pricing-price">
-        <sup>$</sup>1,200<span>/mes</span>
+        <sup>$</sup>1,400<span>/mes</span>
       </div>
-      <div class="pricing-note">Presupuesto publicitario incluido · Sin costos ocultos</div>
+      <div class="pricing-note">Un solo pago mensual · Sin costos ocultos · Sin sorpresas</div>
+
+      <!-- BREAKDOWN -->
+      <div class="pricing-breakdown">
+        <div class="breakdown-label">¿A dónde va tu dinero?</div>
+        <div class="breakdown-grid">
+          <div class="breakdown-item breakdown-ads">
+            <div class="breakdown-icon"><i class="ph-bold ph-megaphone-simple"></i></div>
+            <div class="breakdown-amount">$800</div>
+            <div class="breakdown-name">Presupuesto publicitario</div>
+            <div class="breakdown-desc">Va directo a Meta Ads (Facebook &amp; Instagram). 100% para mostrar tus anuncios.</div>
+          </div>
+          <div class="breakdown-plus">+</div>
+          <div class="breakdown-item breakdown-svc">
+            <div class="breakdown-icon"><i class="ph-bold ph-brain"></i></div>
+            <div class="breakdown-amount">$600</div>
+            <div class="breakdown-name">Gestión y estrategia</div>
+            <div class="breakdown-desc">Nuestro cobro por diseño, administración, sitio web, Pixel y optimización.</div>
+          </div>
+        </div>
+        <div class="breakdown-why">
+          <i class="ph-bold ph-info"></i>
+          <span>Creemos en la transparencia total. $800 de presupuesto publicitario es suficiente para generar resultados reales en negocios locales — sin desperdiciar dinero en audiencias que no convierten.</span>
+        </div>
+      </div>
 
       <div class="pricing-divider"></div>
 
@@ -858,9 +921,9 @@
         <li><i class="ph-bold ph-check-circle"></i> Soporte directo por WhatsApp con tu equipo</li>
       </ul>
 
-      <a href="https://wa.me/12094609828?text=Hola%2C%20quiero%20empezar%20con%20el%20sistema%20de%20leads%20por%20%241%2C200%2Fmes.%20Mi%20negocio%20es%3A%20" target="_blank" rel="noopener" class="btn-wa-big">
+      <a href="https://wa.me/12094609828?text=Hola%2C%20quiero%20empezar%20con%20el%20sistema%20de%20leads%20por%20%241%2C400%2Fmes.%20Mi%20negocio%20es%3A%20" target="_blank" rel="noopener" class="btn-wa-big">
         <i class="ph-bold ph-whatsapp-logo"></i>
-        Empezar Ahora — $1,200/mes
+        Empezar Ahora — $1,400/mes
       </a>
       <p class="pricing-footer-note">Cupos limitados por mes · Sin contratos anuales · Respuesta en menos de 2 horas</p>
     </div>
