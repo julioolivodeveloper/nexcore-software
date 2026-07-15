@@ -516,7 +516,8 @@ app.delete('/api/expenses/:id', (req, res) => {
 // ── REPORTS ───────────────────────────────────────────────────────────────────
 app.get('/api/reports/dashboard', (req, res) => res.json(computeDashboard()));
 
-// ── ACADEMY & LIBROS ──────────────────────────────────────────────────────────
+// ── MARKETING & ACADEMY & LIBROS ──────────────────────────────────────────────
+app.get('/marketing',         (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'marketing.html')));
 app.get('/academy',           (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'academy.html')));
 app.get('/libro',             (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'libro.html')));
 app.get('/libros',            (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'libro.html')));
