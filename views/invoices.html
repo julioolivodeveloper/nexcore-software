@@ -196,7 +196,24 @@
       const tbody = document.getElementById('invoicesBody');
       if (!list.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:40px;height:40px;margin:0 auto 12px;opacity:.3;display:block"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Sin facturas aún</td></tr>'; return; }
       const sm = { paid:['status-paid','Pagada'], pending:['status-pending','Pendiente'], cancelled:['status-cancelled','Cancelada'] };
-      tbody.innerHTML = list.map(inv => { const [cls,lbl] = sm[inv.status]||['status-pending','Pendiente']; return `<tr><td style="font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--purple-l)">#${String(inv.id).padStart(4,'0')}</td><td style="font-weight:500">${inv.client_name||'—'}</td><td style="color:var(--text-muted)">${inv.issue_date||'—'}</td><td style="color:var(--text-muted)">${inv.due_date||'—'}</td><td class="amount-cell">$${parseFloat(inv.total||0).toFixed(2)}</td><td><span class="status-badge ${cls}">${lbl}</span></td><td><div class="actions">${inv.status==='pending'?`<button class="btn-icon success" onclick="markPaid(${inv.id})" title="Marcar como pagada"><i data-lucide="check-circle"></i></button>`:''}<button class="btn-icon" onclick="downloadPDF(${inv.id})" title="PDF"><i data-lucide="download"></i></button><button class="btn-icon danger" onclick="deleteInvoice(${inv.id})"><i data-lucide="trash-2"></i></button></div></td></tr>`; }).join('');
+      tbody.innerHTML = list.map(function(inv) {
+        var sc = sm[inv.status] || ['status-pending','Pendiente'];
+        var cls = sc[0], lbl = sc[1];
+        var paidBtn = inv.status === 'pending'
+          ? '<button class="btn-icon success" onclick="markPaid(' + inv.id + ')" title="Marcar como pagada"><i data-lucide="check-circle"></i></button>'
+          : '';
+        return '<tr>'
+          + '<td style="font-family:Space Grotesk,sans-serif;font-weight:600;color:var(--purple-l)">#' + String(inv.id).padStart(4,'0') + '</td>'
+          + '<td style="font-weight:500">' + (inv.client_name||'—') + '</td>'
+          + '<td style="color:var(--text-muted)">' + (inv.issue_date||'—') + '</td>'
+          + '<td style="color:var(--text-muted)">' + (inv.due_date||'—') + '</td>'
+          + '<td class="amount-cell">$' + parseFloat(inv.total||0).toFixed(2) + '</td>'
+          + '<td><span class="status-badge ' + cls + '">' + lbl + '</span></td>'
+          + '<td><div class="actions">' + paidBtn
+          + '<button class="btn-icon" onclick="downloadPDF(' + inv.id + ')" title="PDF"><i data-lucide="download"></i></button>'
+          + '<button class="btn-icon danger" onclick="deleteInvoice(' + inv.id + ')"><i data-lucide="trash-2"></i></button>'
+          + '</div></td></tr>';
+      }).join('');
       lucide.createIcons();
     }
     function filterInvoices() { const q = document.getElementById('searchInput').value.toLowerCase(); renderInvoices(allInvoices.filter(i => (String(i.id)+i.client_name).toLowerCase().includes(q))); }

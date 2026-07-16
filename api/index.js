@@ -486,12 +486,14 @@ app.delete('/api/clients/:id', async (req, res) => {
 app.get('/api/invoices', async (req, res) => {
   let list = [...invoices];
   try {
-    const { data } = await getClient().from('acct_invoices').select('*').order('id', { ascending: false });
-    if (data && data.length) {
+    const sb = getClient();
+    const result = await sb.from('acct_invoices').select('*').order('id', { ascending: false });
+    const data = result && result.data;
+    if (Array.isArray(data) && data.length > 0) {
       const ids = new Set(list.map(i => i.id));
       list = [...data.filter(i => !ids.has(i.id)), ...list];
     }
-  } catch(e) {}
+  } catch(e) { /* Supabase not available, use hardcoded data */ }
   res.json(list.sort((a, b) => b.id - a.id));
 });
 
