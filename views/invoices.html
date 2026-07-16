@@ -48,10 +48,12 @@
     td { padding:14px 16px;font-size:.875rem;border-bottom:1px solid var(--border); }
     tr:last-child td { border-bottom:none; }
     tr:hover td { background:rgba(255,255,255,.02); }
-    .status-badge { display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:.72rem;font-weight:700; }
+    .status-badge { display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:.72rem;font-weight:700;cursor:pointer;transition:opacity .15s; }
+    .status-badge:hover { opacity:.75; }
     .status-paid { background:rgba(16,185,129,.12);color:#6ee7b7;border:1px solid rgba(16,185,129,.22); }
     .status-pending { background:rgba(245,158,11,.12);color:#fcd34d;border:1px solid rgba(245,158,11,.22); }
     .status-cancelled { background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.2); }
+    .status-select { background:var(--bg3);border:1px solid var(--border);color:#e2e8f0;border-radius:8px;padding:4px 8px;font-size:.75rem;cursor:pointer;outline:none; }
     .amount-cell { font-family:'Space Grotesk',sans-serif;font-weight:600;color:#6ee7b7; }
     .actions { display:flex;gap:6px; }
     .btn-icon { width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,border-color .2s; }
@@ -195,21 +197,21 @@
     function renderInvoices(list) {
       const tbody = document.getElementById('invoicesBody');
       if (!list.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:40px;height:40px;margin:0 auto 12px;opacity:.3;display:block"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Sin facturas aún</td></tr>'; return; }
-      const sm = { paid:['status-paid','Pagada'], pending:['status-pending','Pendiente'], cancelled:['status-cancelled','Cancelada'] };
       tbody.innerHTML = list.map(function(inv) {
-        var sc = sm[inv.status] || ['status-pending','Pendiente'];
-        var cls = sc[0], lbl = sc[1];
-        var paidBtn = inv.status === 'pending'
-          ? '<button class="btn-icon success" onclick="markPaid(' + inv.id + ')" title="Marcar como pagada"><i data-lucide="check-circle"></i></button>'
-          : '';
+        var s = inv.status || 'pending';
+        var statusSelect = '<select class="status-select" onchange="changeStatus(' + inv.id + ',this.value)">'
+          + '<option value="pending"' + (s==='pending'?' selected':'') + '>Pendiente</option>'
+          + '<option value="paid"' + (s==='paid'?' selected':'') + '>Pagada</option>'
+          + '<option value="cancelled"' + (s==='cancelled'?' selected':'') + '>Cancelada</option>'
+          + '</select>';
         return '<tr>'
           + '<td style="font-family:Space Grotesk,sans-serif;font-weight:600;color:var(--purple-l)">#' + String(inv.id).padStart(4,'0') + '</td>'
           + '<td style="font-weight:500">' + (inv.client_name||'—') + '</td>'
           + '<td style="color:var(--text-muted)">' + (inv.issue_date||'—') + '</td>'
           + '<td style="color:var(--text-muted)">' + (inv.due_date||'—') + '</td>'
           + '<td class="amount-cell">$' + parseFloat(inv.total||0).toFixed(2) + '</td>'
-          + '<td><span class="status-badge ' + cls + '">' + lbl + '</span></td>'
-          + '<td><div class="actions">' + paidBtn
+          + '<td>' + statusSelect + '</td>'
+          + '<td><div class="actions">'
           + '<button class="btn-icon" onclick="downloadPDF(' + inv.id + ')" title="PDF"><i data-lucide="download"></i></button>'
           + '<button class="btn-icon danger" onclick="deleteInvoice(' + inv.id + ')"><i data-lucide="trash-2"></i></button>'
           + '</div></td></tr>';
@@ -240,7 +242,11 @@
       } catch{document.getElementById('errText').textContent='Error de conexión';document.getElementById('errMsg').style.display='flex';lucide.createIcons();}
     });
     async function downloadPDF(id) { window.open(`/api/invoices/${id}/pdf`,'_blank'); }
-    async function markPaid(id) { await fetch(`/api/invoices/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({status:'paid'})}); loadInvoices(); }
+    async function changeStatus(id, status) {
+      await fetch('/api/invoices/' + id, {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({status:status})});
+      var inv = allInvoices.find(function(i){ return i.id === id; });
+      if (inv) inv.status = status;
+    }
     async function deleteInvoice(id) { if(!confirm('¿Eliminar esta factura?'))return; await fetch(`/api/invoices/${id}`,{method:'DELETE'}); loadInvoices(); }
     async function loadUser() { try{const res=await fetch('/api/auth/me');const u=await res.json();document.getElementById('userEmail').textContent=u.email;}catch(e){} }
     async function logout() { await fetch('/api/auth/logout',{method:'POST'}); window.location.href='/accounting/login'; }
