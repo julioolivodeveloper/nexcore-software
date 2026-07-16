@@ -2,15 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 
-let _getClient = null;
-try {
-  _getClient = require('../db/database').getClient;
-} catch(e) {}
-function getClient() {
-  if (!_getClient) throw new Error('DB module not loaded');
-  return _getClient();
-}
-
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -382,32 +373,15 @@ let nextExpenseId = 163;
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 
-async function computeDashboard() {
-  let allInvs = [...invoices];
-  let allClients = [...clients];
-  try {
-    const sb = getClient();
-    const [{ data: sbInvs }, { data: sbClients }] = await Promise.all([
-      sb.from('acct_invoices').select('*'),
-      sb.from('acct_clients').select('*')
-    ]);
-    if (sbInvs && sbInvs.length) {
-      const ids = new Set(allInvs.map(i => i.id));
-      allInvs = [...allInvs, ...sbInvs.filter(i => !ids.has(i.id))];
-    }
-    if (sbClients && sbClients.length) {
-      const ids = new Set(allClients.map(c => c.id));
-      allClients = [...allClients, ...sbClients.filter(c => !ids.has(c.id))];
-    }
-  } catch(e) {}
-  const revenue  = allInvs.filter(i => i.status === 'paid').reduce((s, i) => s + (i.total||0), 0);
+function computeDashboard() {
+  const revenue  = invoices.filter(i => i.status === 'paid').reduce((s, i) => s + i.total, 0);
   const totalExp = expenses.reduce((s, e) => s + e.amount, 0);
   const byMonth = {};
-  allInvs.forEach(inv => {
+  invoices.forEach(inv => {
     if (!inv.issue_date) return;
     const [y, m] = inv.issue_date.split('-');
     const key = `${y}-${m}`;
-    byMonth[key] = (byMonth[key] || 0) + (inv.total||0);
+    byMonth[key] = (byMonth[key] || 0) + inv.total;
   });
   const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   const monthlyRevenue = Object.entries(byMonth)
@@ -417,11 +391,11 @@ async function computeDashboard() {
       return { month: `${months[parseInt(m)-1]} ${y}`, total };
     });
   return {
-    totalInvoices: allInvs.length,
-    totalClients: allClients.length,
-    pendingInvoices: allInvs.filter(i => i.status === 'pending').length,
-    paidInvoices: allInvs.filter(i => i.status === 'paid').length,
-    cancelledInvoices: allInvs.filter(i => i.status === 'cancelled').length,
+    totalInvoices: invoices.length,
+    totalClients: clients.length,
+    pendingInvoices: invoices.filter(i => i.status === 'pending').length,
+    paidInvoices: invoices.filter(i => i.status === 'paid').length,
+    cancelledInvoices: invoices.filter(i => i.status === 'cancelled').length,
     revenue,
     totalExpenses: totalExp,
     netIncome: revenue - totalExp,
@@ -457,103 +431,55 @@ app.post('/api/auth/logout', (req, res) => res.json({ success: true }));
 app.get('/api/auth/me', (req, res) => res.json({ email: 'jojulioneto1@gmail.com', name: 'Admin' }));
 
 // ── CLIENTS ───────────────────────────────────────────────────────────────────
-app.get('/api/clients', async (req, res) => {
-  let list = [...clients];
-  try {
-    const { data } = await getClient().from('acct_clients').select('*');
-    if (data && data.length) {
-      const ids = new Set(list.map(c => c.id));
-      list = [...list, ...data.filter(c => !ids.has(c.id))];
-    }
-  } catch(e) {}
-  res.json(list.sort((a, b) => a.name.localeCompare(b.name)));
+app.get('/api/clients', (req, res) => {
+  res.json([...clients].sort((a, b) => a.name.localeCompare(b.name)));
 });
 
-app.post('/api/clients', async (req, res) => {
+app.post('/api/clients', (req, res) => {
   const { name, email, phone, company, address } = req.body;
   if (!name) return res.status(400).json({ error: 'Nombre requerido' });
   const exists = clients.find(c => c.name.toLowerCase() === name.toLowerCase());
   if (exists) return res.status(409).json({ error: 'Cliente ya existe', client: exists });
-  try {
-    const { data, error } = await getClient().from('acct_clients')
-      .insert({ name, email: email||'', phone: phone||'', company: company||'', address: address||'' })
-      .select().single();
-    if (error) throw error;
-    res.status(201).json(data);
-  } catch(e) { res.status(500).json({ error: 'Error al guardar cliente: ' + e.message }); }
+  const client = { id: nextClientId++, name, email: email||'', phone: phone||'', company: company||'', address: address||'', created_at: new Date().toISOString().split('T')[0] };
+  clients.push(client);
+  res.status(201).json(client);
 });
 
-app.delete('/api/clients/:id', async (req, res) => {
+app.delete('/api/clients/:id', (req, res) => {
   const id = parseInt(req.params.id);
-  try { await getClient().from('acct_clients').delete().eq('id', id); } catch(e) {}
   clients = clients.filter(c => c.id !== id);
   res.json({ success: true });
 });
 
 // ── INVOICES ──────────────────────────────────────────────────────────────────
-app.get('/api/invoices', async (req, res) => {
-  let list = [...invoices];
-  try {
-    const sb = getClient();
-    const result = await sb.from('acct_invoices').select('*').order('id', { ascending: false });
-    const data = result && result.data;
-    if (Array.isArray(data) && data.length > 0) {
-      const ids = new Set(list.map(i => i.id));
-      list = [...data.filter(i => !ids.has(i.id)), ...list];
-    }
-  } catch(e) { /* Supabase not available, use hardcoded data */ }
-  res.json(list.sort((a, b) => b.id - a.id));
+app.get('/api/invoices', (req, res) => {
+  res.json([...invoices].sort((a, b) => b.id - a.id));
 });
 
-app.post('/api/invoices', async (req, res) => {
+app.post('/api/invoices', (req, res) => {
   const { client_name, status, issue_date, due_date, notes, items, total } = req.body;
   if (!client_name) return res.status(400).json({ error: 'Cliente requerido' });
-  try {
-    const { data, error } = await getClient().from('acct_invoices').insert({
-      client_name, status: status||'pending', issue_date, due_date,
-      notes: notes||'', items: items||[], total: parseFloat(total)||0
-    }).select().single();
-    if (error) throw error;
-    res.status(201).json(data);
-  } catch(e) { res.status(500).json({ error: 'Error al guardar: ' + e.message }); }
+  const invoice = { id: nextInvoiceId++, client_name, status: status||'pending', issue_date, due_date, notes: notes||'', items: items||[], total: parseFloat(total)||0 };
+  invoices.push(invoice);
+  res.status(201).json(invoice);
 });
 
-app.put('/api/invoices/:id', async (req, res) => {
+app.put('/api/invoices/:id', (req, res) => {
   const id = parseInt(req.params.id);
-  const { status, client_name, due_date, notes, items, total } = req.body;
-  const updates = {};
-  if (status)             updates.status      = status;
-  if (client_name)        updates.client_name = client_name;
-  if (due_date)           updates.due_date    = due_date;
-  if (notes !== undefined) updates.notes       = notes;
-  if (items)              updates.items       = items;
-  if (total !== undefined) updates.total       = parseFloat(total);
-  try {
-    const { error } = await getClient().from('acct_invoices').update(updates).eq('id', id);
-    if (error) throw error;
-  } catch(e) {
-    const inv = invoices.find(i => i.id === id);
-    if (inv) Object.assign(inv, updates);
-  }
-  res.json({ success: true });
+  const inv = invoices.find(i => i.id === id);
+  if (!inv) return res.status(404).json({ error: 'Factura no encontrada' });
+  if (req.body.status) inv.status = req.body.status;
+  res.json(inv);
 });
 
-app.delete('/api/invoices/:id', async (req, res) => {
+app.delete('/api/invoices/:id', (req, res) => {
   const id = parseInt(req.params.id);
-  try { await getClient().from('acct_invoices').delete().eq('id', id); } catch(e) {}
   invoices = invoices.filter(i => i.id !== id);
   res.json({ success: true });
 });
 
-app.get('/api/invoices/:id/pdf', async (req, res) => {
-  const id = parseInt(req.params.id);
-  let inv = invoices.find(i => i.id === id);
-  if (!inv) {
-    try {
-      const { data } = await getClient().from('acct_invoices').select('*').eq('id', id).single();
-      inv = data;
-    } catch(e) {}
-  }
+app.get('/api/invoices/:id/pdf', (req, res) => {
+  const inv = invoices.find(i => i.id === parseInt(req.params.id));
   if (!inv) return res.status(404).json({ error: 'Factura no encontrada' });
   res.setHeader('Content-Type', 'text/html');
   res.send(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Factura #${String(inv.id).padStart(4,'0')}</title>
@@ -596,7 +522,7 @@ app.delete('/api/expenses/:id', (req, res) => {
 });
 
 // ── REPORTS ───────────────────────────────────────────────────────────────────
-app.get('/api/reports/dashboard', async (req, res) => res.json(await computeDashboard()));
+app.get('/api/reports/dashboard', (req, res) => res.json(computeDashboard()));
 
 // ── MARKETING & ACADEMY & LIBROS ──────────────────────────────────────────────
 app.get('/marketing',         (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'marketing.html')));
