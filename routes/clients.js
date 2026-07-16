@@ -1,15 +1,18 @@
 const express = require('express');
-const { run, get, all } = require('../db/database');
+const { getClient } = require('../db/database');
 const { isAuthenticated } = require('../middleware/auth');
 
 const router = express.Router();
-
 router.use(isAuthenticated);
 
 router.get('/', async (req, res) => {
   try {
-    const clients = await all('SELECT * FROM clients ORDER BY name ASC');
-    res.json(clients);
+    const { data, error } = await getClient()
+      .from('clients')
+      .select('*')
+      .order('name', { ascending: true });
+    if (error) throw error;
+    res.json(data || []);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -17,11 +20,13 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const client = await get('SELECT * FROM clients WHERE id = ?', [req.params.id]);
-    if (!client) {
-      return res.status(404).json({ error: 'Cliente no encontrado' });
-    }
-    res.json(client);
+    const { data, error } = await getClient()
+      .from('clients')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
+    if (error) return res.status(404).json({ error: 'Cliente no encontrado' });
+    res.json(data);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -30,26 +35,23 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const { name, email, phone, address, tax_id, business_name } = req.body;
+    if (!name) return res.status(400).json({ error: 'Nombre requerido' });
 
-    if (!name) {
-      return res.status(400).json({ error: 'Nombre requerido' });
-    }
+    const { data, error } = await getClient()
+      .from('clients')
+      .insert({
+        name,
+        email:         email         || null,
+        phone:         phone         || null,
+        address:       address       || null,
+        tax_id:        tax_id        || null,
+        business_name: business_name || null
+      })
+      .select()
+      .single();
 
-    const result = await run(
-      `INSERT INTO clients (name, email, phone, address, tax_id, business_name)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [name, email || null, phone || null, address || null, tax_id || null, business_name || null]
-    );
-
-    res.status(201).json({
-      id: result.id,
-      name,
-      email,
-      phone,
-      address,
-      tax_id,
-      business_name
-    });
+    if (error) throw error;
+    res.status(201).json(data);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -59,18 +61,14 @@ router.put('/:id', async (req, res) => {
   try {
     const { name, email, phone, address, tax_id, business_name } = req.body;
 
-    const result = await run(
-      `UPDATE clients SET
-       name = ?, email = ?, phone = ?, address = ?, tax_id = ?, business_name = ?,
-       updated_at = CURRENT_TIMESTAMP
-       WHERE id = ?`,
-      [name, email, phone, address, tax_id, business_name, req.params.id]
-    );
+    const { data, error } = await getClient()
+      .from('clients')
+      .update({ name, email, phone, address, tax_id, business_name, updated_at: new Date().toISOString() })
+      .eq('id', req.params.id)
+      .select();
 
-    if (result.changes === 0) {
-      return res.status(404).json({ error: 'Cliente no encontrado' });
-    }
-
+    if (error) throw error;
+    if (!data || data.length === 0) return res.status(404).json({ error: 'Cliente no encontrado' });
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -79,12 +77,14 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const result = await run('DELETE FROM clients WHERE id = ?', [req.params.id]);
+    const { data, error } = await getClient()
+      .from('clients')
+      .delete()
+      .eq('id', req.params.id)
+      .select();
 
-    if (result.changes === 0) {
-      return res.status(404).json({ error: 'Cliente no encontrado' });
-    }
-
+    if (error) throw error;
+    if (!data || data.length === 0) return res.status(404).json({ error: 'Cliente no encontrado' });
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
