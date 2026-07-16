@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const { getClient } = require('../db/database');
 
 const app = express();
 app.use(express.json());
@@ -373,15 +374,32 @@ let nextExpenseId = 163;
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 
-function computeDashboard() {
-  const revenue  = invoices.filter(i => i.status === 'paid').reduce((s, i) => s + i.total, 0);
+async function computeDashboard() {
+  let allInvs = [...invoices];
+  let allClients = [...clients];
+  try {
+    const sb = getClient();
+    const [{ data: sbInvs }, { data: sbClients }] = await Promise.all([
+      sb.from('acct_invoices').select('*'),
+      sb.from('acct_clients').select('*')
+    ]);
+    if (sbInvs && sbInvs.length) {
+      const ids = new Set(allInvs.map(i => i.id));
+      allInvs = [...allInvs, ...sbInvs.filter(i => !ids.has(i.id))];
+    }
+    if (sbClients && sbClients.length) {
+      const ids = new Set(allClients.map(c => c.id));
+      allClients = [...allClients, ...sbClients.filter(c => !ids.has(c.id))];
+    }
+  } catch(e) {}
+  const revenue  = allInvs.filter(i => i.status === 'paid').reduce((s, i) => s + (i.total||0), 0);
   const totalExp = expenses.reduce((s, e) => s + e.amount, 0);
   const byMonth = {};
-  invoices.forEach(inv => {
+  allInvs.forEach(inv => {
     if (!inv.issue_date) return;
     const [y, m] = inv.issue_date.split('-');
     const key = `${y}-${m}`;
-    byMonth[key] = (byMonth[key] || 0) + inv.total;
+    byMonth[key] = (byMonth[key] || 0) + (inv.total||0);
   });
   const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   const monthlyRevenue = Object.entries(byMonth)
@@ -391,11 +409,11 @@ function computeDashboard() {
       return { month: `${months[parseInt(m)-1]} ${y}`, total };
     });
   return {
-    totalInvoices: invoices.length,
-    totalClients: clients.length,
-    pendingInvoices: invoices.filter(i => i.status === 'pending').length,
-    paidInvoices: invoices.filter(i => i.status === 'paid').length,
-    cancelledInvoices: invoices.filter(i => i.status === 'cancelled').length,
+    totalInvoices: allInvs.length,
+    totalClients: allClients.length,
+    pendingInvoices: allInvs.filter(i => i.status === 'pending').length,
+    paidInvoices: allInvs.filter(i => i.status === 'paid').length,
+    cancelledInvoices: allInvs.filter(i => i.status === 'cancelled').length,
     revenue,
     totalExpenses: totalExp,
     netIncome: revenue - totalExp,
@@ -431,53 +449,107 @@ app.post('/api/auth/logout', (req, res) => res.json({ success: true }));
 app.get('/api/auth/me', (req, res) => res.json({ email: 'jojulioneto1@gmail.com', name: 'Admin' }));
 
 // ── CLIENTS ───────────────────────────────────────────────────────────────────
-app.get('/api/clients', (req, res) => {
-  res.json([...clients].sort((a, b) => a.name.localeCompare(b.name)));
+app.get('/api/clients', async (req, res) => {
+  let list = [...clients];
+  try {
+    const { data } = await getClient().from('acct_clients').select('*');
+    if (data && data.length) {
+      const ids = new Set(list.map(c => c.id));
+      list = [...list, ...data.filter(c => !ids.has(c.id))];
+    }
+  } catch(e) {}
+  res.json(list.sort((a, b) => a.name.localeCompare(b.name)));
 });
 
-app.post('/api/clients', (req, res) => {
+app.post('/api/clients', async (req, res) => {
   const { name, email, phone, company, address } = req.body;
   if (!name) return res.status(400).json({ error: 'Nombre requerido' });
   const exists = clients.find(c => c.name.toLowerCase() === name.toLowerCase());
   if (exists) return res.status(409).json({ error: 'Cliente ya existe', client: exists });
-  const client = { id: nextClientId++, name, email: email||'', phone: phone||'', company: company||'', address: address||'', created_at: new Date().toISOString().split('T')[0] };
-  clients.push(client);
-  res.status(201).json(client);
+  try {
+    const { data, error } = await getClient().from('acct_clients')
+      .insert({ name, email: email||'', phone: phone||'', company: company||'', address: address||'' })
+      .select().single();
+    if (error) throw error;
+    res.status(201).json(data);
+  } catch(e) { res.status(500).json({ error: 'Error al guardar cliente: ' + e.message }); }
 });
 
-app.delete('/api/clients/:id', (req, res) => {
+app.delete('/api/clients/:id', async (req, res) => {
   const id = parseInt(req.params.id);
+  try { await getClient().from('acct_clients').delete().eq('id', id); } catch(e) {}
   clients = clients.filter(c => c.id !== id);
   res.json({ success: true });
 });
 
 // ── INVOICES ──────────────────────────────────────────────────────────────────
-app.get('/api/invoices', (req, res) => {
-  res.json([...invoices].sort((a, b) => b.id - a.id));
+app.get('/api/invoices', async (req, res) => {
+  let list = [...invoices];
+  try {
+    const { data } = await getClient().from('acct_invoices').select('*').order('id', { ascending: false });
+    if (data && data.length) {
+      const ids = new Set(list.map(i => i.id));
+      list = [...data.filter(i => !ids.has(i.id)), ...list];
+    }
+  } catch(e) {}
+  res.json(list.sort((a, b) => b.id - a.id));
 });
 
-app.post('/api/invoices', (req, res) => {
+app.post('/api/invoices', async (req, res) => {
   const { client_name, status, issue_date, due_date, notes, items, total } = req.body;
   if (!client_name) return res.status(400).json({ error: 'Cliente requerido' });
-  const invoice = { id: nextInvoiceId++, client_name, status: status||'pending', issue_date, due_date, notes: notes||'', items: items||[], total: parseFloat(total)||0 };
-  invoices.push(invoice);
-  res.status(201).json(invoice);
+  try {
+    const { data, error } = await getClient().from('acct_invoices').insert({
+      client_name, status: status||'pending', issue_date, due_date,
+      notes: notes||'', items: items||[], total: parseFloat(total)||0
+    }).select().single();
+    if (error) throw error;
+    res.status(201).json(data);
+  } catch(e) { res.status(500).json({ error: 'Error al guardar: ' + e.message }); }
 });
 
-app.delete('/api/invoices/:id', (req, res) => {
+app.put('/api/invoices/:id', async (req, res) => {
   const id = parseInt(req.params.id);
+  const { status, client_name, due_date, notes, items, total } = req.body;
+  const updates = {};
+  if (status)             updates.status      = status;
+  if (client_name)        updates.client_name = client_name;
+  if (due_date)           updates.due_date    = due_date;
+  if (notes !== undefined) updates.notes       = notes;
+  if (items)              updates.items       = items;
+  if (total !== undefined) updates.total       = parseFloat(total);
+  try {
+    const { error } = await getClient().from('acct_invoices').update(updates).eq('id', id);
+    if (error) throw error;
+  } catch(e) {
+    const inv = invoices.find(i => i.id === id);
+    if (inv) Object.assign(inv, updates);
+  }
+  res.json({ success: true });
+});
+
+app.delete('/api/invoices/:id', async (req, res) => {
+  const id = parseInt(req.params.id);
+  try { await getClient().from('acct_invoices').delete().eq('id', id); } catch(e) {}
   invoices = invoices.filter(i => i.id !== id);
   res.json({ success: true });
 });
 
-app.get('/api/invoices/:id/pdf', (req, res) => {
-  const inv = invoices.find(i => i.id === parseInt(req.params.id));
+app.get('/api/invoices/:id/pdf', async (req, res) => {
+  const id = parseInt(req.params.id);
+  let inv = invoices.find(i => i.id === id);
+  if (!inv) {
+    try {
+      const { data } = await getClient().from('acct_invoices').select('*').eq('id', id).single();
+      inv = data;
+    } catch(e) {}
+  }
   if (!inv) return res.status(404).json({ error: 'Factura no encontrada' });
   res.setHeader('Content-Type', 'text/html');
   res.send(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Factura #${String(inv.id).padStart(4,'0')}</title>
   <style>body{font-family:Arial,sans-serif;max-width:700px;margin:40px auto;color:#111}h1{color:#2563eb;font-size:1rem;font-weight:600}.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px}.info{margin-bottom:24px}table{width:100%;border-collapse:collapse;margin-bottom:24px}th{background:#f3f4f6;padding:10px;text-align:left;font-size:13px}td{padding:10px;border-bottom:1px solid #e5e7eb;font-size:13px}.total{text-align:right;font-size:1.1rem;font-weight:700;color:#2563eb}.badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;background:#d1fae5;color:#065f46}</style>
   </head><body>
-  <div class="header"><div><h1>www.julioolivodeveloper.com</h1><p style="color:#666">Sistema de Contabilidad</p></div><div style="text-align:right"><h2>FACTURA</h2><p style="color:#2563eb;font-size:1.2rem">#${String(inv.id).padStart(4,'0')}</p><span class="badge">${inv.status==='paid'?'Pagada':inv.status==='pending'?'Pendiente':'Cancelada'}</span></div></div>
+  <div class="header"><div><h1>www.julioolivodeveloper.com</h1></div><div style="text-align:right"><h2>FACTURA</h2><p style="color:#2563eb;font-size:1.2rem">#${String(inv.id).padStart(4,'0')}</p><span class="badge">${inv.status==='paid'?'Pagada':inv.status==='pending'?'Pendiente':'Cancelada'}</span></div></div>
   <div class="info"><p><strong>Cliente:</strong> ${inv.client_name}</p><p><strong>Fecha emisión:</strong> ${inv.issue_date||'—'}</p><p><strong>Fecha vencimiento:</strong> ${inv.due_date||'—'}</p>${inv.notes?`<p><strong>Notas:</strong> ${inv.notes}</p>`:''}</div>
   <table><thead><tr><th>Descripción</th><th>Qty</th><th>Precio</th><th>Total</th></tr></thead><tbody>
   ${(inv.items||[]).map(it=>`<tr><td>${it.description||''}</td><td>${it.quantity||1}</td><td>$${parseFloat(it.unit_price||0).toFixed(2)}</td><td>$${(it.quantity*it.unit_price).toFixed(2)}</td></tr>`).join('')}
@@ -514,7 +586,7 @@ app.delete('/api/expenses/:id', (req, res) => {
 });
 
 // ── REPORTS ───────────────────────────────────────────────────────────────────
-app.get('/api/reports/dashboard', (req, res) => res.json(computeDashboard()));
+app.get('/api/reports/dashboard', async (req, res) => res.json(await computeDashboard()));
 
 // ── MARKETING & ACADEMY & LIBROS ──────────────────────────────────────────────
 app.get('/marketing',         (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'marketing.html')));
