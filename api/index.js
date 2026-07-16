@@ -1,7 +1,15 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const { getClient } = require('../db/database');
+
+let _getClient = null;
+try {
+  _getClient = require('../db/database').getClient;
+} catch(e) {}
+function getClient() {
+  if (!_getClient) throw new Error('DB module not loaded');
+  return _getClient();
+}
 
 const app = express();
 app.use(express.json());
