@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cómo creo videos con IA y cómo automatizo el proceso con agentes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#15171B;
+  --sheet:#FBFAF7;
+  --field:#E7E5DE;
+  --rule:#D3D1C7;
+  --muted:#6B6E75;
+  --gel:#2B31C4;
+  --tally:#D8202A;
+
+  --display:"Barlow Condensed","Arial Narrow",Haettenschweiler,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--field);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.62;
+}
+
+.sheet{
+  max-width:780px;
+  margin:0 auto;
+  background:var(--sheet);
+  padding:0 clamp(20px,5vw,56px) 72px;
+  border-left:1px solid var(--rule);
+  border-right:1px solid var(--rule);
+}
+
+/* ── SLATE ───────────────────────────────── */
+.slate{margin:0 calc(-1 * clamp(20px,5vw,56px));background:var(--ink);color:var(--sheet)}
+.clapper{
+  height:22px;
+  background:repeating-linear-gradient(74deg,
+    var(--sheet) 0 26px, var(--ink) 26px 52px);
+}
+.slate-body{padding:26px clamp(20px,5vw,56px) 22px}
+.eyebrow{
+  font-family:var(--display);
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-weight:600;
+  font-size:12px;
+  color:#9A9DA6;
+}
+h1{
+  font-family:var(--display);
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.005em;
+  font-size:clamp(30px,6.2vw,52px);
+  line-height:.98;
+  margin:10px 0 0;
+  max-width:15ch;
+}
+h1 em{font-style:normal;color:#7F84FF}
+.fields{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  margin-top:26px;
+  background:#33363D;
+  border:1px solid #33363D;
+}
+.field{background:var(--ink);padding:8px 10px}
+.field span{display:block;font-family:var(--display);font-size:10px;letter-spacing:.16em;color:#82868F;text-transform:uppercase}
+.field b{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--sheet)}
+
+/* ── TEXTO ───────────────────────────────── */
+.lede{font-size:19px;line-height:1.55;margin:34px 0 0;color:#2B2E34}
+.lede + p{margin-top:14px}
+p{margin:0 0 14px}
+strong{font-weight:600}
+a{color:var(--gel)}
+
+.scene{margin-top:52px}
+.scene-head{
+  display:flex;
+  align-items:baseline;
+  gap:14px;
+  border-bottom:2px solid var(--ink);
+  padding-bottom:7px;
+  margin-bottom:22px;
+}
+.slug{
+  font-family:var(--mono);
+  font-weight:600;
+  font-size:12px;
+  background:var(--ink);
+  color:var(--sheet);
+  padding:3px 7px 2px;
+  letter-spacing:.06em;
+  flex:none;
+}
+h2{
+  font-family:var(--display);
+  text-transform:uppercase;
+  font-weight:700;
+  font-size:clamp(21px,3.4vw,28px);
+  letter-spacing:.01em;
+  line-height:1.1;
+  margin:0;
+  flex:1;
+}
+.dur{font-family:var(--mono);font-size:11px;color:var(--muted);flex:none}
+
+h3{
+  font-family:var(--display);
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-size:13px;
+  font-weight:600;
+  color:var(--muted);
+  margin:26px 0 8px;
+}
+
+ol,ul{margin:0 0 14px;padding-left:1.25em}
+li{margin-bottom:6px}
+
+/* ── FILMSTRIP ────────────────────────────── */
+.strip-wrap{margin:38px 0 8px}
+.strip{background:var(--ink);padding:12px 0}
+.perf{
+  height:14px;
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 12px, var(--sheet) 12px 24px, transparent 24px 36px);
+  opacity:.85;
+}
+.frames{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:6px;
+  padding:10px 12px;
+}
+.frame{
+  background:var(--sheet);
+  padding:9px 8px 10px;
+  min-height:74px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.frame b{font-family:var(--mono);font-size:10px;color:var(--gel);font-weight:600}
+.frame span{
+  font-family:var(--display);
+  text-transform:uppercase;
+  font-weight:600;
+  font-size:14px;
+  line-height:1.05;
+  letter-spacing:.02em;
+}
+.frame.human{background:#7F84FF;color:var(--ink)}
+.frame.human b{color:var(--ink)}
+.loop{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--muted);
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:8px;
+  border-top:1px solid var(--rule);
+  padding-top:7px;
+}
+.key{display:inline-flex;align-items:center;gap:5px}
+.key i{width:9px;height:9px;background:#7F84FF;display:inline-block}
+
+/* ── PROMPT / MONITOR ──────────────────────── */
+.monitor{
+  border:1px solid var(--ink);
+  margin:16px 0 18px;
+  background:#fff;
+}
+.monitor-bar{
+  background:var(--ink);
+  color:var(--sheet);
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:.1em;
+  padding:5px 9px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  text-transform:uppercase;
+}
+.rec{width:7px;height:7px;border-radius:50%;background:var(--tally);flex:none}
+.monitor-bar .right{margin-left:auto;color:#8B8F98;letter-spacing:.06em}
+.monitor p{
+  font-family:var(--mono);
+  font-size:13px;
+  line-height:1.68;
+  margin:0;
+  padding:13px 14px;
+}
+.monitor p + p{border-top:1px dashed var(--rule)}
+
+/* ── FICHA ────────────────────────────────── */
+.ficha{
+  border-left:4px solid var(--gel);
+  background:#F0EFF9;
+  padding:14px 16px;
+  margin:18px 0;
+}
+.ficha .eyebrow{color:var(--gel)}
+.ficha p{margin:6px 0 0;font-size:16px}
+
+.formula{
+  font-family:var(--mono);
+  font-size:12.5px;
+  background:var(--ink);
+  color:var(--sheet);
+  padding:11px 13px;
+  margin:14px 0 18px;
+  overflow-x:auto;
+  white-space:nowrap;
+}
+.formula em{color:#7F84FF;font-style:normal}
+
+/* ── EVITAR ──────────────────────────────── */
+.avoid{list-style:none;padding:0;margin:10px 0 14px}
+.avoid li{
+  padding-left:26px;
+  position:relative;
+  font-size:16px;
+}
+.avoid li::before{
+  content:"✕";
+  position:absolute;left:6px;top:-1px;
+  font-family:var(--mono);
+  font-weight:600;
+  color:var(--tally);
+}
+
+/* ── TABLA AGENTES ────────────────────────── */
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
+thead th{
+  font-family:var(--display);
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-size:11px;
+  text-align:left;
+  border-bottom:2px solid var(--ink);
+  padding:0 8px 5px 0;
+  color:var(--muted);
+}
+tbody td{border-bottom:1px solid var(--rule);padding:9px 8px 9px 0;vertical-align:top}
+tbody tr td:first-child{
+  font-family:var(--display);
+  text-transform:uppercase;
+  font-weight:600;
+  font-size:16px;
+  letter-spacing:.02em;
+  white-space:nowrap;
+  width:1%;
+  padding-right:16px;
+}
+tbody td:last-child{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.5}
+
+/* ── CIERRE ──────────────────────────────── */
+.cierre{
+  margin:56px calc(-1 * clamp(20px,5vw,56px)) 0;
+  background:var(--ink);
+  color:var(--sheet);
+  padding:34px clamp(20px,5vw,56px) 38px;
+}
+.cierre h2{color:var(--sheet);border:0}
+.cierre .scene-head{border-bottom:2px solid #3A3E46}
+.cierre .slug{background:var(--sheet);color:var(--ink)}
+.cierre p{color:#D6D8DD}
+.cierre strong{color:#7F84FF;font-weight:600}
+.endmark{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.24em;
+  color:#82868F;
+  border-top:1px solid #3A3E46;
+  padding-top:14px;
+  margin-top:24px;
+}
+
+@media (max-width:640px){
+  body{font-size:16px}
+  .frames{grid-template-columns:repeat(2,1fr)}
+  .fields{grid-template-columns:repeat(2,1fr)}
+  .formula{white-space:normal}
+  tbody tr td:first-child{white-space:normal}
+}
+
+@media print{
+  body{background:#fff;font-size:10.5pt;line-height:1.45}
+  .sheet{max-width:none;border:0;padding:0 0 0;}
+  @page{size:A4;margin:14mm}
+  .scene{page-break-inside:auto;margin-top:26px}
+  .scene-head,.monitor,.ficha,.frames,table{page-break-inside:avoid}
+  .cierre{background:#fff;color:var(--ink);margin:34px 0 0;padding:0;border-top:2px solid var(--ink);padding-top:18px}
+  .cierre h2,.cierre p{color:var(--ink)}
+  .cierre .slug{background:var(--ink);color:#fff}
+  .cierre strong{color:var(--gel)}
+  .slate{margin:0}
+}
+@media (prefers-reduced-motion:no-preference){
+  .rec{animation:blink 1.8s steps(1,end) infinite}
+  @keyframes blink{0%,60%{opacity:1}61%,100%{opacity:.25}}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="slate">
+    <div class="clapper" aria-hidden="true"></div>
+    <div class="slate-body">
+      <div class="eyebrow">Guía práctica de producción</div>
+      <h1>Cómo creo videos con IA y cómo <em>automatizo</em> todo con agentes</h1>
+      <div class="fields">
+        <div class="field"><span>Escenas</span><b>06</b></div>
+        <div class="field"><span>Formato</span><b>16:9 → 9:16</b></div>
+        <div class="field"><span>Motor</span><b>Flow AI</b></div>
+        <div class="field"><span>Duración</span><b>~12 min lectura</b></div>
+      </div>
+    </div>
+  </header>
+
+  <p class="lede">Producir un video con IA no consiste en pedirle un clip a un modelo. Consiste en encadenar decisiones: un personaje que se mantenga igual en todas las escenas, imágenes coherentes, prompts cinematográficos precisos, audio sincronizado y un montaje que se sienta intencional.</p>
+  <p>Esta guía recorre mi flujo en seis escenas y termina donde empieza lo interesante: cómo delegar cada etapa a agentes de IA para que el proceso se ejecute prácticamente solo.</p>
+
+  <!-- FLUJO -->
+  <section class="strip-wrap" aria-label="Diagrama del flujo de trabajo">
+    <div class="strip">
+      <div class="perf" aria-hidden="true"></div>
+      <div class="frames">
+        <div class="frame"><b>01</b><span>Investigación</span></div>
+        <div class="frame human"><b>02</b><span>Guion</span></div>
+        <div class="frame"><b>03</b><span>Personaje</span></div>
+        <div class="frame"><b>04</b><span>Imágenes</span></div>
+        <div class="frame"><b>05</b><span>Prompts</span></div>
+        <div class="frame"><b>06</b><span>Clips</span></div>
+        <div class="frame"><b>07</b><span>Audio + lip sync</span></div>
+        <div class="frame human"><b>08</b><span>Montaje</span></div>
+        <div class="frame"><b>09</b><span>Publicación</span></div>
+        <div class="frame"><b>10</b><span>Métricas</span></div>
+      </div>
+      <div class="perf" aria-hidden="true"></div>
+    </div>
+    <div class="loop">
+      <span class="key"><i aria-hidden="true"></i> Aprobación humana</span>
+      <span>10 → 01 · el analista realimenta al investigador</span>
+    </div>
+  </section>
+
+  <!-- 01 -->
+  <section class="scene">
+    <div class="scene-head"><span class="slug">ESC 01</span><h2>El personaje consistente</h2><span class="dur">base</span></div>
+    <p>El personaje es el activo más valioso del proyecto. Si cambia de cara entre escenas, el video pierde credibilidad de inmediato.</p>
+    <ol>
+      <li><strong>Escribo una biblia de personaje:</strong> un párrafo fijo con los rasgos inmutables. No se improvisa nunca; se copia y pega igual en todos los prompts.</li>
+      <li><strong>Genero una hoja de referencia:</strong> 4–6 imágenes en frontal, ambos perfiles, tres cuartos y plano medio, con luz neutra y fondo liso.</li>
+      <li><strong>Fijo la semilla (seed)</strong> para que las variaciones no alteren la identidad.</li>
+      <li><strong>Uso las referencias como entrada</strong> en las herramientas que aceptan imagen de origen, en vez de volver a describir la cara con palabras.</li>
+    </ol>
+
+    <div class="ficha">
+      <div class="eyebrow">Ficha de personaje — texto canónico</div>
+      <p>Mariana, mujer latina de 32 años, rostro ovalado, piel morena clara, ojos color avellana ligeramente rasgados, cejas gruesas, cabello negro ondulado a la altura del hombro con raya al centro, lunar pequeño bajo el ojo derecho, complexión atlética. Viste chaqueta de mezclilla azul desgastada sobre camiseta blanca lisa. Expresión serena, mirada directa.</p>
+    </div>
+
+    <h3>Para que no se rompa</h3>
+    <ul>
+      <li>Un solo personaje por prompt. Dos personas multiplican los errores.</li>
+      <li>Misma lente y misma distancia (ej. 50 mm siempre) para que el rostro no se deforme.</li>
+      <li>Carpeta <em>canon</em>: solo los mejores renders sirven de referencia; el resto se descarta.</li>
+      <li>Cambia el entorno y la luz, nunca la descripción física.</li>
+      <li>Revisa siempre tres puntos de fallo: ojos, orejas y manos.</li>
+    </ul>
+  </section>
+
+  <!-- 02 -->
+  <section class="scene">
+    <div class="scene-head"><span class="slug">ESC 02</span><h2>Las imágenes de cada escena</h2><span class="dur">1 keyframe / escena</span></div>
+    <p>Primero convierto el guion en un storyboard textual: cada escena con locación, acción, encuadre y emoción. Luego genero un fotograma clave por escena.</p>
+    <div class="formula"><em>[ficha de personaje]</em> + [acción] + [locación] + [encuadre] + [iluminación] + [estilo] + [aspecto]</div>
+    <div class="monitor">
+      <div class="monitor-bar"><span class="rec" aria-hidden="true"></span> Prompt · imagen <span class="right">ESC 02 · 16:9</span></div>
+      <p>Mariana, mujer latina de 32 años, rostro ovalado, piel morena clara, ojos avellana, cabello negro ondulado al hombro, lunar bajo el ojo derecho, chaqueta de mezclilla azul sobre camiseta blanca. Está de pie junto a una ventana empañada de un café vacío, sosteniendo una taza con ambas manos. Plano medio, ligeramente a tres cuartos. Luz natural fría entrando desde la izquierda, sombras suaves. Fotografía cinematográfica, lente 50 mm, f/2.0, grano fino, paleta azul apagada. Formato 16:9.</p>
+    </div>
+    <p>Genero cuatro variantes por escena y me quedo con una. Si ninguna respeta al personaje, no ajusto el texto: vuelvo a la referencia visual.</p>
+  </section>
+
+  <!-- 03 -->
+  <section class="scene">
+    <div class="scene-head"><span class="slug">ESC 03</span><h2>Prompts cinematográficos para Flow AI</h2><span class="dur">8 s máx.</span></div>
+    <p>Un prompt de video no es una descripción: es una <strong>instrucción de dirección</strong>. La diferencia entre un clip amateur y uno cinematográfico está en especificar el movimiento de cámara y el tiempo de la acción.</p>
+    <h3>Plantilla de seis capas</h3>
+    <ol>
+      <li><strong>Sujeto</strong> — quién, con la ficha o la imagen de referencia.</li>
+      <li><strong>Acción</strong> — un solo verbo, ejecutable en 5–8 segundos.</li>
+      <li><strong>Cámara</strong> — plano y movimiento: <em>dolly in</em>, <em>pan</em>, <em>tracking</em>, estático.</li>
+      <li><strong>Entorno</strong> — locación y detalles atmosféricos.</li>
+      <li><strong>Luz y óptica</strong> — fuente, hora del día, lente, profundidad de campo.</li>
+      <li><strong>Estilo y ritmo</strong> — referencia visual, paleta, velocidad.</li>
+    </ol>
+    <div class="monitor">
+      <div class="monitor-bar"><span class="rec" aria-hidden="true"></span> Prompt · video <span class="right">Flow AI · 8 s · 24 fps</span></div>
+      <p>Plano medio de Mariana junto a la ventana empañada de un café vacío. Deja lentamente la taza sobre la mesa y gira la cabeza hacia la ventana. Cámara: dolly in muy lento hacia su rostro, terminando en primer plano. Luz natural fría desde la izquierda, atmósfera de mañana lluviosa, gotas resbalando en el cristal. Lente 50 mm, f/2.0, profundidad de campo reducida, fondo desenfocado. Estética cinematográfica contemporánea, paleta azul apagada, ritmo pausado. 8 segundos, 16:9, 24 fps.</p>
+    </div>
+    <h3>Errores que aprendí a evitar</h3>
+    <ul class="avoid">
+      <li>Encadenar tres acciones en un clip: el modelo las comprime y todo se ve acelerado.</li>
+      <li>Movimientos de cámara contradictorios (zoom out + dolly in).</li>
+      <li>Prompts poéticos sin datos técnicos: «hermoso y emotivo» no produce nada consistente.</li>
+      <li>Escenas de más de 8–10 segundos. Divide y une en edición.</li>
+    </ul>
+  </section>
+
+  <!-- 04 -->
+  <section class="scene">
+    <div class="scene-head"><span class="slug">ESC 04</span><h2>Audio y sincronización labial</h2><span class="dur">manda el audio</span></div>
+    <ol>
+      <li><strong>Guion de voz por escena</strong>, con marcas de pausa. La duración del audio define la duración del clip, no al revés.</li>
+      <li><strong>Voz sintética</strong> clonada o de catálogo, siempre la misma para el personaje. Ajusto velocidad y énfasis hasta que suene natural.</li>
+      <li><strong>Lip sync</strong>: envío clip y audio a la herramienta de sincronización. Funciona mucho mejor en planos medios y primeros planos frontales que en generales o perfiles.</li>
+      <li><strong>Capas sonoras</strong>: música a −18 dB respecto a la voz, ambiente (lluvia, café, calle) y efectos puntuales. El ambiente es lo que hace creíble una escena generada.</li>
+    </ol>
+  </section>
+
+  <!-- 05 -->
+  <section class="scene">
+    <div class="scene-head"><span class="slug">ESC 05</span><h2>El montaje final</h2><span class="dur">un LUT para todo</span></div>
+    <ul>
+      <li><strong>Ensamblo por audio:</strong> coloco primero la locución completa y encajo los clips encima. El ritmo lo marca la narración.</li>
+      <li><strong>Continuidad:</strong> verifico que la dirección de la luz y el vestuario no salten entre escenas.</li>
+      <li><strong>Transiciones:</strong> corte directo por defecto. Fundidos solo para saltos de tiempo.</li>
+      <li><strong>Color:</strong> un único LUT para todo el proyecto. Unifica clips generados en sesiones distintas y disimula variaciones del personaje.</li>
+      <li><strong>Exportación:</strong> 16:9 para YouTube; recorte a 9:16 con reencuadre del sujeto para TikTok, Reels y Shorts.</li>
+    </ul>
+  </section>
+
+  <!-- 06 -->
+  <section class="scene">
+    <div class="scene-head"><span class="slug">ESC 06</span><h2>Los agentes que lo hacen solo</h2><span class="dur">9 roles</span></div>
+    <p>Un agente no es un prompt largo: es un rol con <strong>objetivo, herramientas, entradas, salidas y criterios de calidad</strong>. Divido el pipeline en especialistas y los encadeno. Cada uno entrega un archivo estructurado que el siguiente consume.</p>
+    <table>
+      <thead><tr><th>Agente</th><th>Función</th><th>Entrada → salida</th></tr></thead>
+      <tbody>
+        <tr><td>Investigador</td><td>Busca tendencias, datos y ángulos del tema</td><td>tema → informe</td></tr>
+        <tr><td>Guionista</td><td>Escribe gancho, desarrollo y cierre</td><td>informe → guion</td></tr>
+        <tr><td>Dir. de arte</td><td>Genera prompts de imagen con la ficha de personaje</td><td>guion → prompts</td></tr>
+        <tr><td>Imágenes</td><td>Produce keyframes y descarta los fallidos</td><td>prompts → canon</td></tr>
+        <tr><td>Prompt eng.</td><td>Convierte cada escena en prompt cinematográfico</td><td>escena → prompt</td></tr>
+        <tr><td>Productor</td><td>Genera clips y valida duración y encuadre</td><td>prompts → clips</td></tr>
+        <tr><td>Editor</td><td>Ensambla, sincroniza, aplica LUT y exporta</td><td>clips → master</td></tr>
+        <tr><td>Publicador</td><td>Redacta copies, hashtags y programa</td><td>master → posts</td></tr>
+        <tr><td>Analista</td><td>Lee métricas y propone ajustes</td><td>métricas → notas</td></tr>
+      </tbody>
+    </table>
+    <h3>Cómo los orquesto</h3>
+    <ul>
+      <li><strong>Estado compartido:</strong> una carpeta del proyecto donde viven la ficha de personaje, el guion y los assets. Todos leen de ahí.</li>
+      <li><strong>Contratos estrictos:</strong> cada agente devuelve un esquema fijo. Si el formato falla, se reintenta automáticamente.</li>
+      <li><strong>Puntos de control humano:</strong> apruebo el guion y el corte final. El resto corre solo.</li>
+      <li><strong>Disparador:</strong> un cron semanal o un webhook lanza al Investigador y la cadena avanza sola.</li>
+    </ul>
+    <div class="monitor">
+      <div class="monitor-bar"><span class="rec" aria-hidden="true"></span> Instrucción · agente guionista <span class="right">salida: JSON</span></div>
+      <p>Eres guionista de video corto. Recibes un informe de investigación en JSON. Escribe un guion de 60 segundos dividido en 8 escenas. Cada escena incluye: id, locacion, accion (un solo verbo), encuadre, emocion y locucion (máximo 18 palabras). La escena 1 debe abrir con un gancho de menos de 3 segundos. Devuelve únicamente JSON válido, sin texto adicional.</p>
+    </div>
+  </section>
+
+  <!-- CIERRE -->
+  <section class="cierre">
+    <div class="scene-head"><span class="slug">CORTE FINAL</span><h2>Lo que la IA reemplaza de verdad</h2></div>
+    <p>La IA no reemplaza el criterio creativo: reemplaza la <strong>repetición</strong>. Escribir el mismo tipo de prompt cuarenta veces, renombrar archivos, recortar a 9:16, redactar el copy, programar la publicación. Todas son tareas deterministas, y todo lo determinista es automatizable.</p>
+    <p>Lo que queda del lado humano es lo que decide si un video funciona: qué historia vale la pena contar, qué personaje merece existir y qué se corta. <strong>Los agentes ejecutan; tú diriges.</strong></p>
+    <p>Y una recomendación práctica: no automatices las nueve etapas el primer día. Automatiza una, mídela dos semanas y solo entonces añade la siguiente. Un pipeline construido paso a paso resiste; uno construido de golpe se rompe en la primera escena inconsistente.</p>
+    <div class="endmark">FIN · 06 ESCENAS · 9 AGENTES · 2 APROBACIONES HUMANAS</div>
+  </section>
+
+</main>
+</body>
+</html>
