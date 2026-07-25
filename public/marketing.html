@@ -255,10 +255,8 @@ footer p{font-size:.85rem;color:var(--text-muted)}
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-video">
-    <video autoplay muted loop playsinline preload="auto">
-      <source src="/videos/hamburguesa.mov" type="video/mp4">
-    </video>
+  <div class="hero-video" id="heroVideoWrap">
+    <video id="heroVideo" autoplay muted playsinline preload="auto"></video>
   </div>
   <div class="hero-bg">
     <div class="orb orb-1"></div>
@@ -784,6 +782,39 @@ document.getElementById('burger').addEventListener('click', () => {
   const links = document.querySelector('.nav-links');
   if (links) links.classList.toggle('open');
 });
+
+// Video carousel
+const heroVideos = [
+  '/videos/hamburguesa.mov',
+  '/videos/construccion.mp4',
+  '/videos/hombre1.mp4',
+  '/videos/hombre2.mp4',
+  '/videos/cowboy2.mp4',
+  '/videos/gorra.mp4',
+  '/videos/cowboy1.mov',
+  '/videos/cowboy3.mov',
+];
+let heroIdx = 0;
+const heroVid = document.getElementById('heroVideo');
+
+function loadHeroVideo(idx) {
+  heroVid.style.opacity = '0';
+  heroVid.src = heroVideos[idx];
+  heroVid.load();
+  heroVid.play().catch(() => {});
+}
+
+heroVid.addEventListener('canplay', () => {
+  heroVid.style.transition = 'opacity 1s ease';
+  heroVid.style.opacity = '1';
+});
+
+heroVid.addEventListener('ended', () => {
+  heroIdx = (heroIdx + 1) % heroVideos.length;
+  loadHeroVideo(heroIdx);
+});
+
+loadHeroVideo(0);
 </script>
 </body>
 </html>
