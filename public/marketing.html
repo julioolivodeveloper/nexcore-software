@@ -213,6 +213,11 @@ section{padding:100px 0}
 footer{padding:40px 0;border-top:1px solid var(--border);text-align:center}
 footer p{font-size:.85rem;color:var(--text-muted)}
 
+/* ── HERO VIDEO ── */
+.hero-video{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.hero-video video{width:100%;height:100%;object-fit:cover;opacity:.18;filter:saturate(1.2)}
+.hero-video::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(6,6,18,.5) 0%,rgba(6,6,18,.2) 40%,rgba(6,6,18,.7) 100%)}
+
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:#060612}
@@ -245,6 +250,11 @@ footer p{font-size:.85rem;color:var(--text-muted)}
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero-video">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="/videos/hamburguesa.mov" type="video/mp4">
+    </video>
+  </div>
   <div class="hero-bg">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
