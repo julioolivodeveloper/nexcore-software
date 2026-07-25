@@ -220,8 +220,8 @@ footer p{font-size:.85rem;color:var(--text-muted)}
 
 /* ── HERO VIDEO ── */
 .hero-video{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-.hero-video video{width:100%;height:100%;object-fit:cover;opacity:.35;filter:saturate(1.2)}
-.hero-video::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(6,6,18,.65) 0%,rgba(6,6,18,.45) 40%,rgba(6,6,18,.82) 100%)}
+.hero-video::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(6,6,18,.65) 0%,rgba(6,6,18,.45) 40%,rgba(6,6,18,.82) 100%);z-index:1}
+.hero-video video{filter:saturate(1.2) brightness(.6)}
 
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:6px}
@@ -256,7 +256,8 @@ footer p{font-size:.85rem;color:var(--text-muted)}
 <!-- HERO -->
 <section class="hero">
   <div class="hero-video" id="heroVideoWrap">
-    <video id="heroVideo" autoplay muted playsinline preload="auto"></video>
+    <video id="heroVideoA" autoplay muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 1.2s ease;opacity:1"></video>
+    <video id="heroVideoB" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 1.2s ease;opacity:0"></video>
   </div>
   <div class="hero-bg">
     <div class="orb orb-1"></div>
@@ -783,7 +784,7 @@ document.getElementById('burger').addEventListener('click', () => {
   if (links) links.classList.toggle('open');
 });
 
-// Video carousel
+// Video crossfade carousel
 const heroVideos = [
   '/videos/hamburguesa.mov',
   '/videos/construccion.mp4',
@@ -795,26 +796,38 @@ const heroVideos = [
   '/videos/cowboy3.mov',
 ];
 let heroIdx = 0;
-const heroVid = document.getElementById('heroVideo');
+const vidA = document.getElementById('heroVideoA');
+const vidB = document.getElementById('heroVideoB');
+let active = vidA; // el que se ve
+let standby = vidB; // el que espera en segundo plano
 
-function loadHeroVideo(idx) {
-  heroVid.style.opacity = '0';
-  heroVid.src = heroVideos[idx];
-  heroVid.load();
-  heroVid.play().catch(() => {});
+function crossfadeTo(idx) {
+  standby.src = heroVideos[idx];
+  standby.load();
+  standby.play().catch(() => {});
+  standby.addEventListener('canplay', function onReady() {
+    standby.removeEventListener('canplay', onReady);
+    // crossfade
+    standby.style.opacity = '1';
+    active.style.opacity = '0';
+    // intercambiar roles
+    const prev = active;
+    active = standby;
+    standby = prev;
+    // limpiar el anterior después del fade
+    setTimeout(() => { standby.pause(); standby.src = ''; }, 1400);
+  });
 }
 
-heroVid.addEventListener('canplay', () => {
-  heroVid.style.transition = 'opacity 1s ease';
-  heroVid.style.opacity = '1';
-});
+// al terminar el video activo, cargar el siguiente
+function onEnded() { heroIdx = (heroIdx + 1) % heroVideos.length; crossfadeTo(heroIdx); }
+vidA.addEventListener('ended', onEnded);
+vidB.addEventListener('ended', onEnded);
 
-heroVid.addEventListener('ended', () => {
-  heroIdx = (heroIdx + 1) % heroVideos.length;
-  loadHeroVideo(heroIdx);
-});
-
-loadHeroVideo(0);
+// arrancar con el primero
+vidA.src = heroVideos[0];
+vidA.load();
+vidA.play().catch(() => {});
 </script>
 </body>
 </html>
