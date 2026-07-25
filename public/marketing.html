@@ -152,8 +152,10 @@ section{padding:100px 0}
 
 /* ── INDUSTRIAS ── */
 .industries-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:800px;margin:0 auto}
-.industry-chip{padding:10px 20px;border-radius:999px;background:var(--surface2);border:1px solid var(--border);font-size:.875rem;font-weight:500;color:#94a3b8;transition:all .25s;display:flex;align-items:center;gap:8px}
+.industry-chip{padding:10px 20px;border-radius:999px;background:var(--surface2);border:1px solid var(--border);font-size:.875rem;font-weight:500;color:#94a3b8;transition:all .25s;display:flex;align-items:center;gap:9px}
+.industry-chip i{font-size:1rem;color:var(--blue-light);flex-shrink:0}
 .industry-chip:hover{background:rgba(37,99,235,.1);border-color:rgba(96,165,250,.3);color:var(--blue-light);transform:translateY(-2px)}
+.industry-chip:hover i{color:var(--cyan)}
 
 /* ── PLANES ── */
 .plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:860px;margin:0 auto}
@@ -543,18 +545,18 @@ footer p{font-size:.85rem;color:var(--text-muted)}
       <p>Trabajamos con negocios locales y empresas en todo EEUU que quieren crecer con tecnología.</p>
     </div>
     <div class="industries-grid reveal d1">
-      <div class="industry-chip">🍽️ Restaurantes</div>
-      <div class="industry-chip">🔨 Contratistas</div>
-      <div class="industry-chip">🏠 Roofing</div>
-      <div class="industry-chip">🏡 Real Estate</div>
-      <div class="industry-chip">🦷 Dentistas</div>
-      <div class="industry-chip">💇 Salones</div>
-      <div class="industry-chip">💪 Fitness</div>
-      <div class="industry-chip">⚖️ Abogados</div>
-      <div class="industry-chip">🚗 Automotriz</div>
-      <div class="industry-chip">🏗️ Construcción</div>
-      <div class="industry-chip">🌿 Landscaping</div>
-      <div class="industry-chip">🏢 Empresas locales</div>
+      <div class="industry-chip"><i class="ph-bold ph-fork-knife"></i> Restaurantes</div>
+      <div class="industry-chip"><i class="ph-bold ph-hard-hat"></i> Contratistas</div>
+      <div class="industry-chip"><i class="ph-bold ph-house-line"></i> Roofing</div>
+      <div class="industry-chip"><i class="ph-bold ph-key"></i> Real Estate</div>
+      <div class="industry-chip"><i class="ph-bold ph-tooth"></i> Dentistas</div>
+      <div class="industry-chip"><i class="ph-bold ph-scissors"></i> Salones</div>
+      <div class="industry-chip"><i class="ph-bold ph-barbell"></i> Fitness</div>
+      <div class="industry-chip"><i class="ph-bold ph-scales"></i> Abogados</div>
+      <div class="industry-chip"><i class="ph-bold ph-car"></i> Automotriz</div>
+      <div class="industry-chip"><i class="ph-bold ph-crane"></i> Construcción</div>
+      <div class="industry-chip"><i class="ph-bold ph-tree"></i> Landscaping</div>
+      <div class="industry-chip"><i class="ph-bold ph-buildings"></i> Empresas locales</div>
     </div>
   </div>
 </section>
