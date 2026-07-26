@@ -155,7 +155,8 @@ section{padding:100px 0}
 @media(max-width:600px){.compare-grid{grid-template-columns:1fr}}
 
 /* ── INDUSTRIAS ── */
-.industries-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:800px;margin:0 auto}
+.industries-grid{display:grid;grid-template-columns:repeat(4,auto);gap:10px;justify-content:center;max-width:860px;margin:0 auto}
+@media(max-width:640px){.industries-grid{grid-template-columns:repeat(2,auto)}}
 .industry-chip{padding:10px 20px;border-radius:999px;background:var(--surface2);border:1px solid var(--border);font-size:.875rem;font-weight:500;color:#94a3b8;transition:all .25s;display:flex;align-items:center;gap:9px}
 .industry-chip i{font-size:1rem;color:var(--blue-light);flex-shrink:0}
 .industry-chip:hover{background:rgba(37,99,235,.1);border-color:rgba(96,165,250,.3);color:var(--blue-light);transform:translateY(-2px)}
@@ -549,16 +550,16 @@ footer p{font-size:.85rem;color:var(--text-muted)}
       <p>Trabajamos con negocios locales y empresas en todo EEUU que quieren crecer con tecnología.</p>
     </div>
     <div class="industries-grid reveal d1">
-      <div class="industry-chip"><i class="ph-bold ph-fork-knife"></i> Restaurantes</div>
       <div class="industry-chip"><i class="ph-bold ph-hard-hat"></i> Contratistas</div>
       <div class="industry-chip"><i class="ph-bold ph-house-line"></i> Roofing</div>
       <div class="industry-chip"><i class="ph-bold ph-key"></i> Real Estate</div>
+      <div class="industry-chip"><i class="ph-bold ph-crane"></i> Construcción</div>
+      <div class="industry-chip"><i class="ph-bold ph-fork-knife"></i> Restaurantes</div>
       <div class="industry-chip"><i class="ph-bold ph-tooth"></i> Dentistas</div>
       <div class="industry-chip"><i class="ph-bold ph-scissors"></i> Salones</div>
       <div class="industry-chip"><i class="ph-bold ph-barbell"></i> Fitness</div>
       <div class="industry-chip"><i class="ph-bold ph-scales"></i> Abogados</div>
       <div class="industry-chip"><i class="ph-bold ph-car"></i> Automotriz</div>
-      <div class="industry-chip"><i class="ph-bold ph-crane"></i> Construcción</div>
       <div class="industry-chip"><i class="ph-bold ph-tree"></i> Landscaping</div>
       <div class="industry-chip"><i class="ph-bold ph-buildings"></i> Empresas locales</div>
     </div>
@@ -571,7 +572,7 @@ footer p{font-size:.85rem;color:var(--text-muted)}
     <div class="section-header reveal">
       <div class="tag"><i class="ph-bold ph-credit-card"></i> Membresías</div>
       <h2>Elige tu plan de crecimiento</h2>
-      <p>Sin contratos de largo plazo. Resultados o tu dinero de vuelta en los primeros 30 días.</p>
+      <p>Sin contratos de largo plazo. Empieza hoy y escala a tu ritmo.</p>
     </div>
     <div class="plans-grid">
 
