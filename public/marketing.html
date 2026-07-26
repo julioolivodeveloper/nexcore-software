@@ -129,12 +129,13 @@ section{padding:100px 0}
 .step-content h3{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:8px}
 .step-content p{font-size:.9rem;color:#94a3b8;line-height:1.65}
 @media(max-width:768px){
-  .steps-line{left:24px}
-  .step{grid-template-columns:48px 1fr}
-  .step .step-dot{grid-column:1}
-  .step .step-content,.step:nth-child(even) .step-content,.step:nth-child(odd) .step-content{grid-column:2;text-align:left;padding:24px 16px}
-  .step .step-empty{display:none}
-  .step:nth-child(even) .step-empty{display:none}
+  .steps-line{left:23px;transform:none}
+  .step{display:flex;flex-direction:row;align-items:flex-start;gap:0}
+  .step-empty{display:none !important}
+  .step-dot{order:0;flex-shrink:0;width:46px;height:46px;margin-top:8px}
+  .step .step-content,
+  .step:nth-child(even) .step-content,
+  .step:nth-child(odd) .step-content{order:1;text-align:left;padding:0 0 32px 16px;flex:1}
 }
 
 /* ── COMPARACIÓN ── */
