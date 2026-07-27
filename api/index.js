@@ -533,6 +533,110 @@ app.get('/nuevo-consumidor',  (req, res) => res.sendFile(path.join(__dirname, '.
 app.get('/nuestra-lucha',    (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'nuestra-lucha.html')));
 app.get('/thovir',           (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'thovir.html')));
 
+// ── WHATSAPP AI AGENT ─────────────────────────────────────────────────────────
+const WA_CONVERSATIONS = {};
+const WA_PROCESSED = new Set();
+
+const WA_SYSTEM_PROMPT = `Eres el asistente virtual de Financial Innovation, empresa de marketing digital con IA para negocios hispanos en EE.UU.
+
+SERVICIOS:
+- Sistema IA Growth ($900/mes): Videos con IA, Meta Ads, Pixel, Landing Page optimizada, Reportes mensuales
+- Sistema IA Scale ($1,400/mes): Todo lo anterior + Automatizaciones IA, CRM, Remarketing avanzado, Embudos de venta
+
+CLIENTES IDEALES: Restaurantes, Contratistas, Roofing, Real Estate, Dentistas, Salones de belleza, Gimnasios, Abogados, Construcción, Landscaping
+
+TU MISIÓN:
+1. Responder preguntas sobre los servicios con claridad
+2. Calificar al prospecto (tipo de negocio, ubicación)
+3. Agendar una llamada con Julio Olivo
+
+PROCESO PARA AGENDAR LLAMADA:
+- Solicita nombre completo del prospecto
+- Confirma su número de teléfono
+- Pregunta día y hora de disponibilidad
+- Cuando tengas los 3 datos, al FINAL de tu respuesta agrega (en línea separada, invisible para el usuario): [LEAD:NOMBRE|TELEFONO|DISPONIBILIDAD]
+
+REGLAS:
+- Siempre responde en español
+- Mensajes cortos, máximo 4 oraciones
+- Amable pero directo al punto
+- Si preguntan precio, menciona ambos planes`;
+
+async function waeSend(to, text) {
+  const r = await fetch(`https://graph.facebook.com/v19.0/${process.env.META_PHONE_NUMBER_ID}/messages`, {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${process.env.META_TOKEN}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messaging_product: 'whatsapp', recipient_type: 'individual', to, type: 'text', text: { preview_url: false, body: text } })
+  });
+  if (!r.ok) console.error('Meta send error:', await r.text());
+}
+
+async function waeGroq(phone, userMsg) {
+  if (!WA_CONVERSATIONS[phone]) WA_CONVERSATIONS[phone] = [];
+  WA_CONVERSATIONS[phone].push({ role: 'user', content: userMsg });
+  if (WA_CONVERSATIONS[phone].length > 12) WA_CONVERSATIONS[phone] = WA_CONVERSATIONS[phone].slice(-12);
+
+  const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${process.env.GROQ_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'llama-3.1-8b-instant',
+      messages: [{ role: 'system', content: WA_SYSTEM_PROMPT }, ...WA_CONVERSATIONS[phone]],
+      max_tokens: 400, temperature: 0.7
+    })
+  });
+  const data = await r.json();
+  if (!data.choices?.[0]?.message?.content) throw new Error('Groq error: ' + JSON.stringify(data));
+  const reply = data.choices[0].message.content;
+  WA_CONVERSATIONS[phone].push({ role: 'assistant', content: reply });
+  return reply;
+}
+
+// Webhook verification
+app.get('/api/whatsapp', (req, res) => {
+  if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === process.env.WHATSAPP_VERIFY_TOKEN) {
+    return res.status(200).send(req.query['hub.challenge']);
+  }
+  res.status(403).send('Forbidden');
+});
+
+// Incoming messages
+app.post('/api/whatsapp', async (req, res) => {
+  const body = req.body;
+  if (body.object !== 'whatsapp_business_account') return res.status(200).json({ status: 'ok' });
+
+  const msg = body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+  if (!msg || msg.type !== 'text') return res.status(200).json({ status: 'ok' });
+
+  if (WA_PROCESSED.has(msg.id)) return res.status(200).json({ status: 'ok' });
+  WA_PROCESSED.add(msg.id);
+  setTimeout(() => WA_PROCESSED.delete(msg.id), 3600000);
+
+  const from = msg.from;
+  const text = msg.text?.body;
+  if (!text) return res.status(200).json({ status: 'ok' });
+
+  try {
+    let reply = await waeGroq(from, text);
+
+    const lead = reply.match(/\[LEAD:([^|]+)\|([^|]+)\|([^\]]+)\]/);
+    if (lead) {
+      reply = reply.replace(/\[LEAD:[^\]]+\]/, '').trim();
+      const ownerPhone = process.env.OWNER_PHONE;
+      if (ownerPhone) {
+        await waeSend(ownerPhone, `🔔 *Nuevo Lead - Financial Innovation*\n\n👤 Nombre: ${lead[1].trim()}\n📞 Teléfono: ${lead[2].trim()}\n🕐 Disponible: ${lead[3].trim()}\n\n_¡Llámalo pronto!_ ✅`);
+      }
+    }
+
+    await waeSend(from, reply);
+  } catch (err) {
+    console.error('WhatsApp agent error:', err);
+    await waeSend(from, 'Disculpa, hubo un problema técnico. Por favor escríbeme de nuevo en un momento.').catch(() => {});
+  }
+
+  res.status(200).json({ status: 'ok' });
+});
+
 // ── DEFAULT ───────────────────────────────────────────────────────────────────
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'index.html')));
 
