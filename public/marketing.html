@@ -241,7 +241,7 @@ footer p{font-size:.85rem;color:var(--text-muted)}
 @keyframes marquee-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ── HERO VIDEO ── */
-.hero-video{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.hero-video{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;background:linear-gradient(135deg,#0a0a2e 0%,#1a1040 50%,#060612 100%)}
 .hero-video::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(6,6,18,.65) 0%,rgba(6,6,18,.45) 40%,rgba(6,6,18,.82) 100%);z-index:1}
 .hero-video video{filter:saturate(1.2) brightness(.6)}
 
@@ -806,50 +806,62 @@ document.getElementById('burger').addEventListener('click', () => {
   if (links) links.classList.toggle('open');
 });
 
-// Video crossfade carousel
+// Video crossfade carousel — MP4s first (MOV no funciona en Chrome/Instagram Android)
 const heroVideos = [
-  '/videos/hamburguesa.mov',
   '/videos/construccion.mp4',
   '/videos/hombre1.mp4',
   '/videos/hombre2.mp4',
   '/videos/cowboy2.mp4',
   '/videos/gorra.mp4',
-  '/videos/cowboy1.mov',
-  '/videos/cowboy3.mov',
 ];
 let heroIdx = 0;
 const vidA = document.getElementById('heroVideoA');
 const vidB = document.getElementById('heroVideoB');
-let active = vidA; // el que se ve
-let standby = vidB; // el que espera en segundo plano
+let active = vidA;
+let standby = vidB;
+let videoStarted = false;
 
 function crossfadeTo(idx) {
   standby.src = heroVideos[idx];
   standby.load();
-  standby.play().catch(() => {});
+  standby.play().catch(() => { skipToNext(); });
   standby.addEventListener('canplay', function onReady() {
     standby.removeEventListener('canplay', onReady);
-    // crossfade
     standby.style.opacity = '1';
     active.style.opacity = '0';
-    // intercambiar roles
     const prev = active;
     active = standby;
     standby = prev;
-    // limpiar el anterior después del fade
     setTimeout(() => { standby.pause(); standby.src = ''; }, 1400);
+  });
+  standby.addEventListener('error', function onErr() {
+    standby.removeEventListener('error', onErr);
+    skipToNext();
   });
 }
 
-// al terminar el video activo, cargar el siguiente
-function onEnded() { heroIdx = (heroIdx + 1) % heroVideos.length; crossfadeTo(heroIdx); }
+function skipToNext() {
+  heroIdx = (heroIdx + 1) % heroVideos.length;
+  crossfadeTo(heroIdx);
+}
+
+function onEnded() { skipToNext(); }
 vidA.addEventListener('ended', onEnded);
 vidB.addEventListener('ended', onEnded);
 
-// arrancar con el primero
-vidA.src = heroVideos[0];
-vidA.load();
-vidA.play().catch(() => {});
+function startVideo() {
+  if (videoStarted) return;
+  videoStarted = true;
+  vidA.src = heroVideos[0];
+  vidA.load();
+  vidA.play().catch(() => { skipToNext(); });
+}
+
+// Intentar autoplay inmediato
+startVideo();
+// Fallback: en Instagram a veces el autoplay necesita interacción
+document.addEventListener('touchstart', startVideo, { once: true });
+document.addEventListener('click', startVideo, { once: true });
 </script>
 </body>
 </html>
