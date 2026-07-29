@@ -277,7 +277,10 @@ footer p{font-size:.85rem;color:var(--text-muted)}
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-video" id="heroVideoWrap"></div>
+  <div class="hero-video" id="heroVideoWrap">
+    <video id="heroVideoA" autoplay muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 1.2s ease;opacity:1"></video>
+    <video id="heroVideoB" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 1.2s ease;opacity:0"></video>
+  </div>
   <div class="hero-bg">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -803,7 +806,47 @@ document.getElementById('burger').addEventListener('click', () => {
   if (links) links.classList.toggle('open');
 });
 
-// Videos temporalmente desactivados
+// Video crossfade carousel — hosted on Supabase Storage
+const SUPA = 'https://otdwdjxcknpzkllfjktt.supabase.co/storage/v1/object/public/videos';
+const heroVideos = [
+  `${SUPA}/construccion.mp4`,
+  `${SUPA}/hombre1.mp4`,
+  `${SUPA}/hombre2.mp4`,
+  `${SUPA}/cowboy2.mp4`,
+  `${SUPA}/gorra.mp4`,
+];
+let heroIdx = 0;
+const vidA = document.getElementById('heroVideoA');
+const vidB = document.getElementById('heroVideoB');
+let active = vidA, standby = vidB;
+let videoStarted = false;
+
+function crossfadeTo(idx) {
+  standby.src = heroVideos[idx];
+  standby.load();
+  standby.play().catch(() => { skipToNext(); });
+  standby.addEventListener('canplay', function onReady() {
+    standby.removeEventListener('canplay', onReady);
+    standby.style.opacity = '1'; active.style.opacity = '0';
+    const prev = active; active = standby; standby = prev;
+    setTimeout(() => { standby.pause(); standby.src = ''; }, 1400);
+  });
+  standby.addEventListener('error', function onErr() {
+    standby.removeEventListener('error', onErr);
+    skipToNext();
+  });
+}
+function skipToNext() { heroIdx = (heroIdx + 1) % heroVideos.length; crossfadeTo(heroIdx); }
+function onEnded() { skipToNext(); }
+vidA.addEventListener('ended', onEnded);
+vidB.addEventListener('ended', onEnded);
+function startVideo() {
+  if (videoStarted) return; videoStarted = true;
+  vidA.src = heroVideos[0]; vidA.load(); vidA.play().catch(() => { skipToNext(); });
+}
+startVideo();
+document.addEventListener('touchstart', startVideo, { once: true });
+document.addEventListener('click', startVideo, { once: true });
 </script>
 </body>
 </html>
