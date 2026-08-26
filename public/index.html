@@ -152,8 +152,8 @@
       transform: scaleX(0); transform-origin: left;
       transition: transform .25s ease;
     }
-    .nav-links a:hover { color: #fff; }
-    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-links a:hover, .nav-links a.nav-active { color: #fff; }
+    .nav-links a:hover::after, .nav-links a.nav-active::after { transform: scaleX(1); }
     .nav-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
     .nav-login {
       display: flex; align-items: center; gap: 7px;
@@ -189,54 +189,111 @@
     /* mobile nav */
     @media (max-width: 768px) {
       .nav-logo-text { display: none; }
-      .nav-links {
-        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-        z-index: 1002;
-        flex-direction: column; justify-content: flex-start; align-items: center;
-        gap: 0;
-        background: #07070f;
-        transform: translateX(100%);
-        transition: transform .4s cubic-bezier(.4,0,.2,1);
-        pointer-events: none;
-        padding-top: 72px;
+      .nav-backdrop {
+        position: fixed; inset: 0; z-index: 1001;
+        background: rgba(0,0,0,.55);
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
+        opacity: 0; pointer-events: none;
+        transition: opacity .35s ease;
       }
-      .nav-links::before {
-        content: '';
-        position: absolute; top: 0; left: 0; right: 0; height: 3px;
-        background: linear-gradient(90deg, var(--purple), var(--cyan), var(--pink));
+      .nav-backdrop.open { opacity: 1; pointer-events: all; }
+      .nav-links {
+        position: fixed; top: 0; right: 0; bottom: 0;
+        width: 100%;
+        z-index: 1002;
+        flex-direction: column; justify-content: flex-start; align-items: stretch;
+        gap: 0;
+        background: #0d0d1f;
+        transform: translateX(100%);
+        transition: transform .38s cubic-bezier(.4,0,.2,1);
+        pointer-events: none;
+        padding: 0;
+        overflow-y: auto;
       }
       .nav-links.open { transform: translateX(0); pointer-events: all; }
-      .nav-links li { width: 100%; border-bottom: 1px solid rgba(255,255,255,.06); }
-      .nav-links li:first-child { border-top: 1px solid rgba(255,255,255,.06); }
-      .nav-links a {
-        display: block; width: 100%; text-align: center;
-        padding: 18px 0; font-size: 1.1rem; font-weight: 600;
-        color: var(--text-muted);
-        transition: color .2s, background .2s;
+      .nav-mobile-header-li {
+        display: flex !important; align-items: center; justify-content: space-between;
+        padding: 14px 20px;
+        border-bottom: 1px solid rgba(255,255,255,.1) !important;
+        background: linear-gradient(90deg, rgba(37,99,235,.12) 0%, transparent 100%);
+        opacity: 1 !important; transform: none !important; transition: none !important;
       }
-      .nav-links a:hover, .nav-links a:active { color: #fff; background: rgba(255,255,255,.03); }
+      .nav-mobile-logo-wrap {
+        display: flex; align-items: center; gap: 8px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700; font-size: 1rem; color: #fff;
+      }
+      .nav-mobile-logo-hex {
+        width: 30px; height: 30px;
+        background: linear-gradient(135deg, var(--purple), var(--cyan));
+        border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px; color: #fff;
+      }
+      .nav-mobile-close {
+        background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+        border-radius: 10px; color: #94a3b8;
+        cursor: pointer; padding: 8px; line-height: 0;
+        display: flex; align-items: center; justify-content: center;
+        transition: background .2s, color .2s;
+      }
+      .nav-mobile-close:active { background: rgba(255,255,255,.14); color: #fff; }
+      .nav-links li {
+        width: 100%;
+        border-bottom: 1px solid rgba(255,255,255,.05);
+        opacity: 0; transform: translateX(24px);
+        transition: opacity .3s ease, transform .3s ease;
+      }
+      .nav-links.open li { opacity: 1; transform: translateX(0); }
+      .nav-links.open li:nth-child(1) { transition-delay: .02s; }
+      .nav-links.open li:nth-child(2) { transition-delay: .09s; }
+      .nav-links.open li:nth-child(3) { transition-delay: .15s; }
+      .nav-links.open li:nth-child(4) { transition-delay: .21s; }
+      .nav-links.open li:nth-child(5) { transition-delay: .27s; }
+      .nav-links a {
+        display: flex; align-items: center; justify-content: space-between;
+        width: 100%; padding: 18px 24px;
+        font-size: 1.05rem; font-weight: 600;
+        color: var(--text-muted);
+        transition: color .2s, background .2s, padding-left .2s;
+      }
+      .nav-links a::after { display: none; }
+      .nav-links a:active { color: #fff; background: rgba(37,99,235,.09); padding-left: 30px; }
+      .nav-link-arrow {
+        width: 16px; height: 16px; flex-shrink: 0; opacity: 0.22;
+        transition: opacity .2s, transform .2s;
+      }
+      .nav-links a:active .nav-link-arrow { opacity: 0.7; transform: translateX(3px); }
       .nav-mobile-actions {
-        display: flex; gap: 10px; padding: 20px 20px 32px;
+        display: flex; flex-direction: column; gap: 10px;
+        padding: 20px 20px 44px;
         border-top: 1px solid rgba(255,255,255,.06); margin-top: 8px;
       }
       .nav-mobile-wa, .nav-mobile-login {
-        flex: 1; display: flex !important; align-items: center; justify-content: center;
-        gap: 7px; padding: 11px 10px; border-radius: 12px;
-        font-size: .85rem; font-weight: 700; text-decoration: none;
+        display: flex !important; align-items: center; justify-content: center;
+        gap: 8px; padding: 14px 16px; border-radius: 14px;
+        font-size: .95rem; font-weight: 700; text-decoration: none; width: 100%;
       }
       .nav-mobile-wa {
         background: linear-gradient(135deg, var(--purple), #1d4ed8);
-        color: #fff; box-shadow: 0 4px 16px rgba(37,99,235,.3); border: none;
+        color: #fff; box-shadow: 0 4px 16px rgba(37,99,235,.35); border: none;
       }
       .nav-mobile-login {
         background: rgba(6,182,212,.08); border: 1px solid rgba(6,182,212,.35); color: #67e8f9;
       }
-      .nav-mobile-wa svg, .nav-mobile-login svg { width: 15px; height: 15px; flex-shrink: 0; }
+      .nav-mobile-wa svg, .nav-mobile-login svg { width: 16px; height: 16px; flex-shrink: 0; }
       .nav-burger { display: flex; margin-left: auto; z-index: 1003; position: relative; }
       .nav-cta { display: none; }
       .nav-login { display: none; }
     }
-    @media (min-width: 769px) { .nav-mobile-wa { display: none !important; } .nav-mobile-login { display: none !important; } }
+    @media (min-width: 769px) {
+      .nav-mobile-wa { display: none !important; }
+      .nav-mobile-login { display: none !important; }
+      .nav-mobile-header-li { display: none !important; }
+      .nav-link-arrow { display: none !important; }
+      .nav-backdrop { display: none; }
+    }
 
     /* ── HERO ───────────────────────────────────────── */
     .hero {
@@ -1341,21 +1398,26 @@
         <span class="nav-logo-text">Financial Innovation</span>
       </a>
       <ul class="nav-links" id="navLinks">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#servicios">Servicios</a></li>
-        <li><a href="#proceso">Proceso</a></li>
-        <li><a href="#ventajas">Ventajas</a></li>
-        <li><a href="#contacto">Contacto</a></li>
-        <li><a href="/academy">Academy</a></li>
-        <li><a href="/marketing">Marketing</a></li>
+        <li class="nav-mobile-header-li">
+          <div class="nav-mobile-logo-wrap">
+            <div class="nav-mobile-logo-hex">⬡</div>
+            Financial Innovation
+          </div>
+          <button class="nav-mobile-close" id="navClose" aria-label="Cerrar menú">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </li>
+        <li><a href="/" class="nav-active">Software <svg class="nav-link-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a></li>
+        <li><a href="/marketing">Marketing <svg class="nav-link-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a></li>
+        <li><a href="/academy">Academy <svg class="nav-link-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a></li>
         <li style="border:none;padding:0;">
           <div class="nav-mobile-actions">
             <a onclick="fbq('track','Contact')" href="https://wa.me/17473742685" target="_blank" rel="noopener" class="nav-mobile-wa">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.583 3.842 1.585 5.395L2 22l4.733-1.54A9.97 9.97 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.583 3.842 1.585 5.395L2 22l4.733-1.54A9.97 9.97 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 11.999 2z"/></svg>
               WhatsApp
             </a>
             <a href="/accounting/login" class="nav-mobile-login">
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               Iniciar Sesión
             </a>
           </div>
@@ -1376,6 +1438,7 @@
       </button>
     </div>
   </nav>
+  <div class="nav-backdrop" id="navBackdrop"></div>
 
   <!-- ── HERO ─────────────────────────────────────── -->
   <section class="hero">
@@ -2096,19 +2159,30 @@
     window.addEventListener('scroll', onScroll, { passive: true });
 
     // ── Mobile burger ────────────────────────────────
-    const burger    = document.getElementById('navBurger');
-    const navLinks  = document.getElementById('navLinks');
+    const burger      = document.getElementById('navBurger');
+    const navLinks    = document.getElementById('navLinks');
+    const navBackdrop = document.getElementById('navBackdrop');
+    const navClose    = document.getElementById('navClose');
     let menuOpen = false;
-    burger.addEventListener('click', () => {
-      menuOpen = !menuOpen;
-      navLinks.classList.toggle('open', menuOpen);
-      burger.innerHTML = menuOpen
-        ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
-        : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></svg>';
-    });
-    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      menuOpen = false; navLinks.classList.remove('open');
-    }));
+    const svgHamburger = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></svg>';
+    function openMenu() {
+      menuOpen = true;
+      navLinks.classList.add('open');
+      if (navBackdrop) navBackdrop.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      burger.innerHTML = svgHamburger;
+    }
+    function closeMenu() {
+      menuOpen = false;
+      navLinks.classList.remove('open');
+      if (navBackdrop) navBackdrop.classList.remove('open');
+      document.body.style.overflow = '';
+      burger.innerHTML = svgHamburger;
+    }
+    burger.addEventListener('click', () => { menuOpen ? closeMenu() : openMenu(); });
+    if (navBackdrop) navBackdrop.addEventListener('click', closeMenu);
+    if (navClose) navClose.addEventListener('click', closeMenu);
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
     // ── Scroll reveal ────────────────────────────────
     const revealObs = new IntersectionObserver(entries => {
