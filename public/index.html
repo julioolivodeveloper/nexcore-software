@@ -195,7 +195,7 @@
         opacity: 0; pointer-events: none;
         transition: opacity .35s ease;
       }
-      .nav-backdrop.open { opacity: 1; pointer-events: all; }
+      .nav-backdrop.open { opacity: 1; pointer-events: auto; }
       .nav-links {
         position: fixed; top: 0; right: 0; bottom: 0;
         width: 100%;
@@ -209,7 +209,7 @@
         padding: 0;
         overflow-y: auto;
       }
-      .nav-links.open { transform: translateX(0); pointer-events: all; }
+      .nav-links.open { transform: translateX(0); pointer-events: auto; }
       .nav-mobile-header-li {
         display: flex !important; align-items: center; justify-content: space-between;
         padding: 14px 20px;
@@ -1434,9 +1434,9 @@
       <button class="nav-burger" id="navBurger" aria-label="Menú">
         <i data-lucide="menu" id="burgerIcon"></i>
       </button>
+      <div class="nav-backdrop" id="navBackdrop"></div>
     </div>
   </nav>
-  <div class="nav-backdrop" id="navBackdrop"></div>
 
   <!-- ── HERO ─────────────────────────────────────── -->
   <section class="hero">
