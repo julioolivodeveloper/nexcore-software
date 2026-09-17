@@ -50,7 +50,7 @@
     @media(max-width:768px){
       .nav-links{position:fixed;top:0;left:0;right:0;bottom:0;z-index:998;flex-direction:column;justify-content:center;align-items:center;gap:0;background:#07070f;transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);pointer-events:none;padding:0;}
       .nav-links::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple),var(--cyan),var(--pink));}
-      .nav-links.open{transform:translateX(0);pointer-events:all;}
+      .nav-links.open{transform:translateX(0);pointer-events:auto;}
       .nav-links li{width:100%;border-bottom:1px solid rgba(255,255,255,.06);}
       .nav-links li:first-child{border-top:1px solid rgba(255,255,255,.06);}
       .nav-links a{display:block;width:100%;text-align:center;padding:20px 0;font-size:1.15rem;font-weight:600;color:var(--text-muted);transition:color .2s,background .2s;}

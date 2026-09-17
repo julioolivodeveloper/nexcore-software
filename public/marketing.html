@@ -812,6 +812,10 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+// Fallback: si el observer no dispara, mostrar contenido después de 600ms
+setTimeout(function() {
+  document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); });
+}, 600);
 
 // Counter animation
 function animateCounters(container) {
