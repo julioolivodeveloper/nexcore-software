@@ -646,16 +646,14 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
       const tier = rng();
       let size, bright;
-      if     (tier<.58){size=.22+rng()*.42; bright=.10+rng()*.32;}
-      else if(tier<.82){size=.65+rng()*.72; bright=.26+rng()*.38;}
-      else if(tier<.95){size=1.38+rng()*.88;bright=.48+rng()*.34;}
-      else if(tier<.99){size=2.26+rng()*1.7;bright=.64+rng()*.30;}
-      else             {size=3.9+rng()*3.2; bright=.85+rng()*.15;}
+      if  (tier<.62){size=.18+rng()*.38; bright=.08+rng()*.30;}
+      else if(tier<.88){size=.56+rng()*.58; bright=.22+rng()*.35;}
+      else           {size=1.14+rng()*.55; bright=.40+rng()*.28;}
 
       // Drift outward from center — larger = faster (depth parallax)
       const dx=x-cx2, dy=y-cy2;
       const dist=Math.sqrt(dx*dx+dy*dy)||1;
-      const spd2 = 0.022 + size*0.048;
+      const spd2 = 0.018 + size*0.032;
       const vx=dx/dist*spd2, vy=dy/dist*spd2;
 
       stars.push({
@@ -663,9 +661,9 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
         col: pickCol(rng),
         ph:  rng()*Math.PI*2,
         spd: .35+rng()*1.9,
-        amp: size>2 ? .06 : .16+rng()*.22,
-        glow:  size>1.35,
-        spike: size>3.5,
+        amp: .14+rng()*.20,
+        glow:  false,
+        spike: false,
       });
     }
     stars.sort((a,b)=>a.size-b.size);
