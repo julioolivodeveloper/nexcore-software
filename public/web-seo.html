@@ -637,6 +637,7 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     ];
 
     const N = W < 640 ? 480 : 1600;
+    const cx2=W/2, cy2=H/2;
     for(let i=0;i<N;i++){
       const x = rng()*W;
       // Milky Way diagonal band — 35% of stars concentrate here
@@ -651,8 +652,14 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
       else if(tier<.99){size=2.26+rng()*1.7;bright=.64+rng()*.30;}
       else             {size=3.9+rng()*3.2; bright=.85+rng()*.15;}
 
+      // Drift outward from center — larger = faster (depth parallax)
+      const dx=x-cx2, dy=y-cy2;
+      const dist=Math.sqrt(dx*dx+dy*dy)||1;
+      const spd2 = 0.022 + size*0.048;
+      const vx=dx/dist*spd2, vy=dy/dist*spd2;
+
       stars.push({
-        x, y, size, bright,
+        x, y, vx, vy, size, bright, fade:1,
         col: pickCol(rng),
         ph:  rng()*Math.PI*2,
         spd: .35+rng()*1.9,
@@ -664,9 +671,29 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     stars.sort((a,b)=>a.size-b.size);
   }
 
+  function resetStar(s) {
+    const a = Math.random()*Math.PI*2;
+    const d = Math.random()*50;
+    s.x = W/2 + Math.cos(a)*d;
+    s.y = H/2 + Math.sin(a)*d;
+    const dx=s.x-W/2, dy=s.y-H/2;
+    const dist=Math.sqrt(dx*dx+dy*dy)||1;
+    const spd2=0.022+s.size*0.048;
+    s.vx=dx/dist*spd2; s.vy=dy/dist*spd2;
+    s.fade=0; // fade in from invisible
+  }
+
   function frame() {
     ctx.clearRect(0,0,W,H);
     t += .007;
+
+    // ── Move stars ──
+    stars.forEach(s=>{
+      s.x += s.vx;
+      s.y += s.vy;
+      if(s.fade<1) s.fade=Math.min(1, s.fade+0.005); // fade in ~3s
+      if(s.x<-30||s.x>W+30||s.y<-30||s.y>H+30) resetStar(s);
+    });
 
     // ── Nebulae gas clouds ──
     nebulae.forEach(n=>{
@@ -681,7 +708,7 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     // ── Stars ──
     stars.forEach(s=>{
       const tw = 1 - s.amp*(0.5+0.5*Math.sin(t*s.spd+s.ph));
-      const al = Math.min(1, s.bright*tw);
+      const al = Math.min(1, s.bright*tw*s.fade);
       const [r,g,b]=s.col;
 
       // Outer glow halo for brighter stars
