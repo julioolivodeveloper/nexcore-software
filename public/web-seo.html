@@ -198,7 +198,8 @@ nav.scrolled{border-color:var(--border);padding:12px 0}
 .card-cat{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4b5563;margin-bottom:3px}
 .card-name{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:3px;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .card-arrow{opacity:0;transition:opacity .2s,transform .2s;color:#4b5563;flex-shrink:0}
-.card-domain-txt{font-family:'DM Mono',monospace;font-size:.72rem;color:#4b5563;margin-bottom:8px}
+.card-domain-txt{font-family:'DM Mono',monospace;font-size:.72rem;color:#4b5563;margin-bottom:6px}
+.card-loc{display:flex;align-items:center;gap:4px;font-size:.72rem;color:#64748b;margin-bottom:10px}
 .live-badge{display:inline-flex;align-items:center;gap:4px;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--green-l);background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);padding:2px 8px;border-radius:4px}
 .live-dot{width:5px;height:5px;border-radius:50%;background:var(--green-l)}
 
@@ -560,14 +561,14 @@ footer a{color:var(--blue-l)}
 <script>
 // ── DATA ──
 const SITES = [
-  {url:'https://www.lafonditademama.com',domain:'lafonditademama.com',name:'La Fondita de Mamá',cat:'Restaurante · Comida Mexicana',img:'/img/port-lafonditademama.jpg'},
-  {url:'https://www.paversordonez.com',domain:'paversordonez.com',name:'Pavers Ordonez',cat:'Paisajismo · Pavimentación',img:'/img/port-paversordonez.jpg'},
-  {url:'https://www.aaarodriguezgeneralservice.com',domain:'aaarodriguezgeneralservice.com',name:'AAA Rodriguez General Service',cat:'Servicios Generales',img:'/img/port-aaarodriguez.jpg'},
-  {url:'https://www.irepairgaragedoors.com',domain:'irepairgaragedoors.com',name:'iRepair Garage Doors',cat:'Reparación · Garage Doors',img:'/img/port-irepair.jpg'},
-  {url:'https://www.lemonylimebarmobile.com',domain:'lemonylimebarmobile.com',name:'Lemony Lime Bar Mobile',cat:'Bar Móvil · Eventos',img:'/img/port-lemonylime.jpg'},
-  {url:'https://www.manzanoslocksmith.com',domain:'manzanoslocksmith.com',name:'Manzanos Locksmith',cat:'Cerrajería · Seguridad',img:'/img/port-manzanos.jpg'},
-  {url:'https://www.chernandezconstructionchg.com',domain:'chernandezconstructionchg.com',name:'C. Hernandez Construction',cat:'Construcción · Contratista',img:'/img/port-chernandez.jpg'},
-  {url:'https://www.jymcoatings.com',domain:'jymcoatings.com',name:'J&M Coatings',cat:'Epoxy Flooring · Stamp Overlay',img:'/img/port-jymcoatings.jpg'},
+  {url:'https://www.lafonditademama.com',domain:'lafonditademama.com',name:'La Fondita de Mamá',cat:'Restaurante · Comida Mexicana',loc:'El Paso, TX',img:'/img/port-lafonditademama.jpg'},
+  {url:'https://www.paversordonez.com',domain:'paversordonez.com',name:'Pavers Ordonez',cat:'Paisajismo · Pavimentación',loc:'West Palm Beach, FL',img:'/img/port-paversordonez.jpg'},
+  {url:'https://www.aaarodriguezgeneralservice.com',domain:'aaarodriguezgeneralservice.com',name:'AAA Rodriguez General Service',cat:'Servicios Generales',loc:'Florida Central',img:'/img/port-aaarodriguez.jpg'},
+  {url:'https://www.irepairgaragedoors.com',domain:'irepairgaragedoors.com',name:'iRepair Garage Doors',cat:'Reparación · Garage Doors',loc:'Lakeland, FL',img:'/img/port-irepair.jpg'},
+  {url:'https://www.lemonylimebarmobile.com',domain:'lemonylimebarmobile.com',name:'Lemony Lime Bar Mobile',cat:'Bar Móvil · Eventos',loc:'Goshen, IN',img:'/img/port-lemonylime.jpg'},
+  {url:'https://www.manzanoslocksmith.com',domain:'manzanoslocksmith.com',name:'Manzanos Locksmith',cat:'Cerrajería · Seguridad',loc:'Richmond, CA',img:'/img/port-manzanos.jpg'},
+  {url:'https://www.chernandezconstructionchg.com',domain:'chernandezconstructionchg.com',name:'C. Hernandez Construction',cat:'Construcción · Contratista',loc:'Ceres, CA',img:'/img/port-chernandez.jpg'},
+  {url:'https://www.jymcoatings.com',domain:'jymcoatings.com',name:'J&M Coatings',cat:'Epoxy Flooring · Stamp Overlay',loc:'Houston, TX',img:'/img/port-jymcoatings.jpg'},
 ];
 
 // ── NAV ──
@@ -997,6 +998,7 @@ document.querySelectorAll('[data-count]').forEach(el => cntObs.observe(el));
           <svg class="card-arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>
         </div>
         <div class="card-domain-txt">${site.domain}</div>
+        <div class="card-loc"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${site.loc}</div>
         <div class="live-badge"><span class="live-dot"></span>Ver sitio activo</div>
       </div>`;
 
