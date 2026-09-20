@@ -48,9 +48,14 @@ section{padding:96px 0}
 .section-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,4vw,48px);font-weight:800;letter-spacing:-.025em;line-height:1.08;text-wrap:balance}
 .section-sub{font-size:1rem;color:var(--text-muted);line-height:1.75}
 
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
 .reveal.visible{opacity:1;transform:none}
-.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+.reveal-left{opacity:0;transform:translateX(-32px);transition:opacity .7s ease,transform .7s ease}
+.reveal-right{opacity:0;transform:translateX(32px);transition:opacity .7s ease,transform .7s ease}
+.reveal-scale{opacity:0;transform:scale(.91);transition:opacity .65s ease,transform .65s cubic-bezier(.34,1.4,.64,1)}
+.reveal-left.visible,.reveal-right.visible,.reveal-scale.visible{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.18s}.d3{transition-delay:.28s}.d4{transition-delay:.38s}.d5{transition-delay:.48s}
+#scroll-prog{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--green-l),var(--cyan),var(--blue-l));z-index:9999;pointer-events:none;will-change:width}
 
 /* ── NAV ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;background:rgba(6,6,18,.92);border-bottom:1px solid transparent;transition:border-color .3s,padding .3s}
@@ -247,7 +252,7 @@ footer a{color:var(--blue-l)}
   .stats-band{padding:48px 0}
 }
 @media(prefers-reduced-motion:reduce){
-  .reveal{opacity:1;transform:none;transition:none}
+  .reveal,.reveal-left,.reveal-right,.reveal-scale{opacity:1;transform:none;transition:none}
   *{animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
 </style>
@@ -258,6 +263,8 @@ footer a{color:var(--blue-l)}
 <a class="wa-fab" href="https://wa.me/12094609828?text=Hola%2C+quiero+una+demo+gratis+de+Web+%2B+SEO" target="_blank" rel="noopener" aria-label="WhatsApp">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
+
+<div id="scroll-prog"></div>
 
 <!-- GLOBAL STARFIELD -->
 <canvas id="hero-canvas"></canvas>
@@ -327,8 +334,8 @@ footer a{color:var(--blue-l)}
         </a>
       </div>
       <div class="hero-stats">
-        <div class="hstat"><span class="hstat-num">30+</span><span class="hstat-label">Sitios en la red</span></div>
-        <div class="hstat"><span class="hstat-num">100%</span><span class="hstat-label">Diseño custom</span></div>
+        <div class="hstat"><span class="hstat-num" data-count="30" data-suffix="+">30+</span><span class="hstat-label">Sitios en la red</span></div>
+        <div class="hstat"><span class="hstat-num" data-count="100" data-suffix="%">100%</span><span class="hstat-label">Diseño custom</span></div>
         <div class="hstat"><span class="hstat-num">↑</span><span class="hstat-label">Sube solo con el tiempo</span></div>
       </div>
     </div>
@@ -353,7 +360,7 @@ footer a{color:var(--blue-l)}
 <section class="seo-section" id="estrategia">
   <div class="container">
     <div class="seo-grid">
-      <div class="seo-text reveal">
+      <div class="seo-text reveal-left">
         <div class="eyebrow green">Nuestra Estrategia</div>
         <h2 class="section-h">Un sitio que<br><span class="grad-green">mejora solo con el tiempo</span></h2>
         <p class="section-sub" style="margin-bottom:32px">No es magia — es estructura. Publicamos 30+ páginas dedicadas a cada servicio y ciudad que atiendes. Con el tiempo, Google las detecta como señales de relevancia y tu sitio principal sube de posición por sí solo, sin que hagas nada extra.</p>
@@ -387,7 +394,7 @@ footer a{color:var(--blue-l)}
           </div>
         </div>
       </div>
-      <div class="seo-canvas-wrap reveal d2">
+      <div class="seo-canvas-wrap reveal-right d2">
         <canvas id="network-viz" height="380"></canvas>
         <div class="network-legend">
           <div class="leg-item"><div class="leg-dot" style="background:#10b981;box-shadow:0 0 8px #10b981"></div>Tu sitio principal</div>
@@ -460,7 +467,7 @@ footer a{color:var(--blue-l)}
       <p class="section-sub" style="max-width:480px;margin:12px auto 0">Un ecosistema digital completo. No vendemos piezas sueltas.</p>
     </div>
     <div class="svc-grid">
-      <div class="svc-card reveal d1">
+      <div class="svc-card reveal-scale d1">
         <div class="svc-glow" style="background:var(--blue)"></div>
         <div class="svc-icon" style="background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.2)">
           <svg width="22" height="22" fill="none" stroke="var(--blue-l)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
@@ -474,7 +481,7 @@ footer a{color:var(--blue-l)}
           <li><span class="svc-bullet" style="background:var(--blue-l)"></span>SSL, hosting y dominio incluido</li>
         </ul>
       </div>
-      <div class="svc-card reveal d2">
+      <div class="svc-card reveal-scale d2">
         <div class="svc-glow" style="background:var(--green)"></div>
         <div class="svc-icon" style="background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.2)">
           <svg width="22" height="22" fill="none" stroke="var(--green-l)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -488,7 +495,7 @@ footer a{color:var(--blue-l)}
           <li><span class="svc-bullet" style="background:var(--green-l)"></span>El sitio te pertenece — sin pagos mensuales</li>
         </ul>
       </div>
-      <div class="svc-card reveal d3">
+      <div class="svc-card reveal-scale d3">
         <div class="svc-glow" style="background:var(--cyan)"></div>
         <div class="svc-icon" style="background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.2)">
           <svg width="22" height="22" fill="none" stroke="var(--cyan-l)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -511,11 +518,11 @@ footer a{color:var(--blue-l)}
   <div class="container">
     <div class="stats-inner">
       <div class="stat-block reveal">
-        <div class="stat-num grad-green">30+</div>
+        <div class="stat-num grad-green" data-count="30" data-suffix="+">30+</div>
         <div class="stat-label">Sitios en la red<br>de autoridad</div>
       </div>
       <div class="stat-block reveal d1">
-        <div class="stat-num grad-blue">7</div>
+        <div class="stat-num grad-blue" data-count="7" data-suffix="">7</div>
         <div class="stat-label">Negocios hispanos<br>posicionados</div>
       </div>
       <div class="stat-block reveal d2">
@@ -581,10 +588,41 @@ navBackdrop.addEventListener('click', closeNav);
 navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
 
 // ── REVEAL ──
+// ── SCROLL PROGRESS BAR ──
+const scrollProg = document.getElementById('scroll-prog');
+function updateProg(){
+  const max = document.body.scrollHeight - innerHeight;
+  scrollProg.style.width = (max > 0 ? (scrollY / max * 100) : 0) + '%';
+}
+window.addEventListener('scroll', updateProg, {passive:true});
+updateProg();
+
+// ── REVEAL ON SCROLL (all variants) ──
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-}, {threshold:0.1});
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+}, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el => obs.observe(el));
+
+// ── COUNTER ANIMATION ──
+function runCounter(el){
+  const target = +el.dataset.count;
+  const suffix = el.dataset.suffix || '';
+  const dur = 1400;
+  const t0 = performance.now();
+  function step(now){
+    const p = Math.min((now - t0) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(ease * target) + suffix;
+    if(p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+const cntObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){ runCounter(e.target); cntObs.unobserve(e.target); }
+  });
+}, {threshold:0.5});
+document.querySelectorAll('[data-count]').forEach(el => cntObs.observe(el));
 
 // ── HERO CANVAS — DEEP SPACE STARFIELD ──
 (function(){
