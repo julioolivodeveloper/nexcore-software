@@ -312,9 +312,6 @@ nav::before{content:'';position:absolute;inset:0;backdrop-filter:blur(20px);-web
           <img src="/favicon.svg" width="28" height="28" style="border-radius:7px;flex-shrink:0"/>
           Financial Innovation
         </div>
-        <button class="nav-mobile-close" id="navClose" aria-label="Cerrar menú">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
       </li>
       <li><a href="/">Software <svg class="nav-link-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a></li>
       <li><a href="/marketing" class="nav-active">Marketing <svg class="nav-link-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a></li>
@@ -869,7 +866,6 @@ document.querySelectorAll('.faq-q').forEach(btn => {
 const burger = document.getElementById('navBurger');
 const navLinks = document.getElementById('navLinks');
 const navBackdrop = document.getElementById('navBackdrop');
-const navClose = document.getElementById('navClose');
 let menuOpen = false;
 function openMenu() {
   menuOpen = true;
@@ -887,7 +883,6 @@ function closeMenu() {
 }
 burger.addEventListener('click', () => { menuOpen ? closeMenu() : openMenu(); });
 if (navBackdrop) navBackdrop.addEventListener('click', closeMenu);
-if (navClose) navClose.addEventListener('click', closeMenu);
 navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
 // ── SCROLL PROGRESS BAR ──
