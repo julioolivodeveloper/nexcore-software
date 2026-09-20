@@ -527,6 +527,7 @@ app.get('/api/reports/dashboard', (req, res) => res.json(computeDashboard()));
 // ── MARKETING & ACADEMY & LIBROS ──────────────────────────────────────────────
 app.get('/marketing',         (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'marketing.html')));
 app.get('/academy',           (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'academy.html')));
+app.get('/web-seo',           (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'web-seo.html')));
 app.get('/libro',             (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'libro.html')));
 app.get('/libros',            (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'libro.html')));
 app.get('/nuevo-consumidor',  (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'nuevo-consumidor.html')));
