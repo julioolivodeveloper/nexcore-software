@@ -51,7 +51,7 @@ button{cursor:pointer;font-family:inherit}
 }
 
 /* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;background:rgba(6,6,18,.85);backdrop-filter:blur(20px);border-bottom:1px solid transparent;transition:border-color .3s,padding .3s}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;background:rgba(6,6,18,.85);border-bottom:1px solid transparent;transition:border-color .3s,padding .3s}
 nav.scrolled{border-color:var(--border);padding:12px 0}
 .nav-inner{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:32px}
 .nav-logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;display:flex;align-items:center;gap:10px;flex-shrink:0}
@@ -283,9 +283,17 @@ footer p{font-size:.85rem;color:var(--text-muted)}
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:#060612}
 ::-webkit-scrollbar-thumb{background:rgba(37,99,235,.5);border-radius:3px}
+#hero-canvas{position:fixed;inset:0;z-index:-1;width:100%;height:100%;pointer-events:none}
+#scroll-prog{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--purple-light),var(--cyan),var(--blue-light));z-index:9999;pointer-events:none;will-change:width}
+nav::before{content:'';position:absolute;inset:0;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:-1;pointer-events:none}
+.pillars{background:rgba(13,13,31,0.78)}
+.compare-section{background:rgba(13,13,31,0.78)}
+.stats-section{background:rgba(13,13,31,0.78)}
 </style>
 </head>
 <body>
+<div id="scroll-prog"></div>
+<canvas id="hero-canvas"></canvas>
 
 <!-- NAV -->
 <nav id="navbar">
@@ -635,7 +643,7 @@ footer p{font-size:.85rem;color:var(--text-muted)}
 </section>
 
 <!-- PLANES -->
-<section id="planes" style="background:var(--surface)">
+<section id="planes" style="background:rgba(13,13,31,0.78)">
   <div class="container">
     <div class="section-header reveal">
       <div class="tag"><i class="ph-bold ph-credit-card"></i> Membresías</div>
@@ -882,6 +890,77 @@ burger.addEventListener('click', () => { menuOpen ? closeMenu() : openMenu(); })
 if (navBackdrop) navBackdrop.addEventListener('click', closeMenu);
 if (navClose) navClose.addEventListener('click', closeMenu);
 navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+// ── SCROLL PROGRESS BAR ──
+const scrollProg = document.getElementById('scroll-prog');
+function updateProg(){
+  const max = document.body.scrollHeight - innerHeight;
+  scrollProg.style.width = (max > 0 ? (scrollY / max * 100) : 0) + '%';
+}
+window.addEventListener('scroll', updateProg, {passive:true});
+updateProg();
+
+// ── DEEP SPACE STARFIELD ──
+(function(){
+  const cv = document.getElementById('hero-canvas');
+  const ctx = cv.getContext('2d');
+  let W, H, stars = [], nebulae = [], t = 0, raf;
+  function mkRng(seed){let s=seed>>>0;return()=>{s^=s<<13;s^=s>>>17;s^=s<<5;return(s>>>0)/4294967296};}
+  const COLS=[[210,232,255],[220,240,255],[240,248,255],[255,255,255],[255,250,230],[255,235,185],[255,195,145],[195,215,255]];
+  const CWTS=[28,22,18,14,8,5,2,3];
+  function pickCol(r){let v=r()*100,a=0;for(let i=0;i<CWTS.length;i++){a+=CWTS[i];if(v<a)return COLS[i];}return COLS[0];}
+  function buildField(){
+    const rng=mkRng(8675309);
+    stars=[];nebulae=[];
+    nebulae=[
+      {x:W*.18,y:H*.3,r:W*.42,col:[30,70,220],a:.055},
+      {x:W*.80,y:H*.6,r:W*.36,col:[90,30,190],a:.045},
+      {x:W*.50,y:H*.5,r:W*.55,col:[8,140,90],a:.030},
+      {x:W*.05,y:H*.78,r:W*.30,col:[5,150,200],a:.038},
+      {x:W*.90,y:H*.15,r:W*.32,col:[170,35,45],a:.024},
+    ];
+    const N=W<640?480:1600,cx2=W/2,cy2=H/2;
+    for(let i=0;i<N;i++){
+      const x=rng()*W;
+      const bandY=H*(0.28+0.44*(x/W))+(rng()-.5)*H*.42;
+      const y=rng()<.35?bandY:rng()*H;
+      const tier=rng();
+      let size,bright;
+      if(tier<.62){size=.18+rng()*.38;bright=.08+rng()*.30;}
+      else if(tier<.88){size=.56+rng()*.58;bright=.22+rng()*.35;}
+      else{size=1.14+rng()*.55;bright=.40+rng()*.28;}
+      const dx=x-cx2,dy=y-cy2,dist=Math.sqrt(dx*dx+dy*dy)||1,spd2=0.018+size*0.032;
+      stars.push({x,y,vx:dx/dist*spd2,vy:dy/dist*spd2,size,bright,fade:1,col:pickCol(rng),ph:rng()*Math.PI*2,spd:.35+rng()*1.9,amp:.14+rng()*.20});
+    }
+    stars.sort((a,b)=>a.size-b.size);
+  }
+  function resetStar(s){
+    const a=Math.random()*Math.PI*2,d=Math.random()*50;
+    s.x=W/2+Math.cos(a)*d;s.y=H/2+Math.sin(a)*d;
+    const dx=s.x-W/2,dy=s.y-H/2,dist=Math.sqrt(dx*dx+dy*dy)||1,spd2=0.022+s.size*0.048;
+    s.vx=dx/dist*spd2;s.vy=dy/dist*spd2;s.fade=0;
+  }
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    t+=.007;
+    stars.forEach(s=>{s.x+=s.vx;s.y+=s.vy;if(s.fade<1)s.fade=Math.min(1,s.fade+0.005);if(s.x<-30||s.x>W+30||s.y<-30||s.y>H+30)resetStar(s);});
+    nebulae.forEach(n=>{const[r,g,b]=n.col;const grd=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r);grd.addColorStop(0,`rgba(${r},${g},${b},${n.a})`);grd.addColorStop(.4,`rgba(${r},${g},${b},${n.a*.32})`);grd.addColorStop(1,`rgba(${r},${g},${b},0)`);ctx.fillStyle=grd;ctx.fillRect(0,0,W,H);});
+    stars.forEach(s=>{
+      const tw=1-s.amp*(0.5+0.5*Math.sin(t*s.spd+s.ph)),al=Math.min(1,s.bright*tw*s.fade),[r,g,b]=s.col;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.size,0,Math.PI*2);
+      if(s.size>1.35){const cg=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.size);cg.addColorStop(0,`rgba(255,255,255,${al})`);cg.addColorStop(.45,`rgba(${r},${g},${b},${al})`);cg.addColorStop(1,`rgba(${r},${g},${b},${al*.45})`);ctx.fillStyle=cg;}
+      else{ctx.fillStyle=`rgba(${r},${g},${b},${al})`;}
+      ctx.fill();
+    });
+    const vig=ctx.createRadialGradient(W*.5,H*.5,H*.25,W*.5,H*.5,Math.max(W,H)*.9);
+    vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,6,0.55)');
+    ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
+    raf=requestAnimationFrame(frame);
+  }
+  function resize(){W=cv.width=cv.offsetWidth||innerWidth;H=cv.height=cv.offsetHeight||innerHeight;cancelAnimationFrame(raf);buildField();frame();}
+  window.addEventListener('resize',resize,{passive:true});
+  resize();
+})();
 
 </script>
 </body>
