@@ -62,7 +62,11 @@ nav.scrolled{border-color:var(--border);padding:12px 0}
 .nav-actions{margin-left:auto;display:flex;gap:10px;align-items:center}
 .btn-nav{padding:9px 22px;border-radius:8px;background:linear-gradient(135deg,var(--blue),#1d4ed8);font-size:.875rem;font-weight:600;color:#fff;border:none;transition:opacity .2s,transform .2s;box-shadow:0 4px 20px rgba(37,99,235,.3)}
 .btn-nav:hover{opacity:.9;transform:translateY(-1px)}
-.nav-burger{display:none;background:none;border:none;color:#fff;padding:4px}
+.nav-burger{display:none;background:none;border:none;color:#fff;padding:6px;flex-direction:column;gap:5px;align-items:center;justify-content:center;width:34px;height:34px}
+.burger-line{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:transform .32s ease,opacity .22s ease;transform-origin:center}
+.nav-burger.open .burger-line:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-burger.open .burger-line:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-burger.open .burger-line:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 @media(max-width:768px){
   nav{backdrop-filter:none;-webkit-backdrop-filter:none}
   .nav-logo span{display:none}
@@ -333,7 +337,9 @@ nav::before{content:'';position:absolute;inset:0;backdrop-filter:blur(20px);-web
       <a href="https://wa.me/17473742685" target="_blank" class="btn-nav" onclick="fbq('track','Lead',{content_name:'Nav CTA'})">Agenda una llamada</a>
     </div>
     <button class="nav-burger" id="navBurger" aria-label="Menú">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
     </button>
     <div class="nav-backdrop" id="navBackdrop"></div>
   </div>
@@ -871,20 +877,19 @@ const navLinks = document.getElementById('navLinks');
 const navBackdrop = document.getElementById('navBackdrop');
 const navClose = document.getElementById('navClose');
 let menuOpen = false;
-const svgHamburger = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></svg>';
 function openMenu() {
   menuOpen = true;
   navLinks.classList.add('open');
   if (navBackdrop) navBackdrop.classList.add('open');
+  burger.classList.add('open');
   document.body.style.overflow = 'hidden';
-  burger.innerHTML = svgHamburger;
 }
 function closeMenu() {
   menuOpen = false;
   navLinks.classList.remove('open');
   if (navBackdrop) navBackdrop.classList.remove('open');
+  burger.classList.remove('open');
   document.body.style.overflow = '';
-  burger.innerHTML = svgHamburger;
 }
 burger.addEventListener('click', () => { menuOpen ? closeMenu() : openMenu(); });
 if (navBackdrop) navBackdrop.addEventListener('click', closeMenu);

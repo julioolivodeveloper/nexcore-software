@@ -30,7 +30,11 @@
     .site-nav-actions{margin-left:auto;display:flex;align-items:center;gap:10px;flex-shrink:0}
     .site-nav-btn{display:flex;align-items:center;gap:8px;padding:9px 20px;border-radius:999px;background:linear-gradient(135deg,#2563eb,#1d4ed8);font-size:.875rem;font-weight:600;color:#fff;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(37,99,235,.35);text-decoration:none;flex-shrink:0}
     .site-nav-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(37,99,235,.5)}
-    .site-nav-burger{display:none;background:none;border:none;color:#fff;cursor:pointer;padding:6px;line-height:0}
+    .site-nav-burger{display:none;background:none;border:none;color:#fff;cursor:pointer;padding:6px;flex-direction:column;gap:5px;align-items:center;justify-content:center;width:34px;height:34px}
+    .burger-line{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:transform .32s ease,opacity .22s ease;transform-origin:center}
+    .site-nav-burger.open .burger-line:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .site-nav-burger.open .burger-line:nth-child(2){opacity:0;transform:scaleX(0)}
+    .site-nav-burger.open .burger-line:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
     @media(max-width:768px){
       .site-nav{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(7,7,15,.98)}
       .nav-backdrop{position:fixed;inset:0;z-index:1001;background:rgba(0,0,0,.65);opacity:0;pointer-events:none;transition:opacity .35s ease}
@@ -309,7 +313,9 @@
       <a href="https://wa.me/17473742685" target="_blank" class="site-nav-btn">WhatsApp</a>
     </div>
     <button class="site-nav-burger" id="siteNavBurger" aria-label="Menú">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
     </button>
     <div class="nav-backdrop" id="navBackdrop"></div>
   </div>
@@ -493,20 +499,19 @@ const navLinks = document.getElementById('siteNavLinks');
 const navBackdrop = document.getElementById('navBackdrop');
 const navClose = document.getElementById('navClose');
 let menuOpen = false;
-const svgHamburger = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>';
 function openMenu() {
   menuOpen = true;
   navLinks.classList.add('open');
   if (navBackdrop) navBackdrop.classList.add('open');
+  burger.classList.add('open');
   document.body.style.overflow = 'hidden';
-  burger.innerHTML = svgHamburger;
 }
 function closeMenu() {
   menuOpen = false;
   navLinks.classList.remove('open');
   if (navBackdrop) navBackdrop.classList.remove('open');
+  burger.classList.remove('open');
   document.body.style.overflow = '';
-  burger.innerHTML = svgHamburger;
 }
 burger.addEventListener('click', () => { menuOpen ? closeMenu() : openMenu(); });
 if (navBackdrop) navBackdrop.addEventListener('click', closeMenu);
