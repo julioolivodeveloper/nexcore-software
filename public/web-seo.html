@@ -157,7 +157,8 @@ nav.scrolled{border-color:var(--border);padding:12px 0}
 .b-favicon{width:13px;height:13px;border-radius:2px;object-fit:contain;flex-shrink:0}
 .b-domain{font-family:'DM Mono',monospace;font-size:.65rem;color:#4b5563;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .thumb-wrap{height:168px;overflow:hidden;position:relative}
-.thumb-wrap canvas{width:100%;height:168px;display:block}
+.thumb-wrap img{width:100%;height:168px;object-fit:cover;object-position:top;display:block;transition:transform .4s ease}
+.port-card:hover .thumb-wrap img{transform:scale(1.04)}
 .card-meta{padding:14px 16px}
 .card-cat{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4b5563;margin-bottom:3px}
 .card-name{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:3px;display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -537,13 +538,13 @@ footer a{color:var(--blue-l)}
 <script>
 // ── DATA ──
 const SITES = [
-  {url:'https://www.lafonditademama.com',domain:'lafonditademama.com',name:'La Fondita de Mamá',cat:'Restaurante · Comida Mexicana',c:['#450a0a','#991b1b','#f97316']},
-  {url:'https://www.paversordonez.com',domain:'paversordonez.com',name:'Pavers Ordonez',cat:'Paisajismo · Pavimentación',c:['#1c1917','#57534e','#a8a29e']},
-  {url:'https://www.aaarodriguezgeneralservice.com',domain:'aaarodriguezgeneralservice.com',name:'AAA Rodriguez General Service',cat:'Servicios Generales',c:['#0c1a35','#1e40af','#3b82f6']},
-  {url:'https://www.irepairgaragedoors.com',domain:'irepairgaragedoors.com',name:'iRepair Garage Doors',cat:'Reparación · Garage Doors',c:['#111827','#1f2937','#374151']},
-  {url:'https://www.lemonylimebarmobile.com',domain:'lemonylimebarmobile.com',name:'Lemony Lime Bar Mobile',cat:'Bar Móvil · Eventos',c:['#1a2e05','#3f6212','#84cc16']},
-  {url:'https://www.manzanoslocksmith.com',domain:'manzanoslocksmith.com',name:'Manzanos Locksmith',cat:'Cerrajería · Seguridad',c:['#1c0f00','#92400e','#f59e0b']},
-  {url:'https://www.chernandezconstructionchg.com',domain:'chernandezconstructionchg.com',name:'C. Hernandez Construction',cat:'Construcción · Contratista',c:['#1a0f00','#78350f','#d97706']},
+  {url:'https://www.lafonditademama.com',domain:'lafonditademama.com',name:'La Fondita de Mamá',cat:'Restaurante · Comida Mexicana',img:'/img/port-lafonditademama.jpg'},
+  {url:'https://www.paversordonez.com',domain:'paversordonez.com',name:'Pavers Ordonez',cat:'Paisajismo · Pavimentación',img:'/img/port-paversordonez.jpg'},
+  {url:'https://www.aaarodriguezgeneralservice.com',domain:'aaarodriguezgeneralservice.com',name:'AAA Rodriguez General Service',cat:'Servicios Generales',img:'/img/port-aaarodriguez.jpg'},
+  {url:'https://www.irepairgaragedoors.com',domain:'irepairgaragedoors.com',name:'iRepair Garage Doors',cat:'Reparación · Garage Doors',img:'/img/port-irepair.jpg'},
+  {url:'https://www.lemonylimebarmobile.com',domain:'lemonylimebarmobile.com',name:'Lemony Lime Bar Mobile',cat:'Bar Móvil · Eventos',img:'/img/port-lemonylime.jpg'},
+  {url:'https://www.manzanoslocksmith.com',domain:'manzanoslocksmith.com',name:'Manzanos Locksmith',cat:'Cerrajería · Seguridad',img:'/img/port-manzanos.jpg'},
+  {url:'https://www.chernandezconstructionchg.com',domain:'chernandezconstructionchg.com',name:'C. Hernandez Construction',cat:'Construcción · Contratista',img:'/img/port-chernandez.jpg'},
 ];
 
 // ── NAV ──
@@ -740,53 +741,6 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 (function(){
   const grid = document.getElementById('portGrid');
 
-  function drawThumb(cv, site){
-    const W = cv.width = cv.offsetParent ? (cv.offsetParent.clientWidth||300) : 300;
-    const H = cv.height = 168;
-    const ctx = cv.getContext('2d');
-    ctx.clearRect(0,0,W,H);
-
-    // Gradient bg
-    const bg=ctx.createLinearGradient(0,0,W,H);
-    site.c.forEach((col,i)=>bg.addColorStop(i/(site.c.length-1),col));
-    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
-
-    // Grid overlay
-    ctx.strokeStyle='rgba(255,255,255,0.035)'; ctx.lineWidth=1;
-    for(let x=0;x<=W;x+=28){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-    for(let y=0;y<=H;y+=28){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-
-    // Header bar
-    ctx.fillStyle='rgba(0,0,0,0.5)'; ctx.fillRect(0,0,W,32);
-
-    // Fake hero text blocks
-    ctx.fillStyle='rgba(255,255,255,0.15)'; ctx.fillRect(16,44,W*.48,12);
-    ctx.fillStyle='rgba(255,255,255,0.08)'; ctx.fillRect(16,62,W*.36,8);
-    ctx.fillStyle='rgba(255,255,255,0.06)'; ctx.fillRect(16,74,W*.28,8);
-
-    // Fake CTA button
-    ctx.fillStyle=site.c[2]+'cc';
-    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(16,90,80,18,3);ctx.fill();}
-    else{ctx.fillRect(16,90,80,18);}
-
-    // Right visual blob
-    const rb=ctx.createRadialGradient(W*.78,H*.45,0,W*.78,H*.45,56);
-    rb.addColorStop(0,'rgba(255,255,255,0.12)'); rb.addColorStop(1,'rgba(255,255,255,0)');
-    ctx.fillStyle=rb; ctx.fillRect(W*.52,32,W*.46,H-32);
-
-    // Bottom card stubs
-    ctx.fillStyle='rgba(0,0,0,0.22)';
-    [[16,H-34,W*.27,26],[W*.35,H-34,W*.27,26],[W*.64,H-34,W*.27,26]].forEach(([x,y,w,h])=>{
-      if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,y,w,h,3);ctx.fill();}
-      else ctx.fillRect(x,y,w,h);
-    });
-
-    // Vignette
-    const vg=ctx.createLinearGradient(0,0,0,H);
-    vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,0.45)');
-    ctx.fillStyle=vg; ctx.fillRect(0,0,W,H);
-  }
-
   SITES.forEach(site => {
     const card = document.createElement('a');
     card.href = site.url;
@@ -802,7 +756,9 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
           <span class="b-domain">${site.domain}</span>
         </div>
       </div>
-      <div class="thumb-wrap"><canvas width="300" height="168"></canvas></div>
+      <div class="thumb-wrap">
+        <img src="${site.img}" alt="${site.name}" loading="lazy">
+      </div>
       <div class="card-meta">
         <div class="card-cat">${site.cat}</div>
         <div class="card-name">
@@ -815,21 +771,7 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
     grid.appendChild(card);
     obs.observe(card);
-
-    requestAnimationFrame(() => {
-      const thumb = card.querySelector('canvas');
-      drawThumb(thumb, site);
-    });
   });
-
-  // Redraw on resize
-  let rto;
-  window.addEventListener('resize', () => {
-    clearTimeout(rto);
-    rto = setTimeout(() => {
-      grid.querySelectorAll('canvas').forEach((cv, i) => drawThumb(cv, SITES[i]));
-    }, 150);
-  }, {passive:true});
 })();
 
 // ── CTA CANVAS ──
