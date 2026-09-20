@@ -166,7 +166,7 @@ nav.scrolled{border-color:var(--border);padding:12px 0}
 .chip-green{color:var(--green-l);background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2)}
 
 /* ── PORTFOLIO ── */
-.portfolio{background:var(--bg2)}
+.portfolio{background:var(--bg2);padding:80px 0 100px}
 .port-header{text-align:center;margin-bottom:60px}
 .port-header .section-h{margin-bottom:14px}
 .port-header .section-sub{max-width:520px;margin:0 auto}
@@ -331,12 +331,18 @@ footer a{color:var(--blue-l)}
 </section>
 
 <!-- TRUSTED -->
-<div class="trusted">
+<!-- PORTFOLIO (moved here, replaces trusted strip) -->
+<section class="portfolio" id="portfolio">
   <div class="container">
-    <p class="trusted-label">Negocios que trabajan con nosotros</p>
-    <div class="trusted-row" id="trustedRow"></div>
+    <div class="port-header reveal">
+      <div class="eyebrow">Portafolio</div>
+      <h2 class="section-h">Mira nuestro<br><span class="grad-blue">trabajo</span></h2>
+      <p class="section-sub">Cada proyecto es un diseño completamente personalizado, integrado a nuestra red SEO desde el día uno.</p>
+      <p class="trusted-label" style="margin-top:10px;margin-bottom:0">Marcas con las que hemos trabajado</p>
+    </div>
+    <div class="port-grid" id="portGrid"></div>
   </div>
-</div>
+</section>
 
 <!-- SEO STRATEGY SECTION -->
 <section class="seo-section" id="estrategia">
@@ -437,18 +443,6 @@ footer a{color:var(--blue-l)}
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- PORTFOLIO -->
-<section class="portfolio" id="portfolio">
-  <div class="container">
-    <div class="port-header reveal">
-      <div class="eyebrow">Portafolio</div>
-      <h2 class="section-h">Sitios que hemos<br><span class="grad-blue">construido y posicionado</span></h2>
-      <p class="section-sub">Cada proyecto es un diseño completamente personalizado, integrado a nuestra red SEO desde el día uno.</p>
-    </div>
-    <div class="port-grid" id="portGrid"></div>
   </div>
 </section>
 
@@ -600,17 +594,6 @@ const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
 }, {threshold:0.1});
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-// ── TRUSTED PILLS ──
-(function(){
-  const row = document.getElementById('trustedRow');
-  SITES.forEach(s => {
-    const pill = document.createElement('div');
-    pill.className = 'trusted-pill';
-    pill.innerHTML = `<img src="https://www.google.com/s2/favicons?domain=${s.domain}&sz=32" alt="" onerror="this.style.display='none'"><span>${s.name}</span>`;
-    row.appendChild(pill);
-  });
-})();
 
 // ── HERO CANVAS ──
 (function(){
