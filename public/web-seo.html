@@ -140,10 +140,11 @@ nav.scrolled{border-color:var(--border);padding:12px 0}
 .seo-feat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .seo-feat-body h4{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:3px}
 .seo-feat-body p{font-size:.82rem;color:var(--text-muted);line-height:1.6}
-.seo-canvas-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:20px;overflow:hidden;padding:24px}
+.seo-canvas-wrap{background:linear-gradient(145deg,#0a0f1e 0%,#060c18 60%,#070d14 100%);border:1px solid rgba(37,99,235,.2);border-radius:24px;overflow:hidden;position:relative;box-shadow:0 0 40px rgba(37,99,235,.08),0 0 0 1px rgba(6,182,212,.05) inset}
+.seo-canvas-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(16,185,129,.06) 0%,transparent 70%);pointer-events:none}
 #network-viz{width:100%;display:block}
-.network-legend{display:flex;gap:20px;justify-content:center;margin-top:16px;flex-wrap:wrap}
-.leg-item{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--text-muted)}
+.network-legend{display:flex;gap:20px;justify-content:center;padding:0 20px 18px;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:7px;font-size:.72rem;color:#4b5563;font-weight:500;letter-spacing:.04em}
 .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 
 /* ── HOW IT WORKS ── */
@@ -383,11 +384,11 @@ footer a{color:var(--blue-l)}
         </div>
       </div>
       <div class="seo-canvas-wrap reveal d2">
-        <canvas id="network-viz" height="340"></canvas>
+        <canvas id="network-viz" height="380"></canvas>
         <div class="network-legend">
-          <div class="leg-item"><div class="leg-dot" style="background:var(--green-l);box-shadow:0 0 6px var(--green)"></div>Tu sitio principal</div>
-          <div class="leg-item"><div class="leg-dot" style="background:var(--blue-l)"></div>Sitios de autoridad</div>
-          <div class="leg-item"><div class="leg-dot" style="background:#374151"></div>Flujo de PageRank</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#10b981;box-shadow:0 0 8px #10b981"></div>Tu sitio principal</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#3b82f6;box-shadow:0 0 6px rgba(59,130,246,.6)"></div>Sitios de autoridad</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#06b6d4;box-shadow:0 0 6px rgba(6,182,212,.5)"></div>Flujo de PageRank</div>
         </div>
       </div>
     </div>
@@ -700,62 +701,152 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
   const cv = document.getElementById('network-viz');
   if(!cv) return;
   const ctx = cv.getContext('2d');
+  let W, H, CX, CY, t = 0, nodes = [], particles = [], raf;
 
-  function draw(){
-    const W = cv.width = cv.offsetWidth || 400;
-    const H = cv.height = 340;
-    ctx.clearRect(0,0,W,H);
-    const cx=W/2, cy=H/2;
+  const INNER_N = 7, OUTER_N = 16;
 
-    const rings = [
-      {n:7, r:68, col:'rgba(37,99,235,0.7)'},
-      {n:12, r:128, col:'rgba(6,182,212,0.5)'},
-      {n:18, r:190, col:'rgba(37,99,235,0.3)'},
-    ];
+  function seed(s){ let x=s; return()=>{ x=Math.sin(x)*43758.5453123; return x-Math.floor(x); }; }
 
-    // Dashed rings
-    ctx.setLineDash([3,7]);
-    [68,128,190].forEach(r => {
-      ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
-      ctx.strokeStyle='rgba(255,255,255,0.04)'; ctx.lineWidth=1; ctx.stroke();
-    });
-    ctx.setLineDash([]);
-
-    // Lines + dots
-    rings.forEach(ring => {
-      for(let i=0;i<ring.n;i++){
-        const a=(i/ring.n)*Math.PI*2;
-        const nx=cx+Math.cos(a)*ring.r, ny=cy+Math.sin(a)*ring.r;
-        const lg=ctx.createLinearGradient(nx,ny,cx,cy);
-        lg.addColorStop(0,'rgba(0,0,0,0)');
-        lg.addColorStop(.7,ring.col.replace('0.7','0.15').replace('0.5','0.12').replace('0.3','0.08'));
-        lg.addColorStop(1,'rgba(16,185,129,0.35)');
-        ctx.beginPath(); ctx.strokeStyle=lg; ctx.lineWidth=1;
-        ctx.moveTo(nx,ny); ctx.lineTo(cx,cy); ctx.stroke();
-        ctx.beginPath(); ctx.arc(nx,ny,4,0,Math.PI*2);
-        ctx.fillStyle=ring.col; ctx.fill();
-      }
-    });
-
-    // Center glow
-    const cg=ctx.createRadialGradient(cx,cy,0,cx,cy,44);
-    cg.addColorStop(0,'rgba(16,185,129,0.3)'); cg.addColorStop(1,'rgba(16,185,129,0)');
-    ctx.beginPath(); ctx.arc(cx,cy,44,0,Math.PI*2); ctx.fillStyle=cg; ctx.fill();
-    ctx.beginPath(); ctx.arc(cx,cy,20,0,Math.PI*2);
-    ctx.fillStyle='rgba(16,185,129,0.9)'; ctx.fill();
-    ctx.beginPath(); ctx.arc(cx,cy,20,0,Math.PI*2);
-    ctx.strokeStyle='rgba(52,211,153,0.4)'; ctx.lineWidth=2; ctx.stroke();
-
-    ctx.font='600 10px Space Grotesk, sans-serif';
-    ctx.fillStyle='#fff'; ctx.textAlign='center';
-    ctx.fillText('TU SITIO', cx, cy+4);
-    ctx.font='500 11px Inter, sans-serif';
-    ctx.fillStyle='rgba(148,163,184,0.6)';
-    ctx.fillText('30+ sitios de autoridad → flujo constante de PageRank', cx, H-12);
+  function buildNodes(){
+    const r = seed(42);
+    nodes = [];
+    nodes.push({x:CX,y:CY,rad:22,type:'c',color:[16,185,129],phase:0,label:'TU SITIO'});
+    for(let i=0;i<INNER_N;i++){
+      const a=(i/INNER_N)*Math.PI*2 - Math.PI/6;
+      const dist = 82 + (r()-0.5)*18;
+      nodes.push({x:CX+Math.cos(a)*dist,y:CY+Math.sin(a)*dist,rad:5+r()*3,type:'i',color:[59,130,246],phase:r()*Math.PI*2});
+    }
+    for(let i=0;i<OUTER_N;i++){
+      const a=(i/OUTER_N)*Math.PI*2 + (r()-0.5)*0.25;
+      const dist = 158 + (r()-0.5)*24;
+      nodes.push({x:CX+Math.cos(a)*dist,y:CY+Math.sin(a)*dist,rad:3+r()*2.5,type:'o',color:[6,182,212],phase:r()*Math.PI*2});
+    }
   }
 
-  draw();
-  window.addEventListener('resize', draw, {passive:true});
+  function buildParticles(){
+    particles = [];
+    for(let i=0;i<28;i++){
+      const si = 1 + Math.floor(Math.random()*(nodes.length-1));
+      particles.push({si, prog: Math.random(), spd: 0.0025+Math.random()*0.004, sz: 1.2+Math.random()*1.8});
+    }
+  }
+
+  function init(){
+    W = cv.width = cv.offsetWidth || 480;
+    H = cv.height = 380;
+    CX = W/2; CY = H*0.5;
+    buildNodes();
+    buildParticles();
+  }
+
+  function rgbaStr([r,g,b],a){ return `rgba(${r},${g},${b},${a})`; }
+
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    t += 0.012;
+
+    // Ambient bg glow
+    const bg = ctx.createRadialGradient(CX,CY,0,CX,CY,W*0.55);
+    bg.addColorStop(0,'rgba(16,185,129,0.05)');
+    bg.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+    // Expanding pulse rings from center
+    for(let i=0;i<4;i++){
+      const ph = (t*0.35 + i*0.25) % 1;
+      const pr = ph * 220;
+      const pa = (1-ph)*(1-ph)*0.18;
+      ctx.beginPath(); ctx.arc(CX,CY,pr,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(16,185,129,${pa})`; ctx.lineWidth=1.5; ctx.stroke();
+    }
+
+    // Orbit rings — dashed
+    ctx.save(); ctx.setLineDash([3,9]); ctx.lineWidth=0.6;
+    [82,158].forEach(r=>{
+      ctx.beginPath(); ctx.arc(CX,CY,r,0,Math.PI*2);
+      ctx.strokeStyle='rgba(255,255,255,0.06)'; ctx.stroke();
+    });
+    ctx.restore();
+
+    // Connection lines (satellite → center)
+    nodes.slice(1).forEach(n=>{
+      const lg = ctx.createLinearGradient(n.x,n.y,CX,CY);
+      lg.addColorStop(0, rgbaStr(n.color,0.04));
+      lg.addColorStop(0.55, rgbaStr(n.color,0.12));
+      lg.addColorStop(1,'rgba(16,185,129,0.35)');
+      ctx.beginPath(); ctx.moveTo(n.x,n.y); ctx.lineTo(CX,CY);
+      ctx.strokeStyle=lg; ctx.lineWidth=0.9; ctx.stroke();
+    });
+
+    // Particles flowing toward center
+    particles.forEach(p=>{
+      p.prog += p.spd;
+      if(p.prog>=1){ p.prog=0; p.si=1+Math.floor(Math.random()*(nodes.length-1)); }
+      const src=nodes[p.si];
+      const px=src.x+(CX-src.x)*p.prog;
+      const py=src.y+(CY-src.y)*p.prog;
+      const pa=Math.sin(p.prog*Math.PI)*0.85;
+      const grd = ctx.createRadialGradient(px,py,0,px,py,p.sz*2);
+      grd.addColorStop(0,rgbaStr(src.color,pa));
+      grd.addColorStop(1,rgbaStr(src.color,0));
+      ctx.beginPath(); ctx.arc(px,py,p.sz*2,0,Math.PI*2);
+      ctx.fillStyle=grd; ctx.fill();
+      ctx.beginPath(); ctx.arc(px,py,p.sz*0.6,0,Math.PI*2);
+      ctx.fillStyle=rgbaStr(src.color,pa*0.9); ctx.fill();
+    });
+
+    // Satellite nodes
+    nodes.slice(1).forEach(n=>{
+      const pulse = Math.sin(t*1.8+n.phase)*0.12;
+      const gr = (n.rad+14)*(1+pulse);
+      const grd = ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,gr);
+      grd.addColorStop(0,rgbaStr(n.color,0.35+pulse*0.1));
+      grd.addColorStop(1,rgbaStr(n.color,0));
+      ctx.beginPath(); ctx.arc(n.x,n.y,gr,0,Math.PI*2);
+      ctx.fillStyle=grd; ctx.fill();
+      ctx.beginPath(); ctx.arc(n.x,n.y,n.rad*(1+pulse*0.08),0,Math.PI*2);
+      ctx.fillStyle=rgbaStr(n.color,0.88); ctx.fill();
+      // inner highlight
+      ctx.beginPath(); ctx.arc(n.x-n.rad*0.25,n.y-n.rad*0.25,n.rad*0.35,0,Math.PI*2);
+      ctx.fillStyle=rgbaStr([255,255,255],0.25); ctx.fill();
+    });
+
+    // Center outer glow
+    const cg1=ctx.createRadialGradient(CX,CY,0,CX,CY,72);
+    cg1.addColorStop(0,'rgba(16,185,129,0.18)'); cg1.addColorStop(1,'rgba(16,185,129,0)');
+    ctx.beginPath(); ctx.arc(CX,CY,72,0,Math.PI*2); ctx.fillStyle=cg1; ctx.fill();
+
+    // Center mid ring
+    const pls=Math.sin(t*2.5)*0.08;
+    const cr=22*(1+pls);
+    ctx.beginPath(); ctx.arc(CX,CY,cr+8,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(52,211,153,${0.2+pls*0.1})`; ctx.lineWidth=1.5; ctx.stroke();
+
+    // Center fill
+    const cg2=ctx.createRadialGradient(CX,CY,0,CX,CY,cr);
+    cg2.addColorStop(0,'rgba(110,231,183,1)'); cg2.addColorStop(0.5,'rgba(16,185,129,0.95)'); cg2.addColorStop(1,'rgba(5,150,105,0.85)');
+    ctx.beginPath(); ctx.arc(CX,CY,cr,0,Math.PI*2); ctx.fillStyle=cg2; ctx.fill();
+    // inner shine
+    const cg3=ctx.createRadialGradient(CX-cr*0.2,CY-cr*0.2,0,CX,CY,cr);
+    cg3.addColorStop(0,'rgba(255,255,255,0.35)'); cg3.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.beginPath(); ctx.arc(CX,CY,cr,0,Math.PI*2); ctx.fillStyle=cg3; ctx.fill();
+    // border
+    ctx.beginPath(); ctx.arc(CX,CY,cr,0,Math.PI*2);
+    ctx.strokeStyle='rgba(167,243,208,0.5)'; ctx.lineWidth=1.5; ctx.stroke();
+
+    // Center label
+    ctx.save();
+    ctx.font='700 9.5px "Space Grotesk",sans-serif';
+    ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.shadowColor='rgba(0,0,0,0.6)'; ctx.shadowBlur=4;
+    ctx.fillText('TU SITIO',CX,CY);
+    ctx.restore();
+
+    raf = requestAnimationFrame(frame);
+  }
+
+  init(); frame();
+  window.addEventListener('resize',()=>{ cancelAnimationFrame(raf); init(); frame(); },{passive:true});
 })();
 
 // ── PORTFOLIO CARDS ──
