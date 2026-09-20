@@ -104,18 +104,19 @@ nav.scrolled{border-color:var(--border);padding:12px 0}
 .hero{min-height:100vh;display:flex;align-items:stretch;position:relative;overflow:hidden;padding:0}
 #hero-canvas{position:absolute;inset:0;z-index:0;width:100%;height:100%}
 .hero-wrap{position:relative;z-index:1;display:flex;flex-direction:column;flex:1;padding:130px 0 64px}
-.hero-inner{display:flex;flex-direction:column;flex:1}
+.hero-inner{display:flex;flex-direction:column;flex:1;align-items:center;text-align:center}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.08);font-size:.72rem;font-weight:700;color:var(--green-l);letter-spacing:.12em;text-transform:uppercase;margin-bottom:28px}
 .hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green-l);animation:blink 2s steps(1) infinite}
 @keyframes blink{0%,55%{opacity:1}56%,100%{opacity:.15}}
 .hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(38px,6.5vw,76px);font-weight:800;line-height:1.03;letter-spacing:-.035em;margin-bottom:26px;text-wrap:balance}
-.hero-sub{font-size:clamp(15px,1.8vw,18px);color:#94a3b8;max-width:560px;line-height:1.8;margin-bottom:44px}
-.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.hero-sub{font-size:clamp(15px,1.8vw,18px);color:#94a3b8;max-width:560px;line-height:1.8;margin:0 auto 44px}
+.hero-cursor{display:inline-block;width:3px;height:.82em;background:var(--green-l);margin-left:3px;vertical-align:middle;border-radius:1px;animation:blink 1s steps(1) infinite}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:center}
 .btn-primary{display:inline-flex;align-items:center;gap:9px;padding:15px 30px;border-radius:10px;background:linear-gradient(135deg,var(--blue),#1d4ed8);font-size:.95rem;font-weight:700;color:#fff;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 28px rgba(37,99,235,.35)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(37,99,235,.5)}
 .btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:15px 26px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--border);font-size:.95rem;font-weight:600;color:#e2e8f0;transition:background .2s,border-color .2s}
 .btn-ghost:hover{background:rgba(255,255,255,.08);border-color:var(--border2)}
-.hero-stats{display:flex;gap:36px;flex-wrap:wrap;margin-top:auto;padding-top:40px;border-top:1px solid var(--border)}
+.hero-stats{display:flex;gap:36px;flex-wrap:wrap;margin-top:auto;padding-top:40px;border-top:1px solid var(--border);justify-content:center}
 .hstat{display:flex;flex-direction:column;gap:3px}
 .hstat-num{font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:800;line-height:1;background:linear-gradient(135deg,#fff 40%,#64748b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hstat-label{font-size:.75rem;color:#4b5563;letter-spacing:.07em;text-transform:uppercase}
@@ -311,7 +312,7 @@ footer a{color:var(--blue-l)}
         <span class="hero-badge-dot"></span>
         Red SEO Activa &nbsp;·&nbsp; 30+ Sitios Conectados
       </div>
-      <h1>Un sitio que<br><span class="grad-green">crece solo</span><br>con el tiempo</h1>
+      <h1>Un sitio que<br><span class="grad-green" id="heroType"></span><span class="hero-cursor"></span><br>con el tiempo</h1>
       <p class="hero-sub">No solo construimos tu sitio — publicamos más de <strong style="color:#e2e8f0">30 páginas por servicio y ciudad</strong> que apuntan hacia él. Con el tiempo, tu sitio mejora su posición en Google por sí solo, sin que tengas que hacer nada.</p>
       <div class="hero-ctas">
         <a href="https://wa.me/12094609828?text=Hola%2C+quiero+una+demo+gratis+de+Web+%2B+SEO" target="_blank" class="btn-primary" onclick="fbq&&fbq('track','Lead',{content_name:'Hero CTA WebSEO'})">
@@ -758,6 +759,29 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
   window.addEventListener('resize', resize, {passive:true});
   resize();
+})();
+
+// ── HERO TYPEWRITER ──
+(function(){
+  const el = document.getElementById('heroType');
+  if(!el) return;
+  const phrases = ['crece solo','sube en Google','trabaja por ti','se posiciona solo'];
+  let pi = 0, ci = 0, deleting = false;
+  function tick(){
+    const phrase = phrases[pi];
+    if(!deleting){
+      ci++;
+      el.textContent = phrase.slice(0, ci);
+      if(ci === phrase.length){ deleting = true; setTimeout(tick, 2200); return; }
+      setTimeout(tick, 85);
+    } else {
+      ci--;
+      el.textContent = phrase.slice(0, ci);
+      if(ci === 0){ deleting = false; pi = (pi+1) % phrases.length; setTimeout(tick, 350); return; }
+      setTimeout(tick, 42);
+    }
+  }
+  tick();
 })();
 
 // ── NETWORK VIZ (SEO section) ──
