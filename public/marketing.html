@@ -116,7 +116,7 @@ nav.scrolled{border-color:var(--border);padding:12px 0}
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
 
 /* ── HERO ── */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding:160px 24px 120px}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;padding:160px 24px 120px}
 .hero-bg{position:absolute;inset:0;pointer-events:none}
 .orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.25;animation:float 8s ease-in-out infinite}
 .orb-1{width:800px;height:800px;background:radial-gradient(circle,var(--blue),transparent 70%);top:-200px;left:-200px;animation-delay:0s}
@@ -348,12 +348,6 @@ nav::before{content:'';position:absolute;inset:0;backdrop-filter:blur(20px);-web
 <!-- HERO -->
 <section class="hero">
   <div class="hero-video" id="heroVideoWrap"></div>
-  <div class="hero-bg">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="hero-grid"></div>
-  </div>
   <div style="position:relative;z-index:1;width:100%">
     <div class="reveal">
       <div class="hero-badge">
