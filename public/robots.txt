@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /accounting/
+Disallow: /api/
+
+Sitemap: https://julioolivodeveloper.com/sitemap.xml
