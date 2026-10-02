@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Blog · Financial Innovation</title>
+<meta name="description" content="Artículos sobre SEO, marketing digital y desarrollo web para negocios hispanos en Estados Unidos. Estrategias probadas para crecer en Google y redes sociales."/>
+<link rel="canonical" href="https://julioolivodeveloper.com/blog"/>
+<link rel="alternate" hreflang="es-US" href="https://julioolivodeveloper.com/blog"/>
+<link rel="alternate" hreflang="x-default" href="https://julioolivodeveloper.com/blog"/>
+<meta property="og:title" content="Blog · Financial Innovation"/>
+<meta property="og:description" content="Artículos sobre SEO, marketing digital y desarrollo web para negocios hispanos en EE.UU."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://julioolivodeveloper.com/blog"/>
+<meta property="og:locale" content="es_US"/>
+<meta property="og:site_name" content="Financial Innovation"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Blog Financial Innovation",
+  "description": "Estrategias de SEO, marketing digital y desarrollo web para negocios hispanos en EE.UU.",
+  "url": "https://julioolivodeveloper.com/blog",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Financial Innovation",
+    "url": "https://julioolivodeveloper.com",
+    "logo": {"@type": "ImageObject", "url": "https://julioolivodeveloper.com/favicon.svg"}
+  },
+  "inLanguage": "es-US"
+}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#22c55e;--text:#e2e8f0;--muted:#94a3b8;--surface:rgba(13,14,36,0.85);--border:rgba(255,255,255,.07)}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:#060612;color:var(--text);line-height:1.7;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 24px}
+nav::before{content:'';position:absolute;inset:0;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(6,6,18,.7);z-index:-1}
+.nav-inner{max-width:1100px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:.875rem;font-weight:500;color:#94a3b8;transition:color .2s}
+.nav-links a:hover,.nav-links a.nav-active{color:#fff;font-weight:600}
+.btn-nav{padding:9px 22px;border-radius:8px;background:linear-gradient(135deg,#22c55e,#16a34a);font-size:.875rem;font-weight:600;color:#fff;text-decoration:none;white-space:nowrap}
+@media(max-width:768px){.nav-links{display:none}}
+
+/* HERO */
+.blog-hero{padding:120px 24px 64px;text-align:center;max-width:720px;margin:0 auto}
+.eyebrow-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 18px;border-radius:999px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#34d399;margin-bottom:24px}
+.blog-hero h1{font-family:'Syne',sans-serif;font-size:clamp(32px,5vw,60px);font-weight:800;line-height:1.08;letter-spacing:-.035em;margin-bottom:18px;text-wrap:balance}
+.blog-hero p{color:#94a3b8;font-size:1.05rem;max-width:520px;margin:0 auto}
+
+/* FILTERS */
+.filter-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:48px}
+.filter-btn{padding:7px 18px;border-radius:999px;font-size:.8rem;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.12);background:transparent;color:#94a3b8;transition:all .2s}
+.filter-btn:hover{border-color:rgba(34,197,94,.4);color:#e2e8f0}
+.filter-btn.active{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#34d399}
+
+/* GRID */
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:28px;margin-bottom:80px}
+.post-card{background:rgba(13,14,36,0.7);border:1px solid rgba(255,255,255,.07);border-radius:20px;overflow:hidden;transition:border-color .25s,transform .25s;display:flex;flex-direction:column}
+.post-card:hover{border-color:rgba(34,197,94,.3);transform:translateY(-4px)}
+.post-card-top{padding:28px 28px 0}
+.post-cat{display:inline-block;padding:3px 12px;border-radius:999px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#34d399;margin-bottom:14px}
+.post-card h2{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;line-height:1.3;letter-spacing:-.02em;margin-bottom:12px;color:#e2e8f0}
+.post-card p{color:#64748b;font-size:.875rem;line-height:1.6;flex:1}
+.post-card-bot{padding:20px 28px 24px;display:flex;align-items:center;justify-content:space-between;margin-top:16px;border-top:1px solid rgba(255,255,255,.05)}
+.post-meta-sm{font-size:.75rem;color:#475569}
+.post-read-btn{font-size:.78rem;font-weight:600;color:#34d399;display:flex;align-items:center;gap:4px;transition:gap .2s}
+.post-card:hover .post-read-btn{gap:8px}
+
+/* CTA BANNER */
+.cta-banner{background:rgba(13,14,36,0.85);border:1px solid rgba(34,197,94,.2);border-radius:24px;padding:56px 40px;text-align:center;margin-bottom:80px}
+.cta-banner h2{font-family:'Syne',sans-serif;font-size:clamp(24px,3.5vw,38px);font-weight:800;letter-spacing:-.03em;margin-bottom:14px;text-wrap:balance}
+.cta-banner p{color:#94a3b8;font-size:1rem;max-width:520px;margin:0 auto 28px}
+.btn-green{display:inline-flex;align-items:center;gap:8px;padding:14px 30px;border-radius:10px;background:linear-gradient(135deg,#22c55e,#16a34a);font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:#fff;text-decoration:none}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:10px;border:1px solid rgba(255,255,255,.15);font-size:.9rem;font-weight:600;color:#e2e8f0;margin-left:12px;text-decoration:none;transition:border-color .2s}
+.btn-ghost:hover{border-color:rgba(255,255,255,.35)}
+
+footer{border-top:1px solid rgba(255,255,255,.07);padding:40px 24px;text-align:center;color:#475569;font-size:.85rem}
+footer a{color:#64748b;margin:0 8px}
+footer a:hover{color:#94a3b8}
+</style>
+</head>
+<body>
+<canvas id="hero-canvas" style="position:fixed;inset:0;z-index:-1;width:100%;height:100%;pointer-events:none"></canvas>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <img src="/favicon.svg" width="34" height="34" alt="Financial Innovation" style="border-radius:10px;flex-shrink:0"/>
+      <span>Financial Innovation</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="/">Software</a>
+      <a href="/marketing">Marketing</a>
+      <a href="/web-seo">Web &amp; SEO</a>
+      <a href="/academy">Academy</a>
+      <a href="/blog" class="nav-active">Blog</a>
+    </div>
+    <a href="https://wa.me/12094609828?text=Hola%2C+quiero+información+sobre+sus+servicios" target="_blank" class="btn-nav">Contactar</a>
+  </div>
+</nav>
+
+<div class="blog-hero">
+  <div class="eyebrow-pill">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+    Blog
+  </div>
+  <h1>Estrategias digitales para <span style="color:#34d399">negocios hispanos</span> en EE.UU.</h1>
+  <p>SEO, marketing y desarrollo web explicado en español por un equipo con 7+ años de experiencia posicionando negocios en todo Estados Unidos.</p>
+</div>
+
+<div class="container">
+
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="filter('all',this)">Todos</button>
+    <button class="filter-btn" onclick="filter('SEO',this)">SEO</button>
+    <button class="filter-btn" onclick="filter('Marketing',this)">Marketing</button>
+    <button class="filter-btn" onclick="filter('Web',this)">Web</button>
+    <button class="filter-btn" onclick="filter('IA',this)">Inteligencia Artificial</button>
+  </div>
+
+  <div class="blog-grid" id="blogGrid">
+
+    <a href="/blog/como-aparecer-en-google-negocio-hispano" class="post-card" data-cat="SEO">
+      <div class="post-card-top">
+        <span class="post-cat">SEO</span>
+        <h2>Cómo aparecer primero en Google si tienes un negocio hispano en EE.UU.</h2>
+        <p>Los 4 factores que Google mira primero y la estrategia exacta que usamos con nuestros clientes para posicionarse en la primera página.</p>
+      </div>
+      <div class="post-card-bot">
+        <span class="post-meta-sm">Oct 2026 · 7 min</span>
+        <span class="post-read-btn">Leer artículo →</span>
+      </div>
+    </a>
+
+    <a href="/blog/chatgpt-recomienda-negocios" class="post-card" data-cat="IA SEO">
+      <div class="post-card-top">
+        <span class="post-cat">IA &amp; SEO</span>
+        <h2>ChatGPT recomienda negocios: cómo lograr que el tuyo aparezca</h2>
+        <p>Cómo hacer para que ChatGPT, Perplexity y Google AI recomienden tu negocio cuando los usuarios preguntan por servicios en tu área.</p>
+      </div>
+      <div class="post-card-bot">
+        <span class="post-meta-sm">Oct 2026 · 6 min</span>
+        <span class="post-read-btn">Leer artículo →</span>
+      </div>
+    </a>
+
+    <a href="/blog/sitio-web-contratistas-eeuu" class="post-card" data-cat="Web">
+      <div class="post-card-top">
+        <span class="post-cat">Web</span>
+        <h2>Sitio web para contratistas en EE.UU.: guía completa 2026</h2>
+        <p>Todo lo que necesitas saber para crear un sitio web que genere llamadas y contratos reales — páginas por servicio, por ciudad, y más.</p>
+      </div>
+      <div class="post-card-bot">
+        <span class="post-meta-sm">Oct 2026 · 8 min</span>
+        <span class="post-read-btn">Leer artículo →</span>
+      </div>
+    </a>
+
+    <a href="/blog/cuanto-cuesta-publicidad-facebook-instagram" class="post-card" data-cat="Marketing">
+      <div class="post-card-top">
+        <span class="post-cat">Marketing</span>
+        <h2>¿Cuánto cuesta la publicidad en Facebook e Instagram para tu negocio?</h2>
+        <p>Desglose real de costos de Meta Ads por industria: contratistas, restaurantes, salones, real estate. Presupuestos y resultados esperados.</p>
+      </div>
+      <div class="post-card-bot">
+        <span class="post-meta-sm">Oct 2026 · 7 min</span>
+        <span class="post-read-btn">Leer artículo →</span>
+      </div>
+    </a>
+
+    <a href="/blog/marketing-digital-restaurantes-hispanos" class="post-card" data-cat="Marketing">
+      <div class="post-card-top">
+        <span class="post-cat">Marketing</span>
+        <h2>Marketing digital para restaurantes hispanos en Estados Unidos</h2>
+        <p>Google Business, Instagram, TikTok y Meta Ads — la estrategia completa para llenar tu restaurante con clientes nuevos cada semana.</p>
+      </div>
+      <div class="post-card-bot">
+        <span class="post-meta-sm">Oct 2026 · 8 min</span>
+        <span class="post-read-btn">Leer artículo →</span>
+      </div>
+    </a>
+
+    <a href="/blog/errores-seo-negocio" class="post-card" data-cat="SEO">
+      <div class="post-card-top">
+        <span class="post-cat">SEO</span>
+        <h2>5 errores de SEO que están frenando a tu negocio en Google</h2>
+        <p>Los errores más comunes en negocios hispanos que no están rankeando — y cómo corregirlos esta semana sin gastar dinero.</p>
+      </div>
+      <div class="post-card-bot">
+        <span class="post-meta-sm">Oct 2026 · 6 min</span>
+        <span class="post-read-btn">Leer artículo →</span>
+      </div>
+    </a>
+
+    <a href="/blog/generar-clientes-inteligencia-artificial" class="post-card" data-cat="IA">
+      <div class="post-card-top">
+        <span class="post-cat">IA</span>
+        <h2>Cómo generar clientes con Inteligencia Artificial para tu pequeño negocio</h2>
+        <p>5 formas concretas de usar IA hoy: videos publicitarios, chatbots 24/7, automatización de seguimiento y más — por $50/mes o menos.</p>
+      </div>
+      <div class="post-card-bot">
+        <span class="post-meta-sm">Oct 2026 · 7 min</span>
+        <span class="post-read-btn">Leer artículo →</span>
+      </div>
+    </a>
+
+    <a href="/blog/google-ads-vs-meta-ads-negocios-latinos" class="post-card" data-cat="Marketing">
+      <div class="post-card-top">
+        <span class="post-cat">Marketing</span>
+        <h2>Google Ads vs. Meta Ads: ¿cuál funciona mejor para negocios latinos en USA?</h2>
+        <p>Comparativa honesta: cuándo usar cada plataforma según tu industria, presupuesto y tipo de cliente. Sin tecnicismos.</p>
+      </div>
+      <div class="post-card-bot">
+        <span class="post-meta-sm">Oct 2026 · 7 min</span>
+        <span class="post-read-btn">Leer artículo →</span>
+      </div>
+    </a>
+
+    <a href="/blog/sitio-web-profesional-vs-facebook" class="post-card" data-cat="Web">
+      <div class="post-card-top">
+        <span class="post-cat">Web</span>
+        <h2>Por qué tu negocio necesita un sitio web (no solo una página de Facebook)</h2>
+        <p>5 razones fundamentales por las que una página de Facebook no puede reemplazar tu sitio web — y qué pierdes cada día que esperas.</p>
+      </div>
+      <div class="post-card-bot">
+        <span class="post-meta-sm">Oct 2026 · 6 min</span>
+        <span class="post-read-btn">Leer artículo →</span>
+      </div>
+    </a>
+
+    <a href="/blog/seo-local-california-florida-texas" class="post-card" data-cat="SEO">
+      <div class="post-card-top">
+        <span class="post-cat">SEO</span>
+        <h2>SEO local para negocios en California, Florida y Texas: estrategia 2026</h2>
+        <p>Estrategia específica para los tres estados con mayor población hispana. Lo que funciona diferente en cada mercado y cómo aprovecharlo.</p>
+      </div>
+      <div class="post-card-bot">
+        <span class="post-meta-sm">Oct 2026 · 8 min</span>
+        <span class="post-read-btn">Leer artículo →</span>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="cta-banner">
+    <h2>¿Tu negocio necesita más clientes?</h2>
+    <p>Llevamos 7+ años ayudando a negocios hispanos en todo EE.UU. a crecer con estrategias digitales probadas. Escríbenos por WhatsApp hoy.</p>
+    <a href="https://wa.me/12094609828?text=Hola%2C+leí+el+blog+y+quiero+información+sobre+sus+servicios" target="_blank" class="btn-green">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.553 4.122 1.523 5.854L.057 23.882l6.206-1.625A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.371l-.36-.213-3.685.966.984-3.595-.234-.369A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+      Hablar con un experto
+    </a>
+    <a href="/web-seo" class="btn-ghost">Ver servicios →</a>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Financial Innovation · <a href="/blog">Blog</a> · <a href="/web-seo">Web &amp; SEO</a> · <a href="/marketing">Marketing</a> · <a href="/academy">Academy</a> · <a href="https://wa.me/12094609828">WhatsApp</a></p>
+</footer>
+
+<script>
+function filter(cat, btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.post-card').forEach(card=>{
+    if(cat==='all'||card.dataset.cat.includes(cat)){
+      card.style.display='flex';
+    } else {
+      card.style.display='none';
+    }
+  });
+}
+(function(){
+  var cv=document.getElementById('hero-canvas');
+  if(!cv)return;
+  var ctx=cv.getContext('2d'),stars=[];
+  function resize(){cv.width=window.innerWidth;cv.height=window.innerHeight;}
+  resize();
+  for(var i=0;i<160;i++)stars.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.1+.2,a:Math.random()});
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    ctx.fillStyle='#060612';ctx.fillRect(0,0,cv.width,cv.height);
+    stars.forEach(function(s){ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,'+s.a+')';ctx.fill();});
+  }
+  draw();
+  window.addEventListener('resize',function(){resize();draw();},{passive:true});
+})();
+</script>
+</body>
+</html>

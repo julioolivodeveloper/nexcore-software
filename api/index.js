@@ -524,6 +524,13 @@ app.delete('/api/expenses/:id', (req, res) => {
 // ── REPORTS ───────────────────────────────────────────────────────────────────
 app.get('/api/reports/dashboard', (req, res) => res.json(computeDashboard()));
 
+// ── BLOG ──────────────────────────────────────────────────────────────────────
+app.get('/blog',              (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'blog', 'index.html')));
+app.get('/blog/:slug',        (req, res) => {
+  const file = path.join(__dirname, '..', 'public', 'blog', req.params.slug + '.html');
+  res.sendFile(file, err => { if (err) res.status(404).sendFile(path.join(__dirname, '..', 'public', 'index.html')); });
+});
+
 // ── MARKETING & ACADEMY & LIBROS ──────────────────────────────────────────────
 app.get('/marketing',         (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'marketing.html')));
 app.get('/academy',           (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'academy.html')));
