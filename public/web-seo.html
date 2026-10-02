@@ -233,6 +233,28 @@ nav.scrolled{border-color:var(--border);padding:12px 0}
 .stat-num{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,4vw,3.2rem);font-weight:800;line-height:1;letter-spacing:-.04em;margin-bottom:6px}
 .stat-label{font-size:.78rem;color:var(--text-muted);line-height:1.4}
 
+/* ── SOCIAL ── */
+.social-section{padding:80px 0;background:rgba(11,11,30,0.70)}
+.social-inner{display:flex;align-items:center;gap:64px;flex-wrap:wrap}
+.social-left{flex:1;min-width:260px}
+.social-eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green-l);margin-bottom:18px}
+.social-dot{width:7px;height:7px;border-radius:50%;background:var(--green-l);box-shadow:0 0 8px var(--green-l);animation:blink 1.4s steps(1) infinite}
+.social-heading{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,46px);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:14px;text-wrap:balance}
+.social-sub{font-size:.95rem;color:var(--text-muted);line-height:1.75;max-width:400px}
+.social-right{flex-shrink:0}
+.social-card{display:flex;flex-direction:column;gap:20px;width:260px;background:linear-gradient(145deg,#0d1b3e,#0a1628);border:1px solid rgba(59,130,246,.25);border-radius:20px;padding:28px 24px;text-decoration:none;color:#fff;transition:transform .25s,box-shadow .25s;box-shadow:0 8px 32px rgba(59,130,246,.12)}
+.social-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(59,130,246,.22)}
+.social-fb{border-color:rgba(59,130,246,.3)}
+.social-card-top{display:flex;flex-direction:column;gap:6px}
+.social-icon-wrap{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#1877f2,#0a5fd4);display:flex;align-items:center;justify-content:center;margin-bottom:4px;box-shadow:0 4px 16px rgba(24,119,242,.35)}
+.social-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.social-handle{font-size:.75rem;color:#64748b}
+.social-card-stat{border-top:1px solid rgba(255,255,255,.06);padding-top:18px}
+.social-stat-num{font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;letter-spacing:-.04em;background:linear-gradient(135deg,#60a5fa,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.social-stat-lbl{font-size:.72rem;color:#64748b;letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
+.social-card-cta{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:600;color:#60a5fa;border-top:1px solid rgba(255,255,255,.06);padding-top:18px}
+@media(max-width:700px){.social-inner{flex-direction:column;align-items:flex-start}.social-card{width:100%}}
+
 /* ── CTA ── */
 .cta-section{padding:120px 0;background:rgba(6,6,18,0.72);position:relative;overflow:hidden}
 #cta-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
@@ -559,6 +581,40 @@ footer a{color:var(--blue-l)}
     </div>
   </div>
 </div>
+
+<!-- SOCIAL -->
+<section class="social-section">
+  <div class="container">
+    <div class="social-inner reveal">
+      <div class="social-left">
+        <div class="social-eyebrow">
+          <span class="social-dot"></span>Síguenos
+        </div>
+        <h2 class="social-heading">Más de <span class="grad-green">150,000</span><br>seguidores en redes</h2>
+        <p class="social-sub">Contenido diario sobre SEO, diseño web y estrategias para hacer crecer tu negocio.</p>
+      </div>
+      <div class="social-right">
+        <a href="https://www.facebook.com/financialinnovation1" target="_blank" rel="noopener" class="social-card social-fb">
+          <div class="social-card-top">
+            <div class="social-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </div>
+            <div class="social-name">Facebook</div>
+            <div class="social-handle">@financialinnovation1</div>
+          </div>
+          <div class="social-card-stat">
+            <div class="social-stat-num">150K+</div>
+            <div class="social-stat-lbl">Seguidores</div>
+          </div>
+          <div class="social-card-cta">
+            Ver perfil
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l6-6M3 4h6v6"/></svg>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- CTA -->
 <section class="cta-section">
