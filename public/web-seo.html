@@ -454,7 +454,7 @@ footer a{color:var(--blue-l)}
       <div class="eyebrow" style="justify-content:center;margin-bottom:16px">Caso Real</div>
       <h2 class="video-proof-title">Así logramos que este negocio<br>sea <span class="grad-green">recomendado por ChatGPT</span></h2>
       <div class="video-proof-wrap">
-        <div id="yt-proof-player"></div>
+        <iframe src="https://www.youtube.com/embed/G4ZHhwncpYM?rel=0&modestbranding=1&playsinline=1" title="Así logramos que este negocio sea recomendado por ChatGPT" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
       </div>
     </div>
   </div>
@@ -1106,22 +1106,6 @@ document.querySelectorAll('[data-count]').forEach(el => cntObs.observe(el));
   draw();
   window.addEventListener('resize', draw, {passive:true});
 })();
-</script>
-<script src="https://www.youtube.com/iframe_api"></script>
-<script>
-function onYouTubeIframeAPIReady(){
-  var w = document.getElementById('yt-proof-player');
-  if(!w) return;
-  var player = new YT.Player('yt-proof-player',{
-    videoId:'G4ZHhwncpYM',
-    playerVars:{rel:0,modestbranding:1,playsinline:1},
-    events:{
-      onReady:function(e){
-        e.target.setPlaybackQualityRange('hd1080','hd1080');
-      }
-    }
-  });
-}
 </script>
 </body>
 </html>
