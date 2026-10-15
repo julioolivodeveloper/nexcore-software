@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Crea tu generador de facturas con Claude — Financial Innovation</title>
+<meta name="description" content="Instrucciones completas y prompts para crear con Claude tu propia herramienta de facturas: clientes, PDF, historial, chat con IA, almacenamiento y control de gastos, sin programar."/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="canonical" href="https://julioolivodeveloper.com/guias/generador-facturas-claude.html"/>
+<meta property="og:title" content="Crea tu generador de facturas con Claude"/>
+<meta property="og:description" content="Instrucciones completas y prompts para crear con Claude tu propia herramienta de facturas: clientes, PDF, historial, chat con IA, almacenamiento y control de gastos, sin programar."/>
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://julioolivodeveloper.com/guias/generador-facturas-claude.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--ink:#0f172a;--sub:#475569;--muted:#64748b;--line:#e2e8f0;--bg:#e9eef5;--sheet:#ffffff;--blue:#2563eb;--cyan:#06b6d4;--navy:#07070f}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:16.5px;line-height:1.65}
+.sheet{max-width:860px;margin:0 auto;background:var(--sheet);box-shadow:0 10px 50px rgba(15,23,42,.10)}
+.cover{position:relative;overflow:hidden;background:linear-gradient(150deg,#0b1024 0%,#07070f 55%,#0a1a2e 100%);color:#fff;padding:44px 56px 40px}
+.cover::before{content:'';position:absolute;top:-120px;right:-120px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(6,182,212,.22),transparent 70%)}
+.cover::after{content:'';position:absolute;bottom:-140px;left:20%;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,.2),transparent 70%)}
+.cover>*{position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:34px}
+.hex{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#2563eb,#06b6d4);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;color:#fff;flex-shrink:0}
+.brand b{display:block;font-family:'Space Grotesk',sans-serif;font-size:16px;letter-spacing:.01em}
+.brand span{display:block;font-size:12.5px;color:#94a3b8}
+.kicker{display:inline-block;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#67e8f9;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.35);padding:6px 14px;border-radius:999px}
+h1{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:clamp(32px,6vw,46px);line-height:1.08;margin:18px 0 14px;letter-spacing:-.01em}
+h1 .hl{background:linear-gradient(135deg,#60a5fa,#06b6d4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:17.5px;color:#cbd5e1;max-width:620px;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.chips span{font-size:13px;font-weight:600;color:#e2e8f0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);padding:5px 12px;border-radius:999px}
+main{padding:36px 56px 20px}
+.before{background:#f0f9ff;border:1px solid #bae6fd;border-radius:16px;padding:18px 22px;margin-bottom:8px}
+.before h3{font-family:'Space Grotesk',sans-serif;margin:0 0 6px;font-size:17px}
+.before ul{margin:0;padding-left:20px}
+.step{margin-top:40px;break-inside:auto}
+.step-head{display:flex;align-items:center;gap:14px;margin-bottom:10px;break-after:avoid}
+.num{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,#2563eb,#06b6d4);color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-head small{display:block;font-family:'Space Grotesk',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+.step-head h2{margin:0;font-family:'Space Grotesk',sans-serif;font-size:24px;line-height:1.2}
+p{margin:0 0 12px}
+.prompt{background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:16px;padding:14px 18px 16px;margin:14px 0 16px;break-inside:avoid}
+.prompt-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.prompt-top span{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1d4ed8}
+.copy{font:600 13px 'Inter',sans-serif;color:#fff;background:var(--blue);border:none;border-radius:10px;padding:7px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.copy:active{transform:scale(.97)}
+.copy.done{background:#16a34a}
+.prompt-text{margin:0;font-size:16.5px;line-height:1.6;color:#0f172a;white-space:pre-wrap;font-weight:500}
+.prompt-text .slot{background:#fef3c7;border-radius:5px;padding:0 4px;color:#92400e}
+.example{background:#ecfeff;border-left:4px solid var(--cyan);border-radius:4px 14px 14px 4px;padding:12px 18px;margin:14px 0 16px;break-inside:avoid}
+.example b{display:block;font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#0e7490;margin-bottom:4px}
+.example q{display:block;font-style:normal;font-weight:500}
+.example q::before{content:'“'}.example q::after{content:'”'}
+.result{margin-top:8px;font-size:15.5px;color:var(--sub)}
+.result strong{color:#0f172a}
+.note{background:#fffbeb;border:1px solid #fde68a;border-radius:16px;padding:14px 20px;margin:14px 0 16px;break-inside:avoid}
+.note b{font-family:'Space Grotesk',sans-serif;color:#92400e}
+.note ul{margin:6px 0 0;padding-left:20px}
+.note li{margin:3px 0}
+.checklist{list-style:none;padding:0;margin:12px 0 0}
+.checklist li{display:flex;gap:12px;align-items:flex-start;padding:10px 14px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;break-inside:avoid}
+.box{width:20px;height:20px;border:2px solid #94a3b8;border-radius:5px;flex-shrink:0;margin-top:3px}
+.done-card{margin-top:40px;background:linear-gradient(135deg,#eff6ff,#ecfeff);border:1px solid #bfdbfe;border-radius:18px;padding:20px 24px;break-inside:avoid}
+.done-card h3{font-family:'Space Grotesk',sans-serif;margin:0 0 6px;font-size:20px}
+footer{padding:22px 56px 40px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:36px}
+footer a{color:var(--blue)}
+footer p{margin:0 0 6px}
+@media(max-width:640px){
+  body{font-size:16px}
+  .cover{padding:32px 22px 30px}
+  main{padding:26px 20px 10px}
+  footer{padding:20px 20px 34px}
+  .step-head h2{font-size:21px}
+  .prompt{padding:12px 14px 14px}
+}
+@media print{
+  @page{size:Letter;margin:12mm 0 14mm}
+  @page:first{margin-top:0}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff;font-size:14.5px}
+  .sheet{box-shadow:none;max-width:none}
+  .copy{display:none}
+  .cover{padding:36px 52px 30px}
+  main{padding:24px 52px 6px}
+  footer{padding:18px 52px 0}
+  .prompt-text{font-size:14.5px}
+  h1 .hl{background:none;color:#60a5fa;-webkit-text-fill-color:#60a5fa}
+  p:has(+ .prompt),p:has(+ .example),p:has(+ .note),p:has(+ .checklist){break-after:avoid}
+  .step{margin-top:30px}
+  .done-card{margin-top:28px}
+  footer{break-inside:avoid;margin-top:22px}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+<header class="cover">
+  <div class="brand"><div class="hex">FI</div><div><b>Financial Innovation</b><span>Academy · Guía gratuita</span></div></div>
+  <div class="kicker">Instrucciones completas · video «FACTURAS»</div>
+  <h1>Crea tu <span class="hl">generador de facturas</span> con Claude</h1>
+  <p class="lead">Copia estos prompts en Claude y construye, paso a paso, tu propia herramienta para hacer facturas, guardar clientes y pagos, y descargar tus facturas en PDF. Sin programar.</p>
+  <div class="chips"><span>7 pasos</span><span>5 prompts</span><span>Nivel principiante</span><span>~15 min</span></div>
+</header>
+<main>
+  <div class="before"><h3>Antes de empezar</h3><ul><li>Una cuenta de Claude: en <strong>claude.ai</strong> o en la app de escritorio.</li><li>Para que la herramienta guarde tus datos necesitas un plan compatible (Pro, Max, Team o Enterprise).</li><li>Cambia lo que está entre <span class="slot" style="background:#fef3c7;border-radius:5px;padding:0 4px;color:#92400e">[corchetes]</span> por los datos reales de tu negocio.</li></ul></div>
+  <section class="step"><div class="step-head"><div class="num">1</div><div><small>Paso 1 de 7 · Empieza</small><h2>Abre Claude y pide tu generador</h2></div></div><p>Abre Claude en tu computadora e inicia una conversación nueva. Escribe:</p><div class="prompt"><div class="prompt-top"><span>Prompt 1 · copia y pega</span><button class="copy" type="button">Copiar</button></div><p class="prompt-text">Crea una aplicación en un artefacto para generar facturas de mi negocio. Necesito registrar clientes, agregar servicios y precios, calcular totales y descargar las facturas en PDF. Incluye un historial de facturas con estados: pendiente, pagada y vencida.</p></div><p>Envía el mensaje y espera a que Claude construya la herramienta. Un <strong>artefacto</strong> es una app interactiva que aparece al lado de la conversación.</p></section><section class="step"><div class="step-head"><div class="num">2</div><div><small>Paso 2 de 7 · Prueba</small><h2>Prueba los botones y pide correcciones</h2></div></div><p>Cuando aparezca la herramienta, prueba cada botón. Si algo no funciona, escribe en la <strong>misma conversación</strong> qué pasó y pídele que lo corrija.</p><div class="example"><b>Ejemplo de corrección</b><q>El botón «Descargar PDF» no hace nada. ¿Puedes corregirlo?</q></div></section><section class="step"><div class="step-head"><div class="num">3</div><div><small>Paso 3 de 7 · Tu marca</small><h2>Personaliza tu factura</h2></div></div><p>Sube el logo de tu negocio con el botón <strong>+</strong> del chat y escribe:</p><div class="prompt"><div class="prompt-top"><span>Prompt 2 · copia y pega</span><button class="copy" type="button">Copiar</button></div><p class="prompt-text">Agrega este logo a las facturas. Estos son mis datos comerciales:
+Nombre: <span class="slot">[nombre de tu empresa]</span>
+Teléfono: <span class="slot">[tu teléfono]</span>
+Correo: <span class="slot">[tu correo]</span>
+Dirección: <span class="slot">[tu dirección, si corresponde]</span></p></div><p>También puedes pedirle que cambie los colores y el diseño:</p><div class="example"><b>Ejemplo</b><q>Usa azul marino y dorado, con un diseño más moderno.</q></div></section><section class="step"><div class="step-head"><div class="num">4</div><div><small>Paso 4 de 7 · Chat con IA</small><h2>Agrega un asistente dentro del generador</h2></div></div><p>Escribe en la conversación:</p><div class="prompt"><div class="prompt-top"><span>Prompt 3 · copia y pega</span><button class="copy" type="button">Copiar</button></div><p class="prompt-text">Agrega un asistente con inteligencia artificial que transforme mis instrucciones en una factura. Si falta información, debe preguntármela. Antes de guardar, muéstrame los datos para confirmar.</p></div><p>Cuando termine, abre ese chat <strong>dentro de la herramienta</strong> y prueba con un ejemplo:</p><div class="example"><b>Ejemplo para probar</b><q>Crea una factura para Carlos López por instalación de piso. El total es 1,500 dólares. Pagó 500 de anticipo y el saldo vence el 23 de octubre.</q><p class="result">La herramienta debe mostrar el servicio, el total, el anticipo y los <strong>1,000 dólares pendientes</strong>. Revisa la información y confirma para guardar.</p></div></section><section class="step"><div class="step-head"><div class="num">5</div><div><small>Paso 5 de 7 · Guardado</small><h2>Configura dónde se guardan tus datos</h2></div></div><p>Vuelve a la conversación donde estás construyendo la aplicación y escribe:</p><div class="prompt"><div class="prompt-top"><span>Prompt 4 · copia y pega</span><button class="copy" type="button">Copiar</button></div><p class="prompt-text">Usa almacenamiento persistente personal para guardar clientes, facturas y pagos y recuperarlos cuando vuelva a abrir la herramienta.</p></div><div class="note"><b>Importante</b><ul><li>Guardar datos entre sesiones requiere un plan compatible: <strong>Pro, Max, Team o Enterprise</strong>, usando Claude en la web o en la app de escritorio.</li><li>Si tu artefacto es de los antiguos (“legacy”), el almacenamiento solo funciona después de publicarlo. Los artefactos nuevos no necesitan publicarse.</li><li>Los datos quedan en el historial de la aplicación. Para tener el documento, usa el botón <strong>Descargar PDF</strong>: guardar el registro no guarda el PDF en tu computadora.</li></ul></div></section><section class="step"><div class="step-head"><div class="num">6</div><div><small>Paso 6 de 7 · Control</small><h2>Amplía el control de tu negocio</h2></div></div><p>Escribe:</p><div class="prompt"><div class="prompt-top"><span>Prompt 5 · copia y pega</span><button class="copy" type="button">Copiar</button></div><p class="prompt-text">Agrega un registro de gastos por categoría, pagos recibidos y cuentas por cobrar. Crea un resumen mensual y permite exportar los registros a CSV.</p></div><p>Así puedes registrar materiales, transporte u otros gastos y consultar tus movimientos.</p><div class="note"><b>Ojo</b><ul><li>Si quieres una contabilidad completa, agrega y revisa las funciones que necesita tu negocio: no aparecen automáticamente por tener un generador de facturas.</li></ul></div></section><section class="step"><div class="step-head"><div class="num">7</div><div><small>Paso 7 de 7 · Prueba final</small><h2>Comprueba que todo funcione</h2></div></div><ul class="checklist"><li><span class="box"></span>Crea una factura de prueba.</li><li><span class="box"></span>Registra un pago y un gasto.</li><li><span class="box"></span>Cierra la herramienta y vuelve a abrirla.</li><li><span class="box"></span>Comprueba que todo siga guardado.</li></ul></section>
+  <div class="done-card"><h3>Listo: ya tienes tu herramienta de facturación</h3><p style="margin:0">La construiste hablando con Claude, sin programar. Cada vez que necesites algo nuevo, vuelve a la misma conversación y pídeselo con tus palabras.</p></div>
+</main>
+<footer>
+  <p><b>Financial Innovation</b> · Guía gratuita · <a href="https://julioolivodeveloper.com/academy">julioolivodeveloper.com/academy</a></p>
+  <p>Planes y almacenamiento de artefactos: <a href="https://support.claude.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them">Centro de ayuda de Claude</a> (consultado en octubre de 2026). Los nombres, clientes y montos de los ejemplos son ficticios.</p>
+  <p>Claude es una marca de Anthropic. Esta guía es independiente y no está afiliada a Anthropic.</p>
+</footer>
+</div>
+<script>
+document.querySelectorAll('.copy').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var text=btn.closest('.prompt').querySelector('.prompt-text').innerText;
+    var ok=function(){btn.classList.add('done');btn.textContent='¡Copiado!';setTimeout(function(){btn.classList.remove('done');btn.textContent='Copiar';},1800);};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,function(){});}
+    else{var t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();try{document.execCommand('copy');ok();}catch(e){}document.body.removeChild(t);}
+  });
+});
+</script>
+</body>
+</html>
