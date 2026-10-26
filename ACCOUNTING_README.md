@@ -6,7 +6,7 @@ El servidor está corriendo en: **http://localhost:3003**
 
 ### Credenciales de Acceso
 - **Email:** jojulioneto1@gmail.com
-- **Contraseña:** Julioolivo94@
+- **Contraseña:** <tu-contraseña>
 
 ### URLs de Acceso
 - **Login:** http://localhost:3003/accounting/login

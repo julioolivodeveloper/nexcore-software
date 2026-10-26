@@ -69,7 +69,7 @@ async function start() {
     app.listen(PORT, () => {
       console.log(`✓ Servidor ejecutándose en http://localhost:${PORT}`);
       console.log(`✓ Acceso a contabilidad: http://localhost:${PORT}/accounting/login`);
-      console.log(`✓ Credenciales: jojulioneto1@gmail.com / Julioolivo94@`);
+      console.log('✓ Credenciales: ACCOUNTING_EMAIL / ACCOUNTING_PASSWORD (variables de entorno)');
     });
   } catch (err) {
     console.error('Error al iniciar:', err);

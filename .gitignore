@@ -6,3 +6,4 @@ accounting.db
 *.log
 dist/
 build/
+.env

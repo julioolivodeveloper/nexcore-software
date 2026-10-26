@@ -113,12 +113,12 @@ CREATE INDEX idx_invoices_status ON invoices(status);
 3. Click en **"Insert row"**
 4. Rellena:
    - **email:** `jojulioneto1@gmail.com`
-   - **password:** `$2a$10$...` (usa bcrypt hash de "Julioolivo94@")
+   - **password:** `$2a$10$...` (usa bcrypt hash de "<tu-contraseña>")
    - **name:** `Admin Julio`
 
 ⚠️ La contraseña debe estar hasheada. Usa esto en terminal:
 ```bash
-node -e "console.log(require('bcryptjs').hashSync('Julioolivo94@', 10))"
+node -e "console.log(require('bcryptjs').hashSync('<tu-contraseña>', 10))"
 ```
 
 O usa esta contraseña hasheada lista:
@@ -162,7 +162,7 @@ https://tu-proyecto.vercel.app/accounting/login
 
 Login:
 - **Email:** jojulioneto1@gmail.com
-- **Contraseña:** Julioolivo94@
+- **Contraseña:** <tu-contraseña>
 
 ---
 

@@ -1,10 +1,34 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const crypto = require('crypto');
 
 const app = express();
-app.use(express.json());
+// Keep the raw body so the WhatsApp webhook signature can be checked
+app.use(express.json({ verify: (req, res, buf) => { req.rawBody = buf; } }));
 app.use(express.urlencoded({ extended: true }));
+
+// ── ACCOUNTING ACCESS ─────────────────────────────────────────────────────────
+// HTTP Basic auth from env (ACCOUNTING_EMAIL / ACCOUNTING_PASSWORD). Locked when unset.
+function safeEqual(a, b) {
+  const x = Buffer.from(String(a)), y = Buffer.from(String(b));
+  return x.length === y.length && crypto.timingSafeEqual(x, y);
+}
+function accountingCredentialsOk(email, password) {
+  const expectedEmail = process.env.ACCOUNTING_EMAIL, expectedPassword = process.env.ACCOUNTING_PASSWORD;
+  return !!expectedEmail && !!expectedPassword && safeEqual(email, expectedEmail) && safeEqual(password, expectedPassword);
+}
+function requireAccounting(req, res, next) {
+  const header = req.headers.authorization || '';
+  if (header.startsWith('Basic ')) {
+    const decoded = Buffer.from(header.slice(6), 'base64').toString('utf8');
+    const sep = decoded.indexOf(':');
+    if (sep > 0 && accountingCredentialsOk(decoded.slice(0, sep), decoded.slice(sep + 1))) return next();
+  }
+  res.set('WWW-Authenticate', 'Basic realm="Financial Innovation Accounting", charset="UTF-8"');
+  res.status(401).send('Authentication required');
+}
+app.use(['/accounting', '/api/clients', '/api/invoices', '/api/expenses', '/api/reports', '/api/auth/me'], requireAccounting);
 
 // ── IN-MEMORY DATA ────────────────────────────────────────────────────────────
 
@@ -421,14 +445,14 @@ app.get('/accounting/chat',      (req, res) => res.sendFile(path.join(__dirname,
 // ── AUTH ──────────────────────────────────────────────────────────────────────
 app.post('/api/auth/login', (req, res) => {
   const { email, password } = req.body;
-  if (email === 'jojulioneto1@gmail.com' && password === 'Julioolivo94@') {
+  if (accountingCredentialsOk(email, password)) {
     res.json({ success: true });
   } else {
     res.status(401).json({ error: 'Credenciales inválidas' });
   }
 });
 app.post('/api/auth/logout', (req, res) => res.json({ success: true }));
-app.get('/api/auth/me', (req, res) => res.json({ email: 'jojulioneto1@gmail.com', name: 'Admin' }));
+app.get('/api/auth/me', (req, res) => res.json({ email: process.env.ACCOUNTING_EMAIL, name: 'Admin' }));
 
 // ── CLIENTS ───────────────────────────────────────────────────────────────────
 app.get('/api/clients', (req, res) => {
@@ -527,6 +551,7 @@ app.get('/api/reports/dashboard', (req, res) => res.json(computeDashboard()));
 // ── BLOG ──────────────────────────────────────────────────────────────────────
 app.get('/blog',              (req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'blog', 'index.html')));
 app.get('/blog/:slug',        (req, res) => {
+  if (!/^[a-z0-9-]+$/i.test(req.params.slug)) return res.status(404).sendFile(path.join(__dirname, '..', 'public', 'index.html'));
   const file = path.join(__dirname, '..', 'public', 'blog', req.params.slug + '.html');
   res.sendFile(file, err => { if (err) res.status(404).sendFile(path.join(__dirname, '..', 'public', 'index.html')); });
 });
@@ -610,6 +635,14 @@ app.get('/api/whatsapp', (req, res) => {
 
 // Incoming messages
 app.post('/api/whatsapp', async (req, res) => {
+  // Only Meta can call this: check X-Hub-Signature-256 with the app secret
+  const appSecret = process.env.WHATSAPP_APP_SECRET;
+  if (appSecret) {
+    const expected = 'sha256=' + crypto.createHmac('sha256', appSecret).update(req.rawBody || '').digest('hex');
+    if (!safeEqual(req.headers['x-hub-signature-256'] || '', expected)) return res.status(401).send('Invalid signature');
+  } else {
+    console.warn('WHATSAPP_APP_SECRET not set — webhook signature not verified');
+  }
   const body = req.body;
   if (body.object !== 'whatsapp_business_account') return res.status(200).json({ status: 'ok' });
 

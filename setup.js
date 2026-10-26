@@ -7,7 +7,7 @@ async function setupAdmin() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: 'jojulioneto1@gmail.com',
-        password: 'Julioolivo94@',
+        password: process.env.ACCOUNTING_PASSWORD,
         name: 'Admin Julio'
       })
     });

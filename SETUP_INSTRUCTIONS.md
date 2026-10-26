@@ -50,9 +50,9 @@ git push origin main
 ```
 SUPABASE_URL = https://otdwdjxcknpzkilfjktt.supabase.co
 
-SUPABASE_ANON_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90ZHdkanhja25wemtsbGZqa3R0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyMDg5NDAsImV4cCI6MjA5ODc4NDk0MH0.KIR3P8sWrt3CSRgsdBQZP6j-TfcFzzP4ipQ4DOGgLqg
+SUPABASE_ANON_KEY = <tu-clave-de-supabase>
 
-SUPABASE_SERVICE_ROLE_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90ZHdkanhja25wemtsbGZqa3R0Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MzIwODk0MCwiZXhwIjoyMDk4Nzg0OTQwfQ.1PKbmVFdATkNgU1ddoh2GsYk8HzYlmBc7zcJ6NmDTSw
+SUPABASE_SERVICE_ROLE_KEY = <tu-clave-de-supabase>
 
 SESSION_SECRET = nexcore-accounting-secure-secret-key-2024
 ```
@@ -83,7 +83,7 @@ https://julioolivodeveloper.com/accounting/login
 
 **Credenciales:**
 - 📧 Email: `jojulioneto1@gmail.com`
-- 🔒 Contraseña: `Julioolivo94@`
+- 🔒 Contraseña: `<tu-contraseña>`
 
 ---
 
