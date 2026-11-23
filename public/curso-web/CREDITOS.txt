@@ -1,0 +1,20 @@
+Fuentes y recursos de la landing
+
+Contenido del curso, precio y garantía:
+https://hotmart.com/es/marketplace/productos/crea-y-vende-sitios-web-profesionales-sin-saber-codigo/C108545380E
+https://pay.hotmart.com/C108545380E?checkoutMode=2
+
+Foto de Julio Olivo: perfil público del instructor en Hotmart.
+
+Imagen ilustrativa del jardín: Alex Tyson / Unsplash
+https://unsplash.com/photos/F-xvnDMydG4
+https://images.unsplash.com/photo-1722247523785-629e5cac9b3d
+
+Imagen ilustrativa de arquitectura: Unsplash
+https://images.unsplash.com/photo-1600585154340-be6161a56a0c
+Licencia: https://unsplash.com/license
+
+Tipografías: Manrope e Instrument Serif, archivos locales utilizados en el proyecto.
+Iconos, monograma y vistas de sitios: SVG, HTML y CSS propios de esta landing.
+
+Los ejemplos visuales no se presentan como trabajos de alumnos ni testimonios.

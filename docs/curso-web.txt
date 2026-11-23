@@ -1,0 +1,33 @@
+LANDING DEL CURSO DE JULIO OLIVO
+
+Ruta dentro del repositorio: public/curso-web/
+Ruta de la página en la aplicación: /curso-web/
+
+La configuración existente sirve public/ con Express. La carpeta contiene su
+propio index.html, estilos, JavaScript, imágenes, fuentes e iconos. Puede usarse
+con la configuración actual de la aplicación.
+
+CONTENIDO
+- Presentación, ejemplos de sitios, temario, instructor, precio y preguntas.
+- Video de YouTube: https://youtu.be/I-Qrp-g6x8o
+- Pago oficial: https://pay.hotmart.com/C108545380E?checkoutMode=2
+- Créditos de imágenes y recursos: public/curso-web/CREDITOS.txt
+
+VISTA LOCAL DE ESTA COPIA
+python3 -m http.server 4176 --bind 127.0.0.1 --directory public
+Abrir http://127.0.0.1:4176/curso-web/
+
+La copia de trabajo original de la landing también permanece en:
+Sites/crea-y-vende-webs-local
+
+ESTADO DE LA OFERTA
+Los datos se consultaron en Hotmart el 22 de noviembre de 2026: US$97,
+7 días de garantía y 19 clases disponibles, correspondientes a los módulos
+0 al 4. Los módulos 5, 6 y 7 se indican como próximos.
+
+La etiqueta noindex se conserva para revisión. Antes de solicitar indexación,
+confirmar la oferta vigente y establecer la URL canónica de la página.
+
+La landing incorpora un reproductor adaptable con pantalla completa. El pago
+se abre en una ventana con el checkout de Hotmart en escritorio y en otra
+pestaña en móvil. La landing no recopila datos de tarjetas.
