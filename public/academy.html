@@ -6,8 +6,8 @@
   <!-- Meta Pixel -->
   <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','564515227584492');fbq('track','PageView');</script>
   <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=564515227584492&ev=PageView&noscript=1"/></noscript>
-  <title>Academy — Libros de Julio Olivo</title>
-  <meta name="description" content="Todos los libros de Julio Olivo. Conocimiento, política, fantasía y negocios en un solo lugar."/>
+  <title>Academy — Cursos, guías y libros de Julio Olivo</title>
+  <meta name="description" content="Descubre el curso para crear sitios web sin saber código, guías prácticas y libros de Julio Olivo. Aprende paso a paso y en español."/>
   <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -112,6 +112,43 @@
     .hero-sub{
       font-size:1.05rem;color:#94a3b8;max-width:520px;margin:0 auto 48px;line-height:1.7;
     }
+
+    /* ── FEATURED WEB COURSE ────────────────────── */
+    .academy-course-section{padding:0 0 56px;scroll-margin-top:95px}
+    .academy-course-featured{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:48px;border:1px solid rgba(151,202,111,.28);border-radius:24px;background:radial-gradient(ellipse at 100% 0,rgba(103,151,73,.15),transparent 60%),linear-gradient(135deg,#101b1b,#101623);position:relative;overflow:hidden}
+    .academy-course-copy{min-width:0;position:relative;z-index:1}
+    .academy-course-badge{display:inline-flex;align-items:center;gap:9px;padding:6px 13px;background:rgba(196,239,136,.09);border:1px solid rgba(196,239,136,.22);border-radius:999px;color:#c4ef88;font-size:.75rem;font-weight:700;letter-spacing:.07em;margin-bottom:20px}
+    .academy-course-badge svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .academy-course-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.9rem,3.5vw,2.65rem);font-weight:700;line-height:1.13;letter-spacing:-.045em;color:#fff;max-width:570px;margin-bottom:20px}
+    .academy-course-title span{display:block;color:#c4ef88;margin-top:6px}
+    .academy-course-desc{font-size:1rem;color:#b7c6c0;line-height:1.8;max-width:540px;margin-bottom:24px}
+    .academy-course-meta{display:flex;flex-wrap:wrap;gap:9px 18px;list-style:none;margin-bottom:27px}
+    .academy-course-meta li{display:flex;align-items:center;gap:7px;font-size:.875rem;color:#d0ded5}
+    .academy-course-meta svg{width:17px;height:17px;fill:none;stroke:#c4ef88;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+    .academy-course-cta{display:inline-flex;align-items:center;justify-content:center;min-height:51px;padding:14px 26px;border:1px solid #c4ef88;border-radius:12px;background:#c4ef88;color:#17271f;font-size:1rem;font-weight:700;box-shadow:0 7px 24px rgba(109,160,64,.13);transition:transform .2s,box-shadow .2s}
+    .academy-course-cta:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(109,160,64,.25)}
+    .academy-course-cta:focus-visible{outline:3px solid #fff;outline-offset:5px}
+    .academy-course-note{font-size:.875rem;color:#9aac9f;margin-top:15px;line-height:1.7;max-width:460px}
+    .academy-course-visual{min-width:0;position:relative;padding:20px 0 32px}
+    .academy-course-browser{background:#f5f8f1;border:1px solid rgba(210,232,195,.4);border-radius:11px;overflow:hidden;transform:rotate(-3deg);box-shadow:0 22px 50px rgba(0,0,0,.28)}
+    .academy-course-browser-bar{height:32px;display:flex;align-items:center;gap:5px;padding:0 12px;background:#fff;border-bottom:1px solid #e1e7dc}
+    .academy-course-browser-bar i{height:5px;width:5px;background:#c4d1bb;border-radius:50%}
+    .academy-course-browser-bar span{font-size:10px;color:#697c60;margin-left:8px}
+    .academy-course-browser-hero{height:270px;position:relative;overflow:hidden;background:#223c2e}
+    .academy-course-browser-hero img{width:100%;height:100%;object-fit:cover}
+    .academy-course-browser-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,37,26,.8),rgba(14,37,26,.12))}
+    .academy-course-browser-content{position:absolute;top:37px;left:25px;right:20px;z-index:1;color:#fff}
+    .academy-course-browser-content small{display:block;font-size:10px;font-weight:600;letter-spacing:.12em;color:#cce4b5;margin-bottom:13px}
+    .academy-course-browser-content strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:32px;line-height:1.08;letter-spacing:-1px;max-width:220px}
+    .academy-course-browser-content>span{display:inline-block;background:#c4ef88;border-radius:4px;margin-top:23px;padding:7px 11px;color:#183426;font-size:10px;font-weight:700}
+    .academy-course-visual-label{position:absolute;bottom:9px;left:15px;right:0;padding:15px 17px;display:flex;align-items:center;gap:12px;border:1px solid rgba(196,239,136,.22);border-radius:11px;background:#192b22;box-shadow:0 12px 35px rgba(0,0,0,.2)}
+    .academy-course-visual-label svg{width:25px;height:25px;fill:none;stroke:#c4ef88;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+    .academy-course-visual-label strong{display:block;font-size:.875rem;line-height:1.5;color:#e8f1e2}
+    .academy-course-visual-label span{display:block;font-size:.75rem;color:#a1b39c;margin-top:2px}
+    @media(max-width:900px){.academy-course-featured{padding:35px;gap:32px}.academy-course-title{font-size:2rem}.academy-course-browser-hero{height:260px}.academy-course-browser-content{left:20px}.academy-course-browser-content strong{font-size:28px}}
+    @media(max-width:700px){.academy-course-featured{grid-template-columns:1fr;padding:29px 25px;gap:24px;border-radius:20px}.academy-course-title{font-size:2rem}.academy-course-meta{gap:10px 16px;margin-bottom:24px}.academy-course-visual{max-width:420px;width:100%;margin:0 auto;padding-top:8px}.academy-course-browser-hero{height:225px}.academy-course-browser-content{top:27px}.academy-course-browser-content strong{font-size:29px}.academy-course-visual-label{left:10px;padding:13px}.academy-course-note{margin-top:14px}.academy-course-badge{font-size:.75rem}.academy-course-cta{width:100%}}
+    @media(max-width:380px){.academy-course-featured{padding:26px 21px}.academy-course-title{font-size:1.8rem}.academy-course-visual-label strong{font-size:.8125rem}.academy-course-visual-label span{font-size:.75rem}}
+    @media(prefers-reduced-motion:reduce){.academy-course-cta{transition:none}.academy-course-cta:hover{transform:none}}
 
     /* ── FEATURED GUIDE ──────────────────────────── */
     .guide-section{padding:0 0 56px}
@@ -397,6 +434,36 @@
 <!-- HERO -->
 <section class="hero">
   <div class="container">
+  </div>
+</section>
+
+<!-- FEATURED COURSE -->
+<section class="academy-course-section" id="curso-web" aria-labelledby="academy-course-title">
+  <div class="container">
+    <div class="academy-course-featured">
+      <div class="academy-course-copy">
+        <div class="academy-course-badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 10 5-10 5L2 8z"/><path d="M6 10v6c4 3 8 3 12 0v-6M22 8v7"/></svg>CURSO ONLINE · EN ESPAÑOL</div>
+        <h2 class="academy-course-title" id="academy-course-title">Crea y vende sitios web profesionales <span>sin saber código.</span></h2>
+        <p class="academy-course-desc">Aprende a crear y publicar páginas para negocios reales, desde la primera idea hasta un sitio que puedes mostrar y ofrecer como servicio. Paso a paso y con Julio Olivo.</p>
+        <ul class="academy-course-meta" aria-label="Características del curso">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>19 clases disponibles</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Empieza desde cero</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Mac y Windows</li>
+        </ul>
+        <a href="/curso-web/" class="academy-course-cta">Conocer el curso</a>
+        <p class="academy-course-note">Disponible en preventa. Consulta el temario, el video de presentación y todos los detalles en la página del curso.</p>
+      </div>
+      <div class="academy-course-visual" aria-hidden="true">
+        <div class="academy-course-browser">
+          <div class="academy-course-browser-bar"><i></i><i></i><i></i><span>Tu próximo proyecto web</span></div>
+          <div class="academy-course-browser-hero">
+            <img src="/curso-web/assets/garden.webp" alt="" width="1300" height="867" loading="lazy"/>
+            <div class="academy-course-browser-content"><small>DISEÑO PARA NEGOCIOS REALES</small><strong>Una idea.<br>Una web<br>hecha por ti.</strong><span>Tu negocio, en internet.</span></div>
+          </div>
+        </div>
+        <div class="academy-course-visual-label"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="14" height="11" rx="2"/><path d="M1 18h12"/><rect x="16" y="10" width="6" height="11" rx="1.5"/></svg><div><strong>De una idea a una web publicada.</strong><span>Vista ilustrativa de un sitio de práctica.</span></div></div>
+      </div>
+    </div>
   </div>
 </section>
 
